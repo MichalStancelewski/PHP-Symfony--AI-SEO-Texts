@@ -4,7 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    CHAT_GPT_API: '%env(CHAT_GPT_API)%'
+    CHAT_GPT_ORGANIZATION: '%env(CHAT_GPT_ORGANIZATION)%'
 services:
     # default configuration for services in *this* file
     _defaults:
