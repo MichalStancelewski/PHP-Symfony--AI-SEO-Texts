@@ -68,16 +68,11 @@ class ChatGptRequest
         $result = curl_exec($curl);
         $jsonData = json_decode($result, false);
         if (curl_errno($curl)) {
-            //throw error
             curl_close($curl);
+            //throw error
             return 'error';
         } else {
             curl_close($curl);
-            /*$output = $jsonData['choices'];
-            $output = $output[0];
-            $output = $output['message'];
-            $output = $output['content'];*/
-            //return $output;
             return $jsonData->choices[0]->message->content;
         }
 

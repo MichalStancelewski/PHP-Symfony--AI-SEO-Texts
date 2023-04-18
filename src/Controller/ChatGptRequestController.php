@@ -16,10 +16,16 @@ class ChatGptRequestController extends AbstractController
     public function index(): JsonResponse
     {
         $msg = "Usługi ślusarskie w Poznaniu'";
-
+        $response = [];
+/*
         $request = new ChatGptRequest($this->getApiKey(), $this->getOrganizationKey(), $msg, 70, true);
         $response = $request->send();
-
+*/
+        for ($i = 0; $i < 3; $i++) {
+            $request = new ChatGptRequest($this->getApiKey(), $this->getOrganizationKey(), $msg, 70, true);
+            $response[] = $request->send();
+            sleep(21);
+        }
         return $this->json([
             $response
         ]);
