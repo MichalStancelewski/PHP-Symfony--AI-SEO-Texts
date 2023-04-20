@@ -97,4 +97,17 @@ class Article
             return trim(substr($text, $firstMark + 4, $secondMark - $firstMark - 4));
         }
     }
+
+    public function getFormatedContentFromString(): string
+    {
+        $text = trim(preg_replace('/\s\s+/', ' ', $this->content));
+        $firstMark = strpos($text, '<h1>');
+        $secondMark = strpos($text, '</h1>');
+        if ($firstMark === false || $secondMark === false) {
+            $text = trim($text);
+        } else {
+            $text = trim(substr($text, $secondMark + 5, strlen($text)));
+        }
+        return $text;
+    }
 }
