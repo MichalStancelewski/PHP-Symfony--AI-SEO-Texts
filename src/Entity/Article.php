@@ -84,4 +84,17 @@ class Article
     {
         return $this->title;
     }
+
+    public function getTitleFromString(): string
+    {
+        $text = $this->content;
+        $firstMark = strpos($text, '<h1>');
+        $secondMark = strpos($text, '</h1>');
+        if ($firstMark === false || $secondMark === false) {
+            //todo throw error
+            return 'error';
+        } else {
+            return trim(substr($text, $firstMark + 4, $secondMark - $firstMark - 4));
+        }
+    }
 }

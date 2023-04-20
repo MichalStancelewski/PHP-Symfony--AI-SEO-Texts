@@ -31,7 +31,7 @@ class ChatGptRequestController extends AbstractController
 
         $entityManager = $this->entityManager;
 
-        $project = new Project('Test project', $msg, 2,350, true);
+        $project = new Project('Test project', $msg, 2, 50, true);
         $databaseInsert = new DatabaseInsert($entityManager, $project);
         $databaseInsert->saveProject();
 
@@ -51,13 +51,16 @@ class ChatGptRequestController extends AbstractController
             $article = new Article();
             $article->setProject($project);
             $article->setContent($receivedData);
-            $article->setTitle("dummy");
             $article->setIsUsed(false);
+
+            if ($project->isWithTitle() === true) {
+                $article->setTitle($article->getTitleFromString());
+            }
 
             $databaseInsert->saveArticle($article);
             $response[] = $receivedData;
 
-            sleep(21);
+            sleep(5);
         }
         return $this->json([
             $response
