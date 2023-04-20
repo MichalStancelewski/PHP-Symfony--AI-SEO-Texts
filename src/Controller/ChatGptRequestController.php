@@ -29,10 +29,10 @@ class ChatGptRequestController extends AbstractController
         $msg = "Usługi ślusarskie w Poznaniu'";
         $response = [];
 
-        $entityMenager = $this->entityManager;
+        $entityManager = $this->entityManager;
 
-        $project = new Project($msg, 2,50, true);
-        $databaseInsert = new DatabaseInsert($entityMenager, $project);
+        $project = new Project('Test project', $msg, 2,350, true);
+        $databaseInsert = new DatabaseInsert($entityManager, $project);
         $databaseInsert->saveProject();
 
         /*

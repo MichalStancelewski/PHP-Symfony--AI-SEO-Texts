@@ -36,7 +36,10 @@ class Project
     #[ORM\Column]
     private ?int $textsLength = null;
 
-    public function __construct(string $theme, int $numberOfArticles, int $textsLength, bool $withTitle)
+    #[ORM\Column(length: 520)]
+    private ?string $name = null;
+
+    public function __construct(string $name, string $theme, int $numberOfArticles, int $textsLength, bool $withTitle)
     {
         $this->articles = new ArrayCollection();
         $this->status = "pending";
@@ -44,6 +47,7 @@ class Project
         $this->textsLength = $textsLength;
         $this->withTitle = $withTitle;
         $this->theme = $theme;
+        $this->name = $name;
         $this->date = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Warsaw'));
     }
 
@@ -152,5 +156,22 @@ class Project
         $this->textsLength = $textsLength;
 
         return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
