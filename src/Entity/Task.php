@@ -32,6 +32,9 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +108,18 @@ class Task
     public function setProject(?Project $project): self
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
