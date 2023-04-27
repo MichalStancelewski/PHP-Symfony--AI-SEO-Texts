@@ -58,7 +58,6 @@ class ChatGptRequestController extends AbstractController
             $article->setContent($article->getFormatedContentFromString());
 
             $databaseInsert->saveArticle($article);
-            //$response[] = $receivedData;
             $response[] = $receivedData;
 
             sleep(5);

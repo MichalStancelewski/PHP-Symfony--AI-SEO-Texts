@@ -31,7 +31,6 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Project $project = null;
-
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 

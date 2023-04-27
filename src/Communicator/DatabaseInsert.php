@@ -4,6 +4,7 @@ namespace App\Communicator;
 
 use App\Entity\Article;
 use App\Entity\Project;
+use App\Entity\Task;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DatabaseInsert
@@ -31,6 +32,14 @@ class DatabaseInsert
         $entityManager = $this->entityManager;
 
         $entityManager->persist($article);
+        $entityManager->flush();
+    }
+
+    public function saveTask(Task $task): void
+    {
+        $entityManager = $this->entityManager;
+
+        $entityManager->persist($task);
         $entityManager->flush();
     }
 
