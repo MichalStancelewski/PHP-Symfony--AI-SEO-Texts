@@ -39,28 +39,50 @@ class TaskRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Task[] Returns an array of Task objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllNew()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.status = :status')
+            ->setParameter('status', 'new')
+            ->orderBy('t.lastChangedDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Task
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAllFailed()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.status = :status')
+            ->setParameter('status', 'failed')
+            ->orderBy('t.lastChangedDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllPending()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.status = :status')
+            ->setParameter('status', 'pending')
+            ->orderBy('t.lastChangedDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function setStatusPending(Task $task): void
+    {
+        $task->setStatus('pending');
+        $task->setLastChangedDate(new \DateTime('now', new \DateTimeZone('Europe/Warsaw')));
+        $this->getEntityManager()->persist($task);
+        $this->getEntityManager()->flush();
+    }
+
+    public function setStatusFailed(Task $task): void
+    {
+        $task->setStatus('failed');
+        $task->setLastChangedDate(new \DateTime('now', new \DateTimeZone('Europe/Warsaw')));
+        $this->getEntityManager()->persist($task);
+        $this->getEntityManager()->flush();
+    }
+
 }

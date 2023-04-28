@@ -53,6 +53,7 @@ class UserController extends AbstractController
                 $task->setWithTitle($formRequest->getWithTitle());
                 $task->setStatus("new");
                 $task->setDateCreated(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Warsaw')));
+                $task->setLastChangedDate(new \DateTime('now', new \DateTimeZone('Europe/Warsaw')));
 
                 $databaseInsert->saveTask($task);
             }
@@ -60,6 +61,7 @@ class UserController extends AbstractController
             return $this->render('form/new.html.twig', [
                 //TODO redirect with success msg
                 'form' => $form,
+                'submission' => $formRequest,
             ]);
         }
 

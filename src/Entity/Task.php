@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
@@ -33,6 +34,9 @@ class Task
     private ?Project $project = null;
     #[ORM\Column(length: 255)]
     private ?string $status = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $lastChangedDate = null;
 
     public function getId(): ?int
     {
@@ -119,6 +123,18 @@ class Task
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getLastChangedDate(): ?\DateTimeInterface
+    {
+        return $this->lastChangedDate;
+    }
+
+    public function setLastChangedDate(\DateTimeInterface $lastChangedDate): self
+    {
+        $this->lastChangedDate = $lastChangedDate;
 
         return $this;
     }
