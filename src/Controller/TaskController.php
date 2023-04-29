@@ -14,6 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
+    private const MAX_MINUTES_JOB = 3;
+    private const MAX_CONCURRENT_JOB = 3;
+    private string $apiKey;
+    private string $organizationKey;
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -22,8 +26,6 @@ class TaskController extends AbstractController
     {
     }
 
-    private string $apiKey;
-    private string $organizationKey;
 
     #[Route('/tasks', name: 'app_tasks')]
     public function index(): JsonResponse
@@ -69,17 +71,18 @@ class TaskController extends AbstractController
             $minutes += $sinceStart->h * 60;
             $minutes += $sinceStart->i;
 
-            if ($minutes > 10) {
+            if ($minutes > TaskController::MAX_MINUTES_JOB) {
                 $taskRepository->setStatusFailed($pT);
                 unset($pT);
             }
         }
 
-        if (count($pendingTasks) >= 3) {
+        if (count($pendingTasks) >= TaskController::MAX_CONCURRENT_JOB) {
             return $tasks;
         } else {
             $maxSpots = $maxSpots - count($pendingTasks);
         }
+        sleep(3);
         $failedTasks = $taskRepository->findAllFailed();
         if (count($failedTasks) > 0) {
             for ($i = 0; $i < count($failedTasks); $i++) {
@@ -93,6 +96,7 @@ class TaskController extends AbstractController
         if (count($tasks) >= 3) {
             return $tasks;
         }
+        sleep(3);
         $newTasks = $taskRepository->findAllNew();
         if (count($newTasks) > 0) {
             for ($i = 0; $i < count($newTasks); $i++) {
