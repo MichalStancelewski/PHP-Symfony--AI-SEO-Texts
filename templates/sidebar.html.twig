@@ -1,0 +1,27 @@
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <p><a href="{{ path('app_user_panel_index') }}">
+                <img src="/uploads/default/icon.png" alt="ICON" class="site-logo"/>
+                AI SEO Texts</a></p>
+    </div>
+    <div class="sidebar-menu-main">
+        <ul class="list-unstyled components">
+            {% set currentPage = app.request.attributes.get('_route') %}
+            <li><a href="{{ path('app_user_panel_new') }}" class="menu-item add-new">
+                    Dodaj
+                </a></li>
+            <li><a href="{{ path('app_user_panel_index') }}"
+                   class="menu-item{% if currentPage == 'index' %} active{% endif %}">
+                    Przegląd
+                </a></li>
+            <li><a href="{{ path('app_user_panel_projects') }}"
+                   class="menu-item{% if currentPage == 'project_index' or currentPage == 'project_single' %} active{% endif %}">
+                    Projekty
+                </a></li>
+
+        </ul>
+    </div>
+    <div id="sidebar-footer">
+        &copy; Michał Stancelewski
+    </div>
+</nav>

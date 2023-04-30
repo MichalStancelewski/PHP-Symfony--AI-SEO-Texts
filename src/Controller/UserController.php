@@ -21,8 +21,16 @@ class UserController extends AbstractController
     {
     }
 
-    #[Route('/new', name: 'app_user_panel_new')]
+
+    #[Route('/', name: 'app_user_panel_index')]
     public function index(Request $request): Response
+    {
+        return $this->render('dashboard/index.html.twig', [
+        ]);
+    }
+
+    #[Route('/new/', name: 'app_user_panel_new')]
+    public function new(Request $request): Response
     {
         $formRequest = new FormRequest();
 
@@ -58,16 +66,24 @@ class UserController extends AbstractController
                 $databaseInsert->saveTask($task);
             }
 
-            return $this->render('form/new.html.twig', [
+            return $this->render('dashboard/new.html.twig', [
                 //TODO redirect with success msg
                 'form' => $form,
                 'submission' => $formRequest,
             ]);
         }
 
-        return $this->render('form/new.html.twig', [
+        return $this->render('dashboard/new.html.twig', [
             //TODO redirect with failure msg
             'form' => $form,
         ]);
     }
+
+    #[Route('/projects/', name: 'app_user_panel_projects')]
+    public function projects(Request $request): Response
+    {
+        return $this->render('dashboard/projects.html.twig', [
+        ]);
+    }
+
 }

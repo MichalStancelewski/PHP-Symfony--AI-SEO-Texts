@@ -1,0 +1,159 @@
+@import './variables';
+
+/* width */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+body {
+    background-color: $color-slight-gray;
+    font-family: $font-family-text;
+    font-weight: 400;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: $font-family-header;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: calc(1.200rem + 1.3vw);
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+h2 {
+    font-size: calc(0.950rem + 0.5vw);
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: calc(0.750rem + 0.3vw);
+    margin-bottom: 12px;
+}
+
+a {
+    transition: all 0.25s;
+    text-decoration: none;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#content {
+    margin-left: 250px;
+    padding: 25px;
+    width: 100%;
+}
+
+#sidebar {
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    padding: 25px;
+    z-index: 999;
+    background-color: $color-very-dark;
+    color: $color-gray;
+}
+
+#sidebar #sidebar-footer {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    bottom: 60px;
+    width: 100%;
+    font-size: 11px;
+    text-align: center;
+    letter-spacing: 0.7px;
+}
+
+.sidebar-menu-main,
+.sidebar-menu-main ul {
+    margin-top: 25px;
+    list-style: none;
+    padding-inline-start: 0;
+    font-weight: 300;
+}
+
+.sidebar-header a {
+    font-family: $font-family-header;
+    color: $color-white;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.sidebar-menu-main .menu-item {
+    display: block;
+    background-color: $color-alfa;
+    color: $color-gray;
+    border-radius: $border-radius;
+    padding: 10px 22px;
+    margin-bottom: 10px;
+}
+
+.menu-item.add-new {
+    background-color: $color-blue;
+    color: $color-white;
+}
+
+.sidebar-menu-main .menu-item.active,
+.sidebar-menu-main .menu-item:hover {
+    background-color: $color-semi-dark;
+    color: $color-white;
+}
+
+.menu-item.add-new:hover {
+    background-color: $color-sky-blue;
+}
+
+.label {
+    color: $color-gray;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+    body {
+        padding-bottom: 50px;
+    }
+
+    h1 {
+        margin-top: 30px !important;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .wrapper {
+        display: block;
+    }
+
+    #content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    #sidebar {
+        width: 100vw;
+        position: relative;
+        height: auto;
+        padding: 15px;
+    }
+
+    #sidebar #sidebar-footer {
+        display: none;
+    }
+
+    .sidebar-header, .sidebar-menu-main p {
+        text-align: center;
+    }
+
+
+}
