@@ -3,5 +3,44 @@
 {% block title %}Nowy Projekt - AI SEO Texts{% endblock %}
 
 {% block body %}
-    {{ form(form) }}
+
+    <div class="title-box">
+        <h1>Dodaj nowy projekt</h1>
+    </div>
+
+    {{ form_start(form) }}
+
+    <div class="form box-container">
+        <div class="my-custom-class-for-errors">
+            {{ form_errors(form) }}
+        </div>
+
+
+        <div class="box">
+            <div class="col-1">
+                <span class="label">{{ form_label(form.name) }} </span><br/>
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="col-1">
+                <span class="label">{{ form_label(form.theme) }} </span><br/>
+                {{ form_widget(form.theme) }}
+            </div>
+            <div class="col-2">
+                <span class="label">{{ form_label(form.numberOfArticles) }} </span><br/>
+                {{ form_widget(form.numberOfArticles) }}
+            </div>
+            <div class="col-2">
+                <span class="label">{{ form_label(form.textsLength) }} </span><br/>
+                {{ form_widget(form.textsLength) }}
+            </div>
+            <div class="radio">
+                <span class="label">{{ form_label(form.withTitle) }} </span><br/>
+                {{ form_widget(form.withTitle) }}
+            </div>
+            <div class="submit">
+                {{ form_row(form.save) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}
