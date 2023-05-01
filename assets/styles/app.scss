@@ -93,7 +93,7 @@ a {
 }
 
 .menu-item.add-new,
-.button.add-new{
+.button.add-new {
   background-color: $color-blue;
   color: $color-white;
 }
@@ -128,11 +128,11 @@ a {
   -webkit-box-shadow: $box-shadow;
 }
 
-.form.box-container{
+.form.box-container {
   max-width: 440px;
 }
 
-.projects.box-container{
+.projects.box-container {
   margin-bottom: 10px;
 }
 
@@ -185,13 +185,15 @@ a {
 }
 
 .projects.projects-summary .box .col-next {
+  display: inline-block;
   flex-basis: auto;
   align-self: baseline;
   padding-right: 10px;
 }
 
 .projects.projects-pending .box,
-.projects.projects-done .box {
+.projects.projects-done .box,
+.projects.article-list .box {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -238,6 +240,27 @@ a {
   width: calc(5% - 10px);
 }
 
+.projects.article-list .box .col-100 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(100% - 10px);
+}
+
+.projects.article-list .box .col-80 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(80% - 10px);
+}
+
+.projects.article-list .box .col-20 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(20% - 10px);
+}
+
 .projects.projects-pending .box .col-next,
 .projects.projects-done .box .col-next {
   flex-basis: auto;
@@ -245,12 +268,12 @@ a {
   padding-right: 10px;
 }
 
-.projects .box{
+.projects .box {
   font-size: 12px;
   overflow-wrap: break-word;
 }
 
-.projects .box.label{
+.projects .box.label {
   font-size: 11px;
 }
 
@@ -260,7 +283,7 @@ a {
   margin-bottom: 5px;
 }
 
-.box .link{
+.box .link {
   padding-top: 5px;
   font-size: 10px;
 }
@@ -295,10 +318,58 @@ a {
   font-size: 13px;
 }
 
+.button.go-back {
+  margin-top: 8px;
+  padding: 8px 23px;
+  background-color: $color-alfa;
+  border: 1px solid $color-blue;
+  border-radius: $border-radius;
+  color: $color-semi-dark;
+  font-family: $font-family-header;
+  font-weight: 700;
+}
+.button.export {
+  margin-top: 8px;
+  padding: 8px 23px;
+  background-color: $color-blue;
+  border: 1px solid $color-blue;
+  border-radius: $border-radius;
+  color: $color-white;
+  font-family: $font-family-header;
+  font-weight: 700;
+}
+
+.button.refresh {
+  margin-top: 8px;
+  padding: 8px 43px;
+  background-color: $color-alfa;
+  border: 1px solid $color-semi-dark;
+  border-radius: $border-radius;
+  color: $color-semi-dark;
+  font-family: $font-family-header;
+  font-weight: 700;
+}
+
+.message-empty.center {
+ width: 100%;
+  margin-top: 30px;
+}
+
+.message-empty.center div{
+  margin: 0 auto;
+  text-align: center;
+  max-width: 420px;
+}
+
+.projects-summary .col-break{
+  margin-bottom: 12px;
+}
+
 .col-break {
   flex-basis: 100%;
   width: 0;
 }
+
 
 @media only screen and (max-width: 767px) {
   body {

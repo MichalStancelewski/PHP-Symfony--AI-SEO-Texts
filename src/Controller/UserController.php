@@ -97,6 +97,14 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/projects/{id}/', name: 'app_user_panel_projects_single')]
+    public function singleProject(Project $project, ProjectRepository $technologyRepository): Response
+    {
+
+        return $this->render('dashboard/projects-single.html.twig', [
+            'project' => $project,
+        ]);
+    }
 
 
 }

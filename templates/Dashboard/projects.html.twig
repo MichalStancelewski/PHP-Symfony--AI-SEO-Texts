@@ -11,7 +11,7 @@
     <div class="projects projects-summary box-container">
         <div class="box">
             <div class="col-next">
-                <a href="/new/" class="button add-new">Stwórz</a>
+                <a href="{{ path('app_user_panel_new') }}" class="button add-new">Stwórz</a>
             </div>
             <div class="col-next">
                 <span class="label">Łącznie:</span> <span class="number">{{ numberTotal }}</span>
@@ -55,7 +55,7 @@
             {% for project in projectsPending %}
                 <div class="box border-bottom">
                     <div class="col-25">
-                        {{ project.name }}
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="name-link">{{ project.name }}</a>
                     </div>
                     <div class="col-30">
                         {{ project.theme }}
@@ -84,7 +84,7 @@
                         {% endif %}
                     </div>
                     <div class="col-next link">
-                        <a href="#" class="view">Zobacz</a>
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="view">Zobacz</a>
                     </div>
                     <div class="col-next link">
                         <a href="#" class="delete">Usuń</a>
@@ -129,7 +129,7 @@
             {% for project in projectsDone %}
                 <div class="box border-bottom">
                     <div class="col-25">
-                        {{ project.name }}
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="name-link">{{ project.name }}</a>
                     </div>
                     <div class="col-30">
                         {{ project.theme }}
@@ -158,7 +158,7 @@
                         {% endif %}
                     </div>
                     <div class="col-next link">
-                        <a href="#" class="view">Zobacz</a>
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="view">Zobacz</a>
                     </div>
                     <div class="col-next link">
                         <a href="#" class="delete">Usuń</a>
