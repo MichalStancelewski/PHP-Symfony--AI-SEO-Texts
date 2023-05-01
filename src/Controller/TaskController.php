@@ -6,6 +6,7 @@ use App\Communicator\ChatGptRequest;
 use App\Communicator\DatabaseInsert;
 use App\Entity\Article;
 use App\Entity\Task;
+use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,15 +22,18 @@ class TaskController extends AbstractController
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private TaskRepository         $taskRepository
+        private TaskRepository         $taskRepository,
+        private ProjectRepository      $projectRepository
     )
     {
     }
 
 
-    #[Route('/tasks', name: 'app_tasks')]
+    #[
+        Route('/tasks', name: 'app_tasks')]
     public function index(): JsonResponse
     {
+        $this->checkProjects();
         $tasks = $this->checkTasks();
 
         $taskRepository = $this->taskRepository;
@@ -55,6 +59,18 @@ class TaskController extends AbstractController
     private function getOrganizationKey(): string
     {
         return strval($this->getParameter('CHAT_GPT_ORGANIZATION'));
+    }
+
+    private function checkProjects()
+    {
+        $projectsRepository = $this->projectRepository;
+        $pendingProjects = $projectsRepository->findAllPending();
+
+        foreach ($pendingProjects as $project){
+            if (count($project->getArticles()) == $project->getNumberOfArticles()){
+                $projectsRepository->setStatusDone($project);
+            }
+        }
     }
 
     private function checkTasks(): array

@@ -39,6 +39,13 @@ class ProjectRepository extends ServiceEntityRepository
         }
     }
 
+    public function setStatusDone(Project $project): void
+    {
+        $project->setStatus('done');
+        $this->getEntityManager()->persist($project);
+        $this->getEntityManager()->flush();
+    }
+
     public function findAllPending()
     {
         return $this->createQueryBuilder('t')

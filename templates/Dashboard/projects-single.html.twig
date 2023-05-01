@@ -43,14 +43,16 @@
             {% for article in project.articles %}
                 <div class="box border-bottom" style="margin: 10px 0;">
                     <div class="col-80">
-                        <b>{{ article.title }}</b>
+                        {% if project.isWithTitle == 1 %}
+                            <b>{{ article.title }}</b>
+                        {% endif %}
                     </div>
                     <div class="col-20">
                         <span class="label">Długość: </span>
-                        <b>{{ article.content|length}}</b>
+                        <b>{{ article.content|length }}</b>
                     </div>
                     <div class="col-100" style="margin: 5px 0;">
-                        {{ article.content}}
+                        {{ article.content }}
                     </div>
                     <div class="col-break">
                     </div>

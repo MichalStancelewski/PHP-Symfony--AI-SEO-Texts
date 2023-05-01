@@ -48,7 +48,9 @@ class ChatGptRequest
                 "role" => "user",
                 "content" => "Napisz mi nowy unikalny tekst o długości około " .
                     $this->textLength .
-                    "wyrazów na temat '" .
+                    "-" .
+                    ($this->textLength * 1.1) .
+                    " liter na temat '" .
                     $this->messageContent .
                     "."
             );
