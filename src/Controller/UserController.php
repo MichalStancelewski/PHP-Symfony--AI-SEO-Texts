@@ -7,6 +7,7 @@ use App\Entity\Project;
 use App\Entity\Task;
 use App\Form\FormRequest;
 use App\Form\Type\FormRequestType;
+use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private ProjectRepository $projectRepository
     )
     {
     }
@@ -82,8 +84,19 @@ class UserController extends AbstractController
     #[Route('/projects/', name: 'app_user_panel_projects')]
     public function projects(Request $request): Response
     {
+        $projectRepository = $this->projectRepository;
+        $projectsPending = $projectRepository->findAllPending();
+        $projectsDone = $projectRepository->findAllDone();
+
         return $this->render('dashboard/projects.html.twig', [
+            'projectsPending' => $projectsPending,
+            'projectsDone' => $projectsDone,
+            'numberOfPending' => count($projectsPending),
+            'numberOfDone' => count($projectsDone),
+            'numberTotal' => count($projectsPending) + count($projectsDone),
         ]);
     }
+
+
 
 }

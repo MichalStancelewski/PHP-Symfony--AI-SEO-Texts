@@ -1,11 +1,5 @@
 @import './variables';
 
-/* width */
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
 body {
   margin: 0;
   background-color: $color-slight-gray;
@@ -88,7 +82,8 @@ a {
   font-weight: 700;
 }
 
-.sidebar-menu-main .menu-item {
+.sidebar-menu-main .menu-item,
+.button.add-new {
   display: block;
   background-color: $color-alfa;
   color: $color-gray;
@@ -97,7 +92,8 @@ a {
   margin-bottom: 10px;
 }
 
-.menu-item.add-new {
+.menu-item.add-new,
+.button.add-new{
   background-color: $color-blue;
   color: $color-white;
 }
@@ -108,13 +104,14 @@ a {
   color: $color-white;
 }
 
-.menu-item.add-new:hover {
+.menu-item.add-new:hover,
+.button.add-new:hover {
   background-color: $color-sky-blue;
 }
 
 .title-box {
   margin: -25px -25px 20px -25px;
-  padding: 30px 30px 15px 30px;
+  padding: 15px 0 15px 30px;
   width: 100%;
   background-color: $color-white;
   box-shadow: $box-shadow;
@@ -135,10 +132,27 @@ a {
   max-width: 440px;
 }
 
+.projects.box-container{
+  margin-bottom: 10px;
+}
+
 .label {
   color: $color-gray;
   font-size: 13px;
   font-weight: 300;
+}
+
+.number {
+  color: $color-very-dark;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+.number-black {
+  color: $color-very-dark;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .form .box {
@@ -161,6 +175,94 @@ a {
 .form .box .radio,
 .form .box .submit {
   width: 96%;
+}
+
+.projects.projects-summary .box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.projects.projects-summary .box .col-next {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+}
+
+.projects.projects-pending .box,
+.projects.projects-done .box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.projects.projects-pending .box .col-30,
+.projects.projects-done .box .col-30 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(30% - 10px);
+}
+
+.projects.projects-pending .box .col-25,
+.projects.projects-done .box .col-25 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(25% - 10px);
+}
+
+.projects.projects-pending .box .col-20,
+.projects.projects-done .box .col-20 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(20% - 10px);
+}
+
+.projects.projects-pending .box .col-10,
+.projects.projects-done .box .col-10 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(10% - 10px);
+}
+
+.projects.projects-pending .box .col-5,
+.projects.projects-done .box .col-5 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(5% - 10px);
+}
+
+.projects.projects-pending .box .col-next,
+.projects.projects-done .box .col-next {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+}
+
+.projects .box{
+  font-size: 12px;
+  overflow-wrap: break-word;
+}
+
+.projects .box.label{
+  font-size: 11px;
+}
+
+.projects .border-bottom {
+  border-bottom: 1px solid $color-medium-gray;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.box .link{
+  padding-top: 5px;
+  font-size: 10px;
 }
 
 .form input {
@@ -188,6 +290,15 @@ a {
   color: $color-white;
 }
 
+.button.add-new {
+  margin: 0 15px 0 0;
+  font-size: 13px;
+}
+
+.col-break {
+  flex-basis: 100%;
+  width: 0;
+}
 
 @media only screen and (max-width: 767px) {
   body {

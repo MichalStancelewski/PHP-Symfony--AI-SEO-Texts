@@ -39,28 +39,26 @@ class ProjectRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Project[] Returns an array of Project objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllPending()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.status = :status')
+            ->setParameter('status', 'pending')
+            ->orderBy('t.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Project
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAllDone()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.status = :status')
+            ->setParameter('status', 'done')
+            ->orderBy('t.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 }
