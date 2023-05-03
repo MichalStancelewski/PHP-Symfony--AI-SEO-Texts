@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wszystkie Projekty - AI SEO Texts{% endblock %}
+
+{% block body %}
+
+    <div class="title-box">
+        <h1>Projekt: <i style="font-weight: 300;">{{ project.name }}</i></h1>
+    </div>
+
+    <a href="{{ path }}" download="">Pobierz</a>
+
+{% endblock %}

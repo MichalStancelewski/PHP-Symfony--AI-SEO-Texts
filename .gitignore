@@ -17,6 +17,7 @@
 .idea/**/shelf
 .idea
 /mysql/
+/public/uploads/export/
 
 # AWS User-specific
 .idea/**/aws.xml

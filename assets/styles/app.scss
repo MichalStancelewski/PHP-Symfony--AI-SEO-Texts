@@ -350,6 +350,24 @@ a {
   font-weight: 700;
 }
 
+.button.go-back:hover {
+  background-color: $color-blue;
+  border: 1px solid $color-blue;
+  color: $color-white;
+}
+
+.button.export:hover {
+  background-color: $color-sky-blue;
+  border: 1px solid $color-sky-blue;
+  color: $color-white;
+}
+
+.button.refresh:hover {
+  background-color: $color-blue;
+  border: 1px solid $color-blue;
+  color: $color-white;
+}
+
 .message-empty.center {
  width: 100%;
   margin-top: 30px;
@@ -362,7 +380,7 @@ a {
 }
 
 .projects-summary .col-break{
-  margin-bottom: 12px;
+  margin-bottom: 22px;
 }
 
 .col-break {

@@ -14,7 +14,7 @@
                 <a href="{{ path('app_user_panel_projects') }}" class="button go-back">Wróć</a>
             </div>
             <div class="col-next">
-                <a href="#" class="button export">Eksportuj</a>
+                <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">Eksportuj</a>
             </div>
             <div class="col-break"></div>
             <div class="col-next">

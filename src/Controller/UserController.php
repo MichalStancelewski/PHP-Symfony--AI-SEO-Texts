@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Communicator\DatabaseInsert;
 use App\Entity\Project;
 use App\Entity\Task;
+use App\Export\ProjectExporter;
 use App\Form\FormRequest;
 use App\Form\Type\FormRequestType;
 use App\Repository\ProjectRepository;
@@ -18,7 +19,7 @@ class UserController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private ProjectRepository $projectRepository
+        private ProjectRepository      $projectRepository
     )
     {
     }
@@ -98,11 +99,23 @@ class UserController extends AbstractController
     }
 
     #[Route('/projects/{id}/', name: 'app_user_panel_projects_single')]
-    public function singleProject(Project $project, ProjectRepository $technologyRepository): Response
+    public function singleProject(Project $project): Response
     {
 
         return $this->render('dashboard/projects-single.html.twig', [
             'project' => $project,
+        ]);
+    }
+
+    #[Route('/projects/{id}/export/', name: 'app_user_panel_projects_export')]
+    public function export(Project $project): Response
+    {
+        $projectExporter = new ProjectExporter($project);
+        $path = $projectExporter->export();
+
+        return $this->render('dashboard/projects-export.html.twig', [
+            'project' => $project,
+            'path' => $path,
         ]);
     }
 
