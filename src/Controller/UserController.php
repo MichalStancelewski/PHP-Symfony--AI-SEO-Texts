@@ -30,8 +30,13 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_panel_index')]
     public function index(Request $request): Response
     {
+        $projectRepository = $this->projectRepository;
+        $projectsNewest = $projectRepository->findNewest(5);
+
         return $this->render('dashboard/index.html.twig', [
+            'projectsNewest' => $projectsNewest,
         ]);
+
     }
 
     #[Route('/new/', name: 'app_user_panel_new')]

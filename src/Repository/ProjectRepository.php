@@ -48,24 +48,32 @@ class ProjectRepository extends ServiceEntityRepository
 
     public function findAllPending()
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.status = :status')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.status = :status')
             ->setParameter('status', 'pending')
-            ->orderBy('t.date', 'DESC')
+            ->orderBy('p.date', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
     public function findAllDone()
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.status = :status')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.status = :status')
             ->setParameter('status', 'done')
-            ->orderBy('t.date', 'DESC')
+            ->orderBy('p.date', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
+    public function findNewest(int $number)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.date', 'DESC')
+            ->setMaxResults($number)
+            ->getQuery()
+            ->getResult();
+    }
 
 
 }

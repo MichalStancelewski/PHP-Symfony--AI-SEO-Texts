@@ -3,5 +3,106 @@
 {% block title %}Panel Zarządzania - AI SEO Texts{% endblock %}
 
 {% block body %}
+    <div class="title-box">
+        <h1>Panel Zarządzania</h1>
+    </div>
+
+        <div class="projects projects-pending box-container">
+            <h2>Najnowsze projekty</h2>
+            <div class="box label border-bottom">
+                <div class="col-25">
+                    Nazwa
+                </div>
+                <div class="col-30">
+                    Temat
+                </div>
+                <div class="col-5">
+                    L. art.
+                </div>
+                <div class="col-5">
+                    Dług.
+                </div>
+                <div class="col-5">
+                    Tytuł
+                </div>
+                <div class="col-20">
+                    Data
+                </div>
+                <div class="col-10">
+                    Status
+                </div>
+            </div>
+
+            {% for project in projectsNewest %}
+
+                {% set numberOfUsed = 0 %}
+                {% for article in project.getArticles %}
+                    {% if article.isUsed == 1 %}
+                        {% set numberOfUsed = numberOfUsed + 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                <div class="box border-bottom">
+                    <div class="col-25">
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
+                           class="name-link">{{ project.name }}</a>
+                    </div>
+                    <div class="col-30">
+                        {{ project.theme }}
+                    </div>
+                    <div class="col-5">
+                        {{ project.numberOfArticles }}
+                    </div>
+                    <div class="col-5">
+                        {{ project.textsLength }}
+                    </div>
+                    <div class="col-5">
+                        {% if project.withTitle == 1 %}
+                            tak
+                        {% else %}
+                            nie
+                        {% endif %}
+                    </div>
+                    <div class="col-20">
+                        {{ project.date|date('d-m-Y H:i:s') }}
+                    </div>
+                    <div class="col-10">
+                        {% if project.status == 'pending' %}
+                            Przetwarzane
+                        {% elseif project.status == 'done' %}
+                            Zakończone
+                        {% endif %}
+                    </div>
+                    <div class="col-next link">
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
+                           class="view">Zobacz</a>
+                    </div>
+                    <div class="col-next link">
+                        <a href="#" class="delete">Usuń</a>
+                    </div>
+                    <div class="col-next link">
+                        <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="export">Eksportuj</a>
+                    </div>
+                    <div class="col-next">
+                        <span class="label is-used">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
+                    </div>
+                    <div class="col-break">
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    <div class="projects projects-summary box-container">
+        <div class="box">
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_new') }}" class="button add-new">Stwórz nowy projekt</a>
+            </div>
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_projects') }}" class="button add-new">Wszystkie projekty</a>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
