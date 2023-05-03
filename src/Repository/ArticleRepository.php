@@ -39,4 +39,11 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+    public function setIsUsed(Article $article, bool $flag): void
+    {
+        $article->setIsUsed($flag);
+        $this->getEntityManager()->persist($article);
+        $this->getEntityManager()->flush();
+    }
+
 }

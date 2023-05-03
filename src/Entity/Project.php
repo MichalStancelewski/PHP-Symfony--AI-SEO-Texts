@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\ArticleRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -207,6 +208,13 @@ class Project
         }
 
         return $this;
+    }
+
+    public function makeUsed(ArticleRepository $articleRepository): void
+    {
+        foreach ($this->getArticles() as $article){
+            $articleRepository->setIsUsed($article, true);
+        }
     }
 
 }

@@ -8,6 +8,7 @@ use App\Entity\Task;
 use App\Export\ProjectExporter;
 use App\Form\FormRequest;
 use App\Form\Type\FormRequestType;
+use App\Repository\ArticleRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,8 @@ class UserController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private ProjectRepository      $projectRepository
+        private ProjectRepository      $projectRepository,
+        private ArticleRepository      $articleRepository
     )
     {
     }
@@ -101,9 +103,17 @@ class UserController extends AbstractController
     #[Route('/projects/{id}/', name: 'app_user_panel_projects_single')]
     public function singleProject(Project $project): Response
     {
+        $numberOfUsed = 0;
+        foreach ($project->getArticles() as $article)
+        {
+            if ($article->isIsUsed()){
+                $numberOfUsed++;
+            }
+        }
 
         return $this->render('dashboard/projects-single.html.twig', [
             'project' => $project,
+            'numberOfUsed' => $numberOfUsed,
         ]);
     }
 
@@ -116,6 +126,17 @@ class UserController extends AbstractController
         return $this->render('dashboard/projects-export.html.twig', [
             'project' => $project,
             'path' => $path,
+        ]);
+    }
+
+    #[Route('/projects/{id}/make-used/', name: 'app_user_panel_projects_makeused')]
+    public function makeUsed(Project $project): Response
+    {
+        $articleRepository = $this->articleRepository;
+        $project->makeUsed($articleRepository);
+
+        return $this->render('dashboard/projects-makeused.html.twig', [
+            'project' => $project,
         ]);
     }
 

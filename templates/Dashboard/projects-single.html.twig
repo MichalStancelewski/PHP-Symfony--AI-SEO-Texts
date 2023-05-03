@@ -26,6 +26,9 @@
             <div class="col-next">
                 <span class="label">Zakończone:</span> <span class="number">{{ project.articles|length }}</span>
             </div>
+            <div class="col-next">
+                <span class="label">Wykorzystane:</span> <span class="number">{{ numberOfUsed }} ({{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%)</span>
+            </div>
         </div>
     </div>
 
