@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wszystkie Projekty - AI SEO Texts{% endblock %}
+
+{% block body %}
+
+    <div class="title-box">
+        <h1>Projekt: <i style="font-weight: 300;">{{ project.name }}</i></h1>
+    </div>
+
+    <div class="projects projects-summary box-container">
+        <div class="box">
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_projects') }}" class="button go-back">
+                    <span><img src="/uploads/default/icons/reply.svg" class="icon" alt=""/>
+                    Wróć
+                    </span>
+                </a>
+            </div>
+            <div class="col-next">
+                <span class="label">Temat:</span> <span class="theme">{{ project.theme }}</span>
+            </div>
+            <div class="col-next">
+                <span class="label">Artykuły:</span> <span class="number">{{ project.numberOfArticles }}</span>
+            </div>
+            <div class="col-break"></div>
+            <div class="col-next">
+                Czy na pewno chcesz usunąć ten projekt? <b>Nie da się tego odwrócić!</b>
+            </div>
+            <div class="col-break"></div>
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_projects_delete_confirm', { id: project.id }) }}"
+                   class="button delete">
+                    <span><img src="/uploads/default/icons/forward.svg" class="icon" alt=""/>
+                    Usuń projekt i artykuły
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

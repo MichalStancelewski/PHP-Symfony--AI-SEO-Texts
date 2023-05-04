@@ -415,6 +415,17 @@ button.submit:hover,
   font-weight: 700;
 }
 
+.button.delete {
+  margin-top: 8px;
+  padding: 8px 43px;
+  background-color: $color-red;
+  border: 1px solid $color-red;
+  border-radius: $border-radius;
+  color: $color-white;
+  font-family: $font-family-header;
+  font-weight: 700;
+}
+
 .button.go-back:hover {
   background-color: $color-blue;
   border: 1px solid $color-blue;
@@ -433,11 +444,21 @@ button.submit:hover,
   color: $color-white;
 }
 
+.button.delete:hover {
+  background-color: $color-sky-blue;
+  border: 1px solid $color-sky-blue;
+  color: $color-white;
+}
+
 .button.go-back .icon {
   filter: $filter-semi-dark;
 }
 
 .button.export .icon {
+  filter: $filter-white;
+}
+
+.button.delete .icon {
   filter: $filter-white;
 }
 

@@ -78,7 +78,7 @@
                            class="view">Zobacz</a>
                     </div>
                     <div class="col-next link">
-                        <a href="#" class="delete">Usuń</a>
+                        <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}" class="delete">Usuń</a>
                     </div>
                     <div class="col-next link">
                         <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="export">Eksportuj</a>

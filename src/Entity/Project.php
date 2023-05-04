@@ -217,4 +217,11 @@ class Project
         }
     }
 
+    public function deleteArticles(ArticleRepository $articleRepository):void
+    {
+        foreach ($this->getArticles() as $article){
+            $articleRepository->remove($article, true);
+        }
+    }
+
 }

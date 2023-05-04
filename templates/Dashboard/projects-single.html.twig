@@ -24,6 +24,14 @@
                     </span>
                 </a>
             </div>
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
+                   class="button delete">
+                    <span><img src="/uploads/default/icons/prohibited.svg" class="icon" alt=""/>
+                    Usuń
+                    </span>
+                </a>
+            </div>
             <div class="col-break"></div>
             <div class="col-next">
                 <span class="label">Temat:</span> <span class="theme">{{ project.theme }}</span>

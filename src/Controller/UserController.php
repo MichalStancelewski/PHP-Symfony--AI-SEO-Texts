@@ -147,5 +147,20 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/projects/{id}/delete/', name: 'app_user_panel_projects_delete')]
+    public function delete(Project $project): Response
+    {
+        return $this->render('dashboard/projects-delete.html.twig', [
+            'project' => $project,
+        ]);
+    }
+
+    #[Route('/projects/{id}/delete/confirm/', name: 'app_user_panel_projects_delete_confirm')]
+    public function deleteConfirmed(Project $project): Response
+    {
+        $project->deleteArticles($this->articleRepository);
+        $this->projectRepository->remove($project, true);
+        return $this->redirectToRoute('app_user_panel_projects');
+    }
 
 }
