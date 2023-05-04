@@ -31,7 +31,11 @@ class ProjectExporter
             echo "An error occurred while creating new file at " . $exception->getPath();
         }
 
+        $iterator = 0;
+
         foreach ($project->getArticles() as $article) {
+            $iterator++;
+
             try {
                 $file->appendToFile($path, 'TITLE: ' . $article->getTitle() . "\n");
                 $file->appendToFile($path, 'POST TYPE: post' . "\n");
@@ -44,9 +48,11 @@ class ProjectExporter
                 $file->appendToFile($path, 'ALLOW PINGBACKS: 0' . "\n");
                 $file->appendToFile($path, 'SITES: ' . "\n");
 
-                $file->appendToFile($path, "\n");
-                $file->appendToFile($path, '[NEW]' . "\n");
-                $file->appendToFile($path, "\n");
+                if($iterator != count($project->getArticles())) {
+                    $file->appendToFile($path, "\n");
+                    $file->appendToFile($path, '[NEW]' . "\n");
+                    $file->appendToFile($path, "\n");
+                }
             } catch (IOExceptionInterface $exception) {
                 echo "An error occurred while appending new content at " . $exception->getPath() . ' with ' . $article->getTitle();
             }
