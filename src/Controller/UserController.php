@@ -30,6 +30,8 @@ class UserController extends AbstractController
     #[Route('/', name: 'app_user_panel_index')]
     public function index(Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $projectRepository = $this->projectRepository;
         $projectsNewest = $projectRepository->findNewest(5);
 

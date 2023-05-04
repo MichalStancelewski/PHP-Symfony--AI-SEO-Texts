@@ -9,23 +9,34 @@
         <ul class="list-unstyled components">
             {% set currentPage = app.request.attributes.get('_route') %}
             <li><a href="{{ path('app_user_panel_new') }}" class="menu-item add-new">
-                    <span><img src="/uploads/default/icons/plus.svg" class="icon" alt="" />
+                    <span><img src="/uploads/default/icons/plus.svg" class="icon" alt=""/>
                     Dodaj</span>
                 </a></li>
             <li><a href="{{ path('app_user_panel_index') }}"
                    class="menu-item{% if currentPage == 'app_user_panel_index' %} active{% endif %}">
-                    <span><img src="/uploads/default/icons/house.svg" class="icon" alt="" />
+                    <span><img src="/uploads/default/icons/house.svg" class="icon" alt=""/>
                     Przegląd</span>
                 </a></li>
             <li><a href="{{ path('app_user_panel_projects') }}"
                    class="menu-item{% if currentPage == 'app_user_panel_projects' %} active{% endif %}">
-                    <span><img src="/uploads/default/icons/menu.svg" class="icon" alt="" />
+                    <span><img src="/uploads/default/icons/menu.svg" class="icon" alt=""/>
                     Projekty</span>
                 </a></li>
 
         </ul>
     </div>
     <div id="sidebar-footer">
-        &copy; Michał Stancelewski
+        {% if is_granted("ROLE_ADMIN") %}
+            <a href="{{ path('app_logout') }}" class="login-link">
+                    <span><img src="/uploads/default/icons/logout.svg" class="icon" alt=""/>
+                    Wyloguj się</span>
+            </a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="login-link">
+                    <span><img src="/uploads/default/icons/login.svg" class="icon" alt=""/>
+                    Zaloguj się</span>
+            </a>
+        {% endif %}
+        <br/>&copy; Michał Stancelewski
     </div>
 </nav>
