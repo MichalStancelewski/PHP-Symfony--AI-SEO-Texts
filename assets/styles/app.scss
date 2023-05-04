@@ -33,6 +33,10 @@ a {
   text-decoration: none;
 }
 
+a, a:visited {
+  color: inherit;
+}
+
 .wrapper {
   display: flex;
   width: 100%;
@@ -92,6 +96,14 @@ a {
   margin-bottom: 10px;
 }
 
+.button {
+  display: block;
+}
+
+.site-logo {
+  width: 42px;
+}
+
 .menu-item.add-new,
 .button.add-new {
   background-color: $color-blue;
@@ -107,6 +119,31 @@ a {
 .menu-item.add-new:hover,
 .button.add-new:hover {
   background-color: $color-sky-blue;
+}
+
+.sidebar-menu-main .icon {
+  width: 20px;
+  height: auto;
+  float: left;
+  margin-right: 10px;
+  filter: $filter-gray;
+}
+
+.sidebar-menu-main .menu-item.active .icon,
+.sidebar-menu-main .menu-item:hover .icon {
+  filter: $filter-white;
+}
+
+.button .icon {
+  width: 16px;
+  height: auto;
+  float: left;
+  margin-right: 7px;
+  margin-left: -7px;
+}
+
+.button.add-new .icon {
+  filter: $filter-white;
 }
 
 .title-box {
@@ -288,6 +325,30 @@ a {
   font-size: 10px;
 }
 
+.link .view {
+  color: $color-gray;
+}
+
+.link .view:hover {
+  color: $color-semi-dark;
+}
+
+.link .delete {
+  color: $color-red;
+}
+
+.link .delete:hover {
+  color: $color-green;
+}
+
+.link .export {
+  color: $color-blue;
+}
+
+.link .export:hover {
+  color: $color-sky-blue;
+}
+
 .form input {
   margin-bottom: 18px;
   padding: 5px 10px;
@@ -328,6 +389,7 @@ a {
   font-family: $font-family-header;
   font-weight: 700;
 }
+
 .button.export {
   margin-top: 8px;
   padding: 8px 23px;
@@ -368,22 +430,36 @@ a {
   color: $color-white;
 }
 
+.button.go-back .icon {
+  filter: $filter-semi-dark;
+}
+
+.button.export .icon {
+  filter: $filter-white;
+}
+
+.button.export:hover .icon,
+.button.go-back:hover .icon {
+  filter: $filter-white;
+}
+
 .message-empty.center {
- width: 100%;
+  width: 100%;
   margin-top: 30px;
 }
 
-.message-empty.center div{
+.message-empty.center div {
   margin: 0 auto;
   text-align: center;
   max-width: 420px;
 }
 
-.projects .is-used{
+
+.projects .is-used {
   font-size: 11px;
 }
 
-.projects-summary .col-break{
+.projects-summary .col-break {
   margin-bottom: 22px;
 }
 

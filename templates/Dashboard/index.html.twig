@@ -45,7 +45,7 @@
                 <div class="box border-bottom">
                     <div class="col-25">
                         <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
-                           class="name-link">{{ project.name }}</a>
+                           class="name-link"><b>{{ project.name }}</b></a>
                     </div>
                     <div class="col-30">
                         {{ project.theme }}
@@ -96,10 +96,18 @@
     <div class="projects projects-summary box-container">
         <div class="box">
             <div class="col-next">
-                <a href="{{ path('app_user_panel_new') }}" class="button add-new">Stwórz nowy projekt</a>
+                <a href="{{ path('app_user_panel_new') }}" class="button add-new">
+                    <span><img src="/uploads/default/icons/plus.svg" class="icon" alt="" />
+                    Stwórz nowy projekt
+                    </span>
+                </a>
             </div>
             <div class="col-next">
-                <a href="{{ path('app_user_panel_projects') }}" class="button add-new">Wszystkie projekty</a>
+                <a href="{{ path('app_user_panel_projects') }}" class="button add-new">
+                    <span><img src="/uploads/default/icons/menu.svg" class="icon" alt="" />
+                    Wszystkie projekty
+                    </span>
+                </a>
             </div>
         </div>
     </div>

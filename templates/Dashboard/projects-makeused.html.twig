@@ -11,7 +11,11 @@
     <div class="projects projects-summary box-container">
         <div class="box">
             <div class="col-next">
-                <a href="{{ path('app_user_panel_projects') }}" class="button go-back">Wróć</a>
+                <a href="{{ path('app_user_panel_projects') }}" class="button go-back">
+                    <span><img src="/uploads/default/icons/reply.svg" class="icon" alt=""/>
+                    Wróć
+                    </span>
+                </a>
             </div>
             <div class="col-next">
                 <span class="label">Temat:</span> <span class="theme">{{ project.theme }}</span>

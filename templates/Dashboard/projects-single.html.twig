@@ -11,10 +11,18 @@
     <div class="projects projects-summary box-container">
         <div class="box">
             <div class="col-next">
-                <a href="{{ path('app_user_panel_projects') }}" class="button go-back">Wróć</a>
+                <a href="{{ path('app_user_panel_projects') }}" class="button go-back">
+                    <span><img src="/uploads/default/icons/reply.svg" class="icon" alt=""/>
+                    Wróć
+                    </span>
+                </a>
             </div>
             <div class="col-next">
-                <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">Eksportuj</a>
+                <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">
+                    <span><img src="/uploads/default/icons/download.svg" class="icon" alt=""/>
+                    Eksportuj
+                    </span>
+                </a>
             </div>
             <div class="col-break"></div>
             <div class="col-next">
@@ -36,7 +44,9 @@
         <div class="message-empty center">
             <div><span>Artykuły w przygotowaniu...</span></div>
             <div><img src="/uploads/default/loading.png" class="spinner"/></div>
-            <div><a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="button refresh">Odśwież</a>
+            <div><a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="button refresh">
+                    Odśwież
+                </a>
             </div>
         </div>
     {% else %}
