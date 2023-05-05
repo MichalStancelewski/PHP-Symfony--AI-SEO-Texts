@@ -1,17 +1,57 @@
 <?php
 
 namespace App\Form;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class FormRequest
 {
+    #[Assert\NotBlank
+    (
+        message: 'Liczba artykułów - Pole nie może byc puste.',
+    )]
+    #[Assert\Range(
+        min: 1,
+        max: 100,
+        notInRangeMessage: 'Liczba artykułów - Podaj wartość między {{ min }} a {{ max }}.',
+    )]
     private ?int $numberOfArticles = null;
 
+    #[Assert\NotBlank
+    (
+        message: 'Nadać tytuł - Pole nie może byc puste.',
+    )]
     private ?bool $withTitle = null;
 
+    #[Assert\NotBlank
+    (
+        message: 'Temat - Pole nie może byc puste.',
+    )]
+    #[Assert\Length(
+        min: 10,
+        max: 240,
+        minMessage: 'Temat - Pole musi mieć minimum {{ limit }} znaków.',
+        maxMessage: 'Temat - Pole musi mieć maksymalnie {{ limit }} znaków.',
+    )]
     private ?string $theme = null;
 
+    #[Assert\NotBlank
+    (
+        message: 'Długość tekstu - Pole nie może byc puste.',
+    )]
+    #[Assert\Range(
+        min: 200,
+        max: 5000,
+        notInRangeMessage: 'Długość tekstu - Podaj wartość między {{ min }} a {{ max }}.',
+    )]
     private ?int $textsLength = null;
 
+    #[Assert\Length(
+        min: 5,
+        max: 80,
+        minMessage: 'Nazwa - Pole musi mieć minimum {{ limit }} znaków.',
+        maxMessage: 'Nazwa - Pole musi mieć maksymalnie {{ limit }} znaków.',
+    )]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     /**

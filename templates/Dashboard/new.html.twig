@@ -8,13 +8,33 @@
         <h1>Dodaj nowy projekt</h1>
     </div>
 
+    {% if isSuccess == 'success' %}
+        <div class="projects projects-summary box-container">
+            <div class="box">
+                <div class="col-next">
+                    Projekt <b>{{ submission.getName }}</b> utworzony!
+                </div>
+            </div>
+        </div>
+    {% elseif isSuccess == 'failure' %}
+        <div class="projects projects-summary box-container">
+            <div class="box">
+                <div class="col-next">
+                    <div class="error-list">
+                        <b>Błędy:</b> <br/>
+                        {% for error in errors %}
+                            {{ error }}<br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
     {{ form_start(form) }}
 
     <div class="form box-container">
-        <div class="my-custom-class-for-errors">
-            {{ form_errors(form) }}
-        </div>
-
 
         <div class="box">
             <div class="col-1">

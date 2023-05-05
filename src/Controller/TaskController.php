@@ -29,8 +29,7 @@ class TaskController extends AbstractController
     }
 
 
-    #[
-        Route('/tasks', name: 'app_tasks')]
+    #[Route('/tasks', name: 'app_tasks')] /* set to '/tasks-cron/ in production */
     public function index(): JsonResponse
     {
         $this->checkProjects();

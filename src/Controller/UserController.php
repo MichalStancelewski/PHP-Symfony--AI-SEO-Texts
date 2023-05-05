@@ -49,6 +49,11 @@ class UserController extends AbstractController
         $form = $this->createForm(FormRequestType::class, $formRequest);
         $form->handleRequest($request);
 
+        $errors = array();
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $formRequest = $form->getData();
 
@@ -79,14 +84,21 @@ class UserController extends AbstractController
             }
 
             return $this->render('dashboard/new.html.twig', [
-                //TODO redirect with success msg
+                'isSuccess' => 'success',
                 'form' => $form,
                 'submission' => $formRequest,
             ]);
         }
+        if($form->isSubmitted() && !$form->isValid()){
+            return $this->render('dashboard/new.html.twig', [
+                'isSuccess' => 'failure',
+                'form' => $form,
+                'errors' => $errors,
+            ]);
+        }
 
         return $this->render('dashboard/new.html.twig', [
-            //TODO redirect with failure msg
+            'isSuccess' => '',
             'form' => $form,
         ]);
     }
