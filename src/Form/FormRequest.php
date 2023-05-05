@@ -16,10 +16,6 @@ class FormRequest
     )]
     private ?int $numberOfArticles = null;
 
-    #[Assert\NotBlank
-    (
-        message: 'Nadać tytuł - Pole nie może byc puste.',
-    )]
     private ?bool $withTitle = null;
 
     #[Assert\NotBlank
