@@ -140,11 +140,13 @@ class UserController extends AbstractController
     public function export(Project $project): Response
     {
         $projectExporter = new ProjectExporter($project);
-        $path = $projectExporter->export();
+        $pathToPlain = $projectExporter->export(false);
+        $pathToAdvanced = $projectExporter->export(true);
 
         return $this->render('dashboard/projects-export.html.twig', [
             'project' => $project,
-            'path' => $path,
+            'pathToPlain' => $pathToPlain,
+            'pathToAdvanced' => $pathToAdvanced,
         ]);
     }
 

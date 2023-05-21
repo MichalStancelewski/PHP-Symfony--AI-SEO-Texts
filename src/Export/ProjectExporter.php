@@ -15,12 +15,19 @@ class ProjectExporter
         $this->project = $project;
     }
 
-    public function export(): string
+    public function export(bool $isAdvanced): string
     {
         $project = $this->project;
         $date = new \DateTime('now', new \DateTimeZone('Europe/Warsaw'));
         $slug = strtolower($this->cleanString($project->getName()));
-        $url = '/uploads/export/' . $date->format('Y-m-d_H-i') . '_' . $slug . '.txt';
+
+        if ($isAdvanced) {
+            $url = '/uploads/export/' . $date->format('Y-m-d_H-i') . '_' . $slug . '-advanced.txt';
+        } else {
+            $url = '/uploads/export/' . $date->format('Y-m-d_H-i') . '_' . $slug . '.txt';
+        }
+
+
         $path = getcwd() . $url;
 
         try {
@@ -37,22 +44,29 @@ class ProjectExporter
             $iterator++;
 
             try {
-                $file->appendToFile($path, 'TITLE: ' . $article->getTitle() . "\n");
-                $file->appendToFile($path, 'POST TYPE: post' . "\n");
-                $file->appendToFile($path, 'AUTHOR: administrator' . "\n");
-                $file->appendToFile($path, 'TAGS:' . "\n");
-                $file->appendToFile($path, 'SLUG: ' . $slug . "\n");
-                $file->appendToFile($path, 'EXCERPT:' . "\n");
-                $file->appendToFile($path, 'BODY: ' . $article->getContent() . "\n");
-                $file->appendToFile($path, 'ALLOW COMMENTS: 0' . "\n");
-                $file->appendToFile($path, 'ALLOW PINGBACKS: 0' . "\n");
-                $file->appendToFile($path, 'SITES: ' . "\n");
+                if ($isAdvanced) {
+                    $file->appendToFile($path, 'TITLE: ' . $article->getTitle() . "\n");
+                    $file->appendToFile($path, 'POST TYPE: post' . "\n");
+                    $file->appendToFile($path, 'AUTHOR:' . "\n");
+                    $file->appendToFile($path, 'TAGS:' . "\n");
+                    $file->appendToFile($path, 'SLUG:' . "\n");
+                    $file->appendToFile($path, 'EXCERPT:' . "\n");
+                    $file->appendToFile($path, 'BODY: ' . $article->getContent() . "\n");
+                    $file->appendToFile($path, 'ALLOW COMMENTS: 0' . "\n");
+                    $file->appendToFile($path, 'ALLOW PINGBACKS: 0' . "\n");
+                    $file->appendToFile($path, 'SITES: ' . "\n");
 
-                if($iterator != count($project->getArticles())) {
-                    $file->appendToFile($path, "\n");
-                    $file->appendToFile($path, '[NEW]' . "\n");
+                    if ($iterator != count($project->getArticles())) {
+                        $file->appendToFile($path, "\n");
+                        $file->appendToFile($path, '[NEW]' . "\n");
+                        $file->appendToFile($path, "\n");
+                    }
+                } else {
+                    $file->appendToFile($path, $article->getTitle() . "\n");
+                    $file->appendToFile($path, $article->getContent() . "\n");
                     $file->appendToFile($path, "\n");
                 }
+
             } catch (IOExceptionInterface $exception) {
                 echo "An error occurred while appending new content at " . $exception->getPath() . ' with ' . $article->getTitle();
             }
