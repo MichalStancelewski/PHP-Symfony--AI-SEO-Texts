@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskController extends AbstractController
 {
-    private const MAX_MINUTES_JOB = 3;
-    private const MAX_CONCURRENT_JOB = 3;
+    private const MAX_MINUTES_JOB = 1;
+    private const MAX_CONCURRENT_JOB = 1;
     private string $apiKey;
     private string $organizationKey;
 
@@ -135,7 +135,7 @@ class TaskController extends AbstractController
             $task->getTheme(),
             $task->getLength(),
             $task->isWithTitle());
-        $receivedData = $chatGptRequest->send();
+        $receivedData = $chatGptRequest->sendAndGetNewArticle();
 
         $article = new Article();
         $article->setProject($task->getProject());
@@ -145,6 +145,7 @@ class TaskController extends AbstractController
             $article->setTitle($article->getTitleFromString());
         }
         $article->setContent($article->getFormatedContentFromString());
+        $article->setContent($chatGptRequest->sendAndGetWithHtml($article->getContent()));
 
         $entityManager = $this->entityManager;
         $databaseInsert = new DatabaseInsert($entityManager, $task->getProject());

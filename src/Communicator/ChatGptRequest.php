@@ -29,7 +29,7 @@ class ChatGptRequest
         );
     }
 
-    public function send()
+    public function sendAndGetNewArticle()
     {
         $messages = array();
         if ($this->addTitles) {
@@ -39,9 +39,9 @@ class ChatGptRequest
                     $this->textLength .
                     "wyrazów na temat '" .
                     $this->messageContent .
-                    "' Nadaj tekstowi tytuł, który ma ponad 7 wyrazów, ale niech nie zawiera frazy '" .
+                    "'. Nadaj tekstowi tytuł, który ma ponad 7 wyrazów, ale niech nie zawiera frazy '" .
                     $this->messageContent .
-                    "'. Tytuł opakuj w znacznik <h1> </h1>"
+                    "'. Tytuł opakuj w znacznik <h1> </h1>."
             );
         } else {
             $messages[] = array(
@@ -59,7 +59,7 @@ class ChatGptRequest
         $data = array();
         $data["model"] = "gpt-3.5-turbo";
         $data["messages"] = $messages;
-        $data["max_tokens"] = 2000;
+        $data["max_tokens"] = 5000;
 
         $curl = curl_init(ChatGptRequest::API_URL);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -76,6 +76,38 @@ class ChatGptRequest
         } else {
             curl_close($curl);
             return $jsonData->choices[0]->message->content;
+        }
+
+    }
+
+    public function sendAndGetWithHtml(string $content)
+    {
+        $messages = array();
+        $messages[] = array(
+            "role" => "user",
+            "content" => "'" . $content . "' Opatrz powyższy tekst znacznikami HTML, aby był ostylowany do publikacji na blogu internetowym (ale nie korzystaj ze znacznika <h1>!)."
+        );
+
+        $data = array();
+        $data["model"] = "gpt-3.5-turbo";
+        $data["messages"] = $messages;
+        $data["max_tokens"] = 5000;
+
+        $curl = curl_init(ChatGptRequest::API_URL);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->headers);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($curl);
+        $jsonData = json_decode($result, false);
+        if (curl_errno($curl)) {
+            curl_close($curl);
+            //throw error
+            return 'error';
+        } else {
+            curl_close($curl);
+            return str_replace("'","",$jsonData->choices[0]->message->content);
         }
 
     }
