@@ -51,7 +51,11 @@
                     {{ project.theme }}
                 </div>
                 <div class="col-5">
-                    {{ project.getArticles|length }}/{{ project.numberOfArticles }}
+                    {% if project.getArticles|length != project.numberOfArticles %}
+                        <span style="color: red;">{{ project.getArticles|length }}</span>/{{ project.numberOfArticles }}
+                    {% else %}
+                        {{ project.getArticles|length }}/{{ project.numberOfArticles }}
+                    {% endif %}
                 </div>
                 <div class="col-5">
                     {{ project.textsLength }}
