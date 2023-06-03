@@ -17,6 +17,7 @@
                     </span>
                 </a>
             </div>
+            {% if project.status == 'done' %}
             <div class="col-next">
                 <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">
                     <span><img src="/uploads/default/icons/download.svg" class="icon" alt=""/>
@@ -24,6 +25,7 @@
                     </span>
                 </a>
             </div>
+            {% endif %}
             <div class="col-next">
                 <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
                    class="button delete">

@@ -7,81 +7,82 @@
         <h1>Panel Zarządzania</h1>
     </div>
 
-        <div class="projects projects-pending box-container">
-            <h2>Najnowsze projekty</h2>
-            <div class="box label border-bottom">
+    <div class="projects projects-pending box-container">
+        <h2>Najnowsze projekty</h2>
+        <div class="box label border-bottom">
+            <div class="col-25">
+                Nazwa
+            </div>
+            <div class="col-30">
+                Temat
+            </div>
+            <div class="col-5">
+                L. art.
+            </div>
+            <div class="col-5">
+                Dług.
+            </div>
+            <div class="col-5">
+                Tytuł
+            </div>
+            <div class="col-20">
+                Data
+            </div>
+            <div class="col-10">
+                Status
+            </div>
+        </div>
+
+        {% for project in projectsNewest %}
+
+            {% set numberOfUsed = 0 %}
+            {% for article in project.getArticles %}
+                {% if article.isUsed == 1 %}
+                    {% set numberOfUsed = numberOfUsed + 1 %}
+                {% endif %}
+            {% endfor %}
+
+            <div class="box border-bottom">
                 <div class="col-25">
-                    Nazwa
+                    <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
+                       class="name-link"><b>{{ project.name }}</b></a>
                 </div>
                 <div class="col-30">
-                    Temat
+                    {{ project.theme }}
                 </div>
                 <div class="col-5">
-                    L. art.
+                    {{ project.getArticles|length }}/{{ project.numberOfArticles }}
                 </div>
                 <div class="col-5">
-                    Dług.
+                    {{ project.textsLength }}
                 </div>
                 <div class="col-5">
-                    Tytuł
+                    {% if project.withTitle == 1 %}
+                        tak
+                    {% else %}
+                        nie
+                    {% endif %}
                 </div>
                 <div class="col-20">
-                    Data
+                    {{ project.date|date('d-m-Y H:i:s') }}
                 </div>
                 <div class="col-10">
-                    Status
-                </div>
-            </div>
-
-            {% for project in projectsNewest %}
-
-                {% set numberOfUsed = 0 %}
-                {% for article in project.getArticles %}
-                    {% if article.isUsed == 1 %}
-                        {% set numberOfUsed = numberOfUsed + 1 %}
+                    {% if project.status == 'pending' %}
+                        Przetwarzane
+                    {% elseif project.status == 'done' %}
+                        Zakończone
                     {% endif %}
-                {% endfor %}
-
-                <div class="box border-bottom">
-                    <div class="col-25">
-                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
-                           class="name-link"><b>{{ project.name }}</b></a>
-                    </div>
-                    <div class="col-30">
-                        {{ project.theme }}
-                    </div>
-                    <div class="col-5">
-                        {{ project.numberOfArticles }}
-                    </div>
-                    <div class="col-5">
-                        {{ project.textsLength }}
-                    </div>
-                    <div class="col-5">
-                        {% if project.withTitle == 1 %}
-                            tak
-                        {% else %}
-                            nie
-                        {% endif %}
-                    </div>
-                    <div class="col-20">
-                        {{ project.date|date('d-m-Y H:i:s') }}
-                    </div>
-                    <div class="col-10">
-                        {% if project.status == 'pending' %}
-                            Przetwarzane
-                        {% elseif project.status == 'done' %}
-                            Zakończone
-                        {% endif %}
-                    </div>
-                    <div class="col-next link">
-                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="view">Zobacz</a>
-                    </div>
-                    <div class="col-next">
-                        <span class="label is-used">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
-                    </div>
-                    <div class="col-next link dropdown">
-                        <span class="more-options">Więcej &#10096;</span>
-                        <div class="dropdown-content">
+                </div>
+                <div class="col-next link">
+                    <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="view">Zobacz</a>
+                </div>
+                <div class="col-next">
+                    <span class="label is-used">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
+                </div>
+                <div class="col-next link dropdown">
+                    <span class="more-options">Więcej &#10096;</span>
+                    <div class="dropdown-content">
+                        {% if project.status == 'done' %}
                             <div class="line link">
                                 <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}"
                                    class="export">Eksportuj</a>
@@ -90,34 +91,36 @@
                                 <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}"
                                    class="export">Oznacz jako wykorzystane</a>
                             </div>
-                            <div class="line link">
-                                <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
-                                   class="delete">Usuń</a>
-                            </div>
+                        {% endif %}
+                        <div class="line link">
+                            <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
+                               class="delete">Usuń</a>
                         </div>
-                    </div>
-                    <div class="col-next">
-                        <span class="label">| ID: {{ project.id }}</span>
-                    </div>
-                    <div class="col-break">
+
                     </div>
                 </div>
-            {% endfor %}
+                <div class="col-next">
+                    <span class="label">| ID: {{ project.id }}</span>
+                </div>
+                <div class="col-break">
+                </div>
+            </div>
+        {% endfor %}
 
-        </div>
+    </div>
 
     <div class="projects projects-summary box-container">
         <div class="box">
             <div class="col-next">
                 <a href="{{ path('app_user_panel_new') }}" class="button add-new">
-                    <span><img src="/uploads/default/icons/plus.svg" class="icon" alt="" />
+                    <span><img src="/uploads/default/icons/plus.svg" class="icon" alt=""/>
                     Stwórz nowy projekt
                     </span>
                 </a>
             </div>
             <div class="col-next">
                 <a href="{{ path('app_user_panel_projects') }}" class="button add-new">
-                    <span><img src="/uploads/default/icons/menu.svg" class="icon" alt="" />
+                    <span><img src="/uploads/default/icons/menu.svg" class="icon" alt=""/>
                     Wszystkie projekty
                     </span>
                 </a>
