@@ -74,17 +74,30 @@
                         {% endif %}
                     </div>
                     <div class="col-next link">
-                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
-                           class="view">Zobacz</a>
-                    </div>
-                    <div class="col-next link">
-                        <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}" class="delete">Usuń</a>
-                    </div>
-                    <div class="col-next link">
-                        <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="export">Eksportuj</a>
+                        <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="view">Zobacz</a>
                     </div>
                     <div class="col-next">
                         <span class="label is-used">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
+                    </div>
+                    <div class="col-next link dropdown">
+                        <span class="more-options">Więcej &#10096;</span>
+                        <div class="dropdown-content">
+                            <div class="line link">
+                                <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}"
+                                   class="export">Eksportuj</a>
+                            </div>
+                            <div class="line link">
+                                <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}"
+                                   class="export">Oznacz jako wykorzystane</a>
+                            </div>
+                            <div class="line link">
+                                <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
+                                   class="delete">Usuń</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-next">
+                        <span class="label">| ID: {{ project.id }}</span>
                     </div>
                     <div class="col-break">
                     </div>
