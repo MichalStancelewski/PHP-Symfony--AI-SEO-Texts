@@ -18,13 +18,20 @@
                 </a>
             </div>
             {% if project.status == 'done' %}
-            <div class="col-next">
-                <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">
+                <div class="col-next">
+                    <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">
                     <span><img src="/uploads/default/icons/download.svg" class="icon" alt=""/>
                     Eksportuj
                     </span>
-                </a>
-            </div>
+                    </a>
+                </div>
+                <div class="col-next">
+                    <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}" class="button go-back">
+                    <span><img src="/uploads/default/icons/checkmark.svg" class="icon" alt=""/>
+                    Oznacz jako wykorzystane
+                    </span>
+                    </a>
+                </div>
             {% endif %}
             <div class="col-next">
                 <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
@@ -45,7 +52,8 @@
                 <span class="label">Zakończone:</span> <span class="number">{{ project.articles|length }}</span>
             </div>
             <div class="col-next">
-                <span class="label">Wykorzystane:</span> <span class="number">{{ numberOfUsed }} ({{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%)</span>
+                <span class="label">Wykorzystane:</span> <span
+                        class="number">{{ numberOfUsed }} ({{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%)</span>
             </div>
         </div>
     </div>
@@ -63,6 +71,7 @@
         <div class="projects article-list box-container">
             <h2>Gotowe artykuły</h2>
 
+            {% set num = 1 %}
             {% for article in project.articles %}
                 <div class="box border-bottom" style="margin: 10px 0;">
                     <div class="col-80">
@@ -71,6 +80,7 @@
                         {% endif %}
                     </div>
                     <div class="col-20">
+                        <span class="label">art. nr {{ num }} | </span>
                         <span class="label">Długość: </span>
                         <b>{{ article.content|length }}</b>
                     </div>
@@ -80,6 +90,7 @@
                     <div class="col-break">
                     </div>
                 </div>
+                {% set num = num + 1 %}
             {% endfor %}
 
         </div>
