@@ -8,10 +8,13 @@ use App\Entity\Article;
 use App\Entity\Task;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class TaskController extends AbstractController
 {
@@ -28,10 +31,11 @@ class TaskController extends AbstractController
     {
     }
 
-
     #[Route('/tasks', name: 'app_tasks')] /* set to '/tasks-cron/ in production */
     public function index(): JsonResponse
     {
+        $this->deleteExportedOlderThan(7);
+
         $this->checkProjects();
         $tasks = $this->checkTasks();
 
@@ -65,8 +69,8 @@ class TaskController extends AbstractController
         $projectsRepository = $this->projectRepository;
         $pendingProjects = $projectsRepository->findAllPending();
 
-        foreach ($pendingProjects as $project){
-            if (count($project->getArticles()) == $project->getNumberOfArticles()){
+        foreach ($pendingProjects as $project) {
+            if (count($project->getArticles()) == $project->getNumberOfArticles()) {
                 $projectsRepository->setStatusDone($project);
             }
         }
@@ -152,6 +156,26 @@ class TaskController extends AbstractController
         $databaseInsert->saveArticle($article);
 
         $taskRepository->remove($task, true);
+    }
+
+    private function deleteExportedOlderThan(int $days): void
+    {
+        $filesystem = new Filesystem();
+        $dateCurrent = date("Y-m-d");
+
+        $dir = 'uploads/export/';
+        $files = scandir($dir, SCANDIR_SORT_DESCENDING);
+
+        foreach ($files as $file) {
+            $dateOfFile = date("Y-m-d", filectime($dir . $file));
+            $dateOfExpiration = date("Y-m-d", strtotime($dateOfFile . '+ '.$days.' Days'));
+
+            if ($dateOfExpiration < $dateCurrent) {
+                if ($filesystem->exists('/' . $dir . $file)) {
+                    $filesystem->remove('/' . $dir . $file);
+                }
+            }
+        }
     }
 
 }
