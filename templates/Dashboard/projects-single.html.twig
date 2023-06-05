@@ -17,16 +17,23 @@
                     </span>
                 </a>
             </div>
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_projects_edit', { id: project.id }) }}" class="button standard">
+                    <span><img src="/uploads/default/icons/settings.svg" class="icon" alt=""/>
+                    Edytuj
+                    </span>
+                </a>
+            </div>
             {% if project.status == 'done' %}
                 <div class="col-next">
-                    <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button export">
+                    <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}" class="button standard">
                     <span><img src="/uploads/default/icons/download.svg" class="icon" alt=""/>
                     Eksportuj
                     </span>
                     </a>
                 </div>
                 <div class="col-next">
-                    <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}" class="button go-back">
+                    <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}" class="button standard">
                     <span><img src="/uploads/default/icons/checkmark.svg" class="icon" alt=""/>
                     Oznacz jako wykorzystane
                     </span>

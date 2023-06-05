@@ -6,7 +6,9 @@ use App\Communicator\DatabaseInsert;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Export\ProjectExporter;
+use App\Form\FormEditProject;
 use App\Form\FormRequest;
+use App\Form\Type\FormEditProjectType;
 use App\Form\Type\FormRequestType;
 use App\Repository\ArticleRepository;
 use App\Repository\ProjectRepository;
@@ -72,7 +74,6 @@ class UserController extends AbstractController
             for ($i = 0; $i < $formRequest->getNumberOfArticles(); $i++) {
                 $task = new Task();
                 $task->setProject($project);
-                $task->setName($formRequest->getName());
                 $task->setLength($formRequest->getTextsLength());
                 $task->setTheme($formRequest->getTheme());
                 $task->setWithTitle($formRequest->getWithTitle());
@@ -89,7 +90,7 @@ class UserController extends AbstractController
                 'submission' => $formRequest,
             ]);
         }
-        if($form->isSubmitted() && !$form->isValid()){
+        if ($form->isSubmitted() && !$form->isValid()) {
             return $this->render('dashboard/new.html.twig', [
                 'isSuccess' => 'failure',
                 'form' => $form,
@@ -123,9 +124,8 @@ class UserController extends AbstractController
     public function singleProject(Project $project): Response
     {
         $numberOfUsed = 0;
-        foreach ($project->getArticles() as $article)
-        {
-            if ($article->isIsUsed()){
+        foreach ($project->getArticles() as $article) {
+            if ($article->isIsUsed()) {
                 $numberOfUsed++;
             }
         }
@@ -175,6 +175,59 @@ class UserController extends AbstractController
         $project->deleteArticles($this->articleRepository);
         $this->projectRepository->remove($project, true);
         return $this->redirectToRoute('app_user_panel_projects');
+    }
+
+    #[Route('/projects/{id}/edit/', name: 'app_user_panel_projects_edit')]
+    public function editProject(int $id, Request $request): Response
+    {
+        $entityManager = $this->entityManager;
+
+        $formEditProject = new FormEditProject();
+        $form = $this->createForm(FormEditProjectType::class, $formEditProject);
+        $form->handleRequest($request);
+
+        $project = $entityManager->getRepository(Project::class)->find($id);
+
+        if (!$project) {
+            return $this->render('dashboard/projects-edit.html.twig', [
+                'isSuccess' => 'failure',
+                'form' => $form,
+                'errors' => 'Nie istnieje projekt o ID: ' . $id,
+            ]);
+        }
+
+        $errors = array();
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formRequest = $form->getData();
+
+            $databaseInsert = new DatabaseInsert($entityManager, $project);
+            $databaseInsert->editProjectName($formRequest->getName());
+
+            return $this->render('dashboard/projects-edit.html.twig', [
+                'isSuccess' => 'success',
+                'project' => $project,
+                'form' => $form,
+                'submission' => $formRequest,
+            ]);
+        }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            return $this->render('dashboard/projects-edit.html.twig', [
+                'isSuccess' => 'failure',
+                'project' => $project,
+                'form' => $form,
+                'errors' => $errors,
+            ]);
+        }
+
+        return $this->render('dashboard/projects-edit.html.twig', [
+            'isSuccess' => '',
+            'project' => $project,
+            'form' => $form,
+        ]);
     }
 
 }

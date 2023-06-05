@@ -43,5 +43,13 @@ class DatabaseInsert
         $entityManager->flush();
     }
 
+    public function editProjectName(string $name): void
+    {
+        $entityManager = $this->entityManager;
+        $project = $this->project;
+        $project->setName($name);
+        $entityManager->flush();
+    }
+
 
 }

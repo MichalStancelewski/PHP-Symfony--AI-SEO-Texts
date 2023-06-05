@@ -14,9 +14,6 @@ class Task
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 520)]
-    private ?string $name = null;
-
     #[ORM\Column(length: 380)]
     private ?string $theme = null;
 
@@ -41,18 +38,6 @@ class Task
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getTheme(): ?string

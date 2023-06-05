@@ -333,6 +333,14 @@ a, a:visited {
   color: $color-semi-dark;
 }
 
+.link .standard {
+  color: $color-slight-dark;
+}
+
+.link .standard:hover {
+  color: $color-blue;
+}
+
 .link .delete {
   color: $color-red;
 }
@@ -393,6 +401,17 @@ button.submit:hover,
   font-weight: 700;
 }
 
+.button.standard {
+  margin-top: 8px;
+  padding: 8px 23px;
+  background-color: $color-blue;
+  border: 1px solid $color-blue;
+  border-radius: $border-radius;
+  color: $color-white;
+  font-family: $font-family-header;
+  font-weight: 700;
+}
+
 .button.export {
   margin-top: 8px;
   padding: 8px 23px;
@@ -432,6 +451,12 @@ button.submit:hover,
   color: $color-white;
 }
 
+.button.standard:hover {
+  background-color: $color-sky-blue;
+  border: 1px solid $color-sky-blue;
+  color: $color-white;
+}
+
 .button.export:hover {
   background-color: $color-sky-blue;
   border: 1px solid $color-sky-blue;
@@ -452,6 +477,10 @@ button.submit:hover,
 
 .button.go-back .icon {
   filter: $filter-semi-dark;
+}
+
+.button.standard .icon {
+  filter: $filter-white;
 }
 
 .button.export .icon {

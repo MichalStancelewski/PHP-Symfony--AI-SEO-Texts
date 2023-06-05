@@ -109,14 +109,18 @@
                     <div class="col-next link dropdown">
                         <span class="more-options">Więcej &#10096;</span>
                         <div class="dropdown-content">
+                            <div class="line link">
+                                <a href="{{ path('app_user_panel_projects_edit', { id: project.id }) }}"
+                                   class="standard">Edytuj</a>
+                            </div>
                             {% if project.status == 'done' %}
                                 <div class="line link">
                                     <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}"
-                                       class="export">Eksportuj</a>
+                                       class="standard">Eksportuj</a>
                                 </div>
                                 <div class="line link">
                                     <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}"
-                                       class="export">Oznacz jako wykorzystane</a>
+                                       class="standard">Oznacz jako wykorzystane</a>
                                 </div>
                             {% endif %}
                             <div class="line link">
@@ -215,14 +219,18 @@
                 <div class="col-next link dropdown">
                     <span class="more-options">Więcej &#10096;</span>
                     <div class="dropdown-content">
+                        <div class="line link">
+                            <a href="{{ path('app_user_panel_projects_edit', { id: project.id }) }}"
+                               class="standard">Edytuj</a>
+                        </div>
                         {% if project.status == 'done' %}
                             <div class="line link">
                                 <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}"
-                                   class="export">Eksportuj</a>
+                                   class="standard">Eksportuj</a>
                             </div>
                             <div class="line link">
                                 <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}"
-                                   class="export">Oznacz jako wykorzystane</a>
+                                   class="standard">Oznacz jako wykorzystane</a>
                             </div>
                         {% endif %}
                         <div class="line link">
