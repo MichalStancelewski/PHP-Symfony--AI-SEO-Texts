@@ -29,37 +29,248 @@ class ChatGptRequest
         );
     }
 
-    public function sendAndGetNewArticle()
+    public function sendAndGetNewArticle(string $language)
     {
         $messages = array();
-        if ($this->addTitles) {
-            $messages[] = array(
-                "role" => "user",
-                "content" => "Napisz mi nowy unikalny tekst o długości około " .
-                    $this->textLength .
-                    "wyrazów na temat '" .
-                    $this->messageContent .
-                    "'. Nadaj tekstowi tytuł, który ma ponad 7 wyrazów, ale niech nie zawiera frazy '" .
-                    $this->messageContent .
-                    "'. Tytuł opakuj w znacznik <h1> </h1>."
-            );
-        } else {
-            $messages[] = array(
-                "role" => "user",
-                "content" => "Napisz mi nowy unikalny tekst o długości około " .
-                    $this->textLength .
-                    "-" .
-                    ($this->textLength * 1.1) .
-                    " liter na temat '" .
-                    $this->messageContent .
-                    "."
-            );
+
+        switch (strtoupper($language)) {
+            case 'POL':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Napisz mi nowy unikalny tekst o długości około " .
+                            $this->textLength .
+                            " wyrazów na temat '" .
+                            $this->messageContent .
+                            "'. Nadaj tekstowi tytuł, który ma ponad 7 wyrazów, ale niech nie zawiera frazy '" .
+                            $this->messageContent .
+                            "'. Tytuł opakuj w znacznik <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Napisz mi nowy unikalny tekst o długości około " .
+                            $this->textLength .
+                            " wyrazów na temat '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'ENG':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Write me a new text of approx " .
+                            $this->textLength .
+                            " words about '" .
+                            $this->messageContent .
+                            "'. Give the text a title that is more than 7 words long, but do not contain a phrase '" .
+                            $this->messageContent .
+                            "'. Wrap the title in a tag <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Write me a new text of approx " .
+                            $this->textLength .
+                            " words about  '" .
+                            $this->messageContent .
+                            "'."
+                    );
+                }
+                break;
+            case 'CZE':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Napište mi nový unikátní text cca " .
+                            $this->textLength .
+                            " slova o '" .
+                            $this->messageContent .
+                            "'. Dejte textu název, který je delší než 7 slov, ale neobsahuje frázi '" .
+                            $this->messageContent .
+                            "'. Zabalte název do značky <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Napište mi nový text cca " .
+                            $this->textLength .
+                            " slova o  '" .
+                            $this->messageContent .
+                            "'."
+                    );
+                }
+                break;
+            case 'FRE':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Écrivez-moi un nouveau texte unique d'environ " .
+                            $this->textLength .
+                            " des mots sur '" .
+                            $this->messageContent .
+                            "'. Donnez au texte un titre de plus de 7 mots, mais ne contenant pas de phrase '" .
+                            $this->messageContent .
+                            "'. Enveloppez le titre dans la balise <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Écrivez-moi un nouveau texte unique d'environ " .
+                            $this->textLength .
+                            " des mots sur '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'SPA':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Escríbeme un nuevo texto único de aprox " .
+                            $this->textLength .
+                            " palabras sobre '" .
+                            $this->messageContent .
+                            "'. Dale al texto un título que tenga más de 7 palabras, pero que no contenga una frase'" .
+                            $this->messageContent .
+                            "'. Envuelva el título en la etiqueta <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Escríbeme un nuevo texto único de aprox " .
+                            $this->textLength .
+                            " palabras sobre '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'DUT':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Schrijf mij een nieuwe unieke tekst van ca " .
+                            $this->textLength .
+                            " woorden over '" .
+                            $this->messageContent .
+                            "'. Geef de tekst een titel die langer is dan 7 woorden, maar geen zin bevat '" .
+                            $this->messageContent .
+                            "'. Wikkel de titel in de <h1> </h1> tag."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Schrijf mij een nieuwe unieke tekst van ca " .
+                            $this->textLength .
+                            " woorden over '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'GER':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Schreiben Sie mir einen neuen einzigartigen Text mit einer Länge von " .
+                            $this->textLength .
+                            " Wörtern über '" .
+                            $this->messageContent .
+                            "'. Geben Sie dem Text einen Titel, der mehr als 7 Wörter lang ist, aber die Phrase '" .
+                            $this->messageContent .
+                            "' nicht einschließt. Wickeln Sie den Titel in das <h1> </h1>-Tag ein."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Schreiben Sie mir einen neuen einzigartigen Text mit einer Länge von " .
+                            $this->textLength .
+                            " Wörtern über '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'RUS':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Напишите мне новый уникальный текст о " .
+                            $this->textLength .
+                            " слов длинной о '" .
+                            $this->messageContent .
+                            "'. Дайте тексту заголовок длиной более 7 слов, но не содержащий словосочетания. '" .
+                            $this->messageContent .
+                            "'. Оберните заголовок тегом <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Напишите мне новый уникальный текст о " .
+                            $this->textLength .
+                            " слов длинной о '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'UKR':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Напишіть мені новий унікальний текст про " .
+                            $this->textLength .
+                            " слів про '" .
+                            $this->messageContent .
+                            "'. Дайте тексту назву, яка містить більше 7 слів, але не включайте фразу '" .
+                            $this->messageContent .
+                            "'. Загорніть назву в тег <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Напишіть мені новий унікальний текст про " .
+                            $this->textLength .
+                            " слів про '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+            case 'ITA':
+                if ($this->addTitles) {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Scrivimi un nuovo testo unico su " .
+                            $this->textLength .
+                            " lungo parole su '" .
+                            $this->messageContent .
+                            "'. Assegna al testo un titolo di più di 7 parole, ma non includere la frase '" .
+                            $this->messageContent .
+                            "'. Avvolgi il titolo nel tag <h1> </h1>."
+                    );
+                } else {
+                    $messages[] = array(
+                        "role" => "user",
+                        "content" => "Scrivimi un nuovo testo unico su " .
+                            $this->textLength .
+                            " lungo parole su '" .
+                            $this->messageContent .
+                            "."
+                    );
+                }
+                break;
+
         }
 
         $data = array();
         $data["model"] = "gpt-3.5-turbo";
         $data["messages"] = $messages;
-        $data["max_tokens"] = 5000;
+        $data["max_tokens"] = 3000;
 
         $curl = curl_init(ChatGptRequest::API_URL);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -68,6 +279,7 @@ class ChatGptRequest
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
         $result = curl_exec($curl);
+
         $jsonData = json_decode($result, false);
         if (curl_errno($curl)) {
             curl_close($curl);
@@ -75,23 +287,85 @@ class ChatGptRequest
             return 'error';
         } else {
             curl_close($curl);
+            if (!isset($jsonData->choices[0]->message->content)) {
+                return 'error';
+            }
             return $jsonData->choices[0]->message->content;
         }
 
     }
 
-    public function sendAndGetWithHtml(string $content)
+    public function sendAndGetWithHtml(string $content, string $language)
     {
         $messages = array();
-        $messages[] = array(
-            "role" => "user",
-            "content" => "'" . $content . "' Opatrz powyższy tekst znacznikami HTML, aby był ostylowany do publikacji na blogu internetowym (ale nie korzystaj ze znacznika <h1>!)."
-        );
+
+        switch (strtoupper($language)) {
+            case 'POL':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Opatrz powyższy tekst znacznikami HTML, aby był ostylowany do publikacji na blogu internetowym (ale nie korzystaj ze znacznika <h1>!)."
+                );
+                break;
+            case 'ENG':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Mark the above text with HTML tags to make it styled for posting on a blog (but don't use the <h1> tag!)."
+                );
+                break;
+            case 'CZE':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Označte výše uvedený text značkami HTML, aby byl stylizovaný pro zveřejňování na blogu (nepoužívejte však značku <h1>!)."
+                );
+                break;
+            case 'FRE':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Marquez le texte ci-dessus avec des balises HTML pour le mettre en forme pour la publication sur un blog (mais n'utilisez pas la balise <h1>!)."
+                );
+                break;
+            case 'SPA':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Marque el texto anterior con etiquetas HTML para diseñarlo para publicarlo en un blog (¡pero no use la etiqueta <h1>!)."
+                );
+                break;
+            case 'DUT':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Markeer de bovenstaande tekst met HTML-tags om deze op te maken voor plaatsing op een blog (maar gebruik de <h1>-tag niet!)."
+                );
+                break;
+            case 'GER':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Markieren Sie den obigen Text mit HTML-Tags, um ihn für die Veröffentlichung in einem Blog zu formatieren (verwenden Sie jedoch nicht das <h1>-Tag!)."
+                );
+                break;
+            case 'RUS':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Отметьте приведенный выше текст HTML-тегами, чтобы оформить его для публикации в блоге (но не используйте тег <h1>!)."
+                );
+                break;
+            case 'UKR':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Позначте наведений вище текст тегами HTML, щоб створити його для публікації в блозі (але не використовуйте тег <h1>!)."
+                );
+                break;
+            case 'ITA':
+                $messages[] = array(
+                    "role" => "user",
+                    "content" => "'" . $content . "' Contrassegna il testo sopra con tag HTML per renderlo adatto alla pubblicazione su un blog (ma non utilizzare il tag <h1>!)."
+                );
+                break;
+        }
 
         $data = array();
         $data["model"] = "gpt-3.5-turbo";
         $data["messages"] = $messages;
-        $data["max_tokens"] = 5000;
+        $data["max_tokens"] = 3000;
 
         $curl = curl_init(ChatGptRequest::API_URL);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -107,7 +381,10 @@ class ChatGptRequest
             return 'error';
         } else {
             curl_close($curl);
-            return str_replace("'","",$jsonData->choices[0]->message->content);
+            if (!isset($jsonData->choices[0]->message->content)) {
+                return 'error';
+            }
+            return str_replace("'", "", $jsonData->choices[0]->message->content);
         }
 
     }

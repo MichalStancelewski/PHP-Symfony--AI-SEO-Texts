@@ -6,6 +6,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
@@ -43,13 +44,32 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Task::class, orphanRemoval: true)]
     private Collection $tasks;
 
-    public function __construct(string $name, string $theme, int $numberOfArticles, int $textsLength, bool $withTitle)
+    #[ORM\Column(length: 3)]
+    private ?string $language = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $cardHeader = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cardCompanyName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cardCompanyPhone = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cardCompanyEmail = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cardCompanyWebsite = null;
+
+    public function __construct(string $name, string $theme, int $numberOfArticles, int $textsLength, bool $withTitle, string $language)
     {
         $this->articles = new ArrayCollection();
         $this->status = "pending";
         $this->numberOfArticles = $numberOfArticles;
         $this->textsLength = $textsLength;
         $this->withTitle = $withTitle;
+        $this->language = $language;
         $this->theme = $theme;
         $this->name = $name;
         $this->date = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Warsaw'));
@@ -222,6 +242,78 @@ class Project
         foreach ($this->getArticles() as $article){
             $articleRepository->remove($article, true);
         }
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(string $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getCardHeader(): ?string
+    {
+        return $this->cardHeader;
+    }
+
+    public function setCardHeader(?string $cardHeader): self
+    {
+        $this->cardHeader = $cardHeader;
+
+        return $this;
+    }
+
+    public function getCardCompanyName(): ?string
+    {
+        return $this->cardCompanyName;
+    }
+
+    public function setCardCompanyName(?string $cardCompanyName): self
+    {
+        $this->cardCompanyName = $cardCompanyName;
+
+        return $this;
+    }
+
+    public function getCardCompanyPhone(): ?string
+    {
+        return $this->cardCompanyPhone;
+    }
+
+    public function setCardCompanyPhone(?string $cardCompanyPhone): self
+    {
+        $this->cardCompanyPhone = $cardCompanyPhone;
+
+        return $this;
+    }
+
+    public function getCardCompanyEmail(): ?string
+    {
+        return $this->cardCompanyEmail;
+    }
+
+    public function setCardCompanyEmail(?string $cardCompanyEmail): self
+    {
+        $this->cardCompanyEmail = $cardCompanyEmail;
+
+        return $this;
+    }
+
+    public function getCardCompanyWebsite(): ?string
+    {
+        return $this->cardCompanyWebsite;
+    }
+
+    public function setCardCompanyWebsite(?string $cardCompanyWebsite): self
+    {
+        $this->cardCompanyWebsite = $cardCompanyWebsite;
+
+        return $this;
     }
 
 }

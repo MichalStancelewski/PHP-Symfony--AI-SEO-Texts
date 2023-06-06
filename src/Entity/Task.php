@@ -35,6 +35,9 @@ class Task
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $lastChangedDate = null;
 
+    #[ORM\Column(length: 3)]
+    private ?string $language = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Task
     public function setLastChangedDate(\DateTimeInterface $lastChangedDate): self
     {
         $this->lastChangedDate = $lastChangedDate;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(string $language): self
+    {
+        $this->language = $language;
 
         return $this;
     }

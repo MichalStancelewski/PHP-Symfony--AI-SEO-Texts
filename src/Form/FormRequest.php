@@ -50,6 +50,15 @@ class FormRequest
     #[Assert\NotBlank]
     private ?string $name = null;
 
+    #[Assert\Length(
+        min: 3,
+        max: 3,
+        minMessage: 'Język - Pole w nieprawidłowym formacie.',
+        maxMessage: 'Język - Pole w nieprawidłowym formacie.',
+    )]
+    #[Assert\NotBlank]
+    private ?string $language = null;
+
     /**
      * @return int|null
      */
@@ -128,6 +137,22 @@ class FormRequest
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string|null $language
+     */
+    public function setLanguage(?string $language): void
+    {
+        $this->language = strtoupper($language);
     }
 
 }

@@ -64,7 +64,8 @@ class UserController extends AbstractController
                 $formRequest->getTheme(),
                 $formRequest->getNumberOfArticles(),
                 $formRequest->getTextsLength(),
-                $formRequest->getWithTitle()
+                $formRequest->getWithTitle(),
+                $formRequest->getLanguage()
             );
 
             $entityManager = $this->entityManager;
@@ -80,6 +81,7 @@ class UserController extends AbstractController
                 $task->setStatus("new");
                 $task->setDateCreated(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Warsaw')));
                 $task->setLastChangedDate(new \DateTime('now', new \DateTimeZone('Europe/Warsaw')));
+                $task->setLanguage($formRequest->getLanguage());
 
                 $databaseInsert->saveTask($task);
             }

@@ -8,12 +8,10 @@ use App\Entity\Article;
 use App\Entity\Task;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class TaskController extends AbstractController
@@ -29,6 +27,15 @@ class TaskController extends AbstractController
         private ProjectRepository      $projectRepository
     )
     {
+    }
+
+    #[Route('/tasks-test', name: 'app_tasks_test')]
+    public function test(): JsonResponse
+    {
+        $gpt = new ChatGptRequest( $this->getApiKey(),  $this->getOrganizationKey(),  "Wakacje nad morzem", 100, false);
+        $receivedData = $gpt->sendAndGetNewArticle("POL");
+        return $this->json([
+        ]);
     }
 
     #[Route('/tasks', name: 'app_tasks')] /* set to '/tasks-cron/ in production */
@@ -49,7 +56,6 @@ class TaskController extends AbstractController
         }
 
         return $this->json([
-            dd($tasks)
         ]);
     }
 
@@ -79,7 +85,7 @@ class TaskController extends AbstractController
     private function checkTasks(): array
     {
         $tasks = [];
-        $maxSpots = 3;
+        $maxSpots = TaskController::MAX_CONCURRENT_JOB;
         $taskRepository = $this->taskRepository;
         $currentTime = new \DateTime('now', new \DateTimeZone('Europe/Warsaw'));
 
@@ -112,7 +118,7 @@ class TaskController extends AbstractController
             }
         }
 
-        if (count($tasks) >= 3) {
+        if (count($tasks) >= TaskController::MAX_CONCURRENT_JOB) {
             return $tasks;
         }
         sleep(3);
@@ -139,7 +145,7 @@ class TaskController extends AbstractController
             $task->getTheme(),
             $task->getLength(),
             $task->isWithTitle());
-        $receivedData = $chatGptRequest->sendAndGetNewArticle();
+        $receivedData = $chatGptRequest->sendAndGetNewArticle($task->getLanguage());
 
         $article = new Article();
         $article->setProject($task->getProject());
@@ -149,7 +155,7 @@ class TaskController extends AbstractController
             $article->setTitle($article->getTitleFromString());
         }
         $article->setContent($article->getFormatedContentFromString());
-        $article->setContent($chatGptRequest->sendAndGetWithHtml($article->getContent()));
+        $article->setContent($chatGptRequest->sendAndGetWithHtml($article->getContent(), $article->getProject()->getLanguage()));
 
         $entityManager = $this->entityManager;
         $databaseInsert = new DatabaseInsert($entityManager, $task->getProject());
