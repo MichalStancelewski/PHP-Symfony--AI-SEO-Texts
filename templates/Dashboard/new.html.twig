@@ -37,6 +37,9 @@
     <div class="form box-container">
 
         <div class="box">
+            <div class="col-1 ">
+                <span class="label"><b>Ustawienia główne</b></span>
+            </div>
             <div class="col-1">
                 <span class="label">{{ form_label(form.name) }} </span><br/>
                 {{ form_widget(form.name) }}
@@ -60,6 +63,39 @@
             <div class="radio">
                 <span class="label">{{ form_label(form.withTitle) }} </span><br/>
                 {{ form_widget(form.withTitle) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="col-1 ">
+                <span class="label"><b>Karta z linkiem pod artykułami (opcjonalne)</b></span>
+            </div>
+            <div class="col-1 select">
+                <span class="label">{{ form_label(form.cardLinkCoverage) }} </span><br/>
+                {{ form_widget(form.cardLinkCoverage) }}
+            </div>
+            <div class="col-1 textarea">
+                <span class="label">{{ form_label(form.cardHeader) }} </span><br/>
+                {{ form_widget(form.cardHeader) }}
+            </div>
+            <div class="col-2">
+                <span class="label">{{ form_label(form.cardCompanyName) }} </span><br/>
+                {{ form_widget(form.cardCompanyName) }}
+            </div>
+            <div class="col-2">
+                <span class="label">{{ form_label(form.cardCompanyPhone) }} </span><br/>
+                {{ form_widget(form.cardCompanyPhone) }}
+            </div>
+            <div class="col-2">
+                <span class="label">{{ form_label(form.cardCompanyEmail) }} </span><br/>
+                {{ form_widget(form.cardCompanyEmail) }}
+            </div>
+            <div class="col-2">
+                <span class="label">{{ form_label(form.cardCompanyWebsite) }} </span><br/>
+                {{ form_widget(form.cardCompanyWebsite) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
             </div>
             <div class="submit">
                 {{ form_row(form.save) }}

@@ -62,6 +62,9 @@ class Project
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cardCompanyWebsite = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $cardLinkCoverage = null;
+
     public function __construct(string $name, string $theme, int $numberOfArticles, int $textsLength, bool $withTitle, string $language)
     {
         $this->articles = new ArrayCollection();
@@ -312,6 +315,18 @@ class Project
     public function setCardCompanyWebsite(?string $cardCompanyWebsite): self
     {
         $this->cardCompanyWebsite = $cardCompanyWebsite;
+
+        return $this;
+    }
+
+    public function getCardLinkCoverage(): ?int
+    {
+        return $this->cardLinkCoverage;
+    }
+
+    public function setCardLinkCoverage(?int $cardLinkCoverage): self
+    {
+        $this->cardLinkCoverage = $cardLinkCoverage;
 
         return $this;
     }

@@ -68,6 +68,23 @@ class UserController extends AbstractController
                 $formRequest->getLanguage()
             );
 
+            $project->setCardLinkCoverage($formRequest->getCardLinkCoverage());
+            if ($formRequest->getCardHeader()) {
+                $project->setCardHeader($formRequest->getCardHeader());
+            };
+            if ($formRequest->getCardCompanyName()) {
+                $project->setCardCompanyName($formRequest->getCardCompanyName());
+            };
+            if ($formRequest->getCardCompanyPhone()) {
+                $project->setCardCompanyPhone($formRequest->getCardCompanyPhone());
+            };
+            if ($formRequest->getCardCompanyEmail()) {
+                $project->setCardCompanyEmail($formRequest->getCardCompanyEmail());
+            };
+            if ($formRequest->getCardCompanyWebsite()) {
+                $project->setCardCompanyWebsite($formRequest->getCardCompanyWebsite());
+            };
+
             $entityManager = $this->entityManager;
             $databaseInsert = new DatabaseInsert($entityManager, $project);
             $databaseInsert->saveProject();
@@ -205,6 +222,23 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formRequest = $form->getData();
+
+            $project->setCardLinkCoverage($formRequest->getCardLinkCoverage());
+            if ($formRequest->getCardHeader()) {
+                $project->setCardHeader($formRequest->getCardHeader());
+            };
+            if ($formRequest->getCardCompanyName()) {
+                $project->setCardCompanyName($formRequest->getCardCompanyName());
+            };
+            if ($formRequest->getCardCompanyPhone()) {
+                $project->setCardCompanyPhone($formRequest->getCardCompanyPhone());
+            };
+            if ($formRequest->getCardCompanyEmail()) {
+                $project->setCardCompanyEmail($formRequest->getCardCompanyEmail());
+            };
+            if ($formRequest->getCardCompanyWebsite()) {
+                $project->setCardCompanyWebsite($formRequest->getCardCompanyWebsite());
+            };
 
             $databaseInsert = new DatabaseInsert($entityManager, $project);
             $databaseInsert->editProjectName($formRequest->getName());

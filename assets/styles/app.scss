@@ -206,12 +206,17 @@ a, a:visited {
 
 .form .box .col-2,
 .form .box .col-2 input {
-  width: 45%;
+  margin-right: 5px;
 }
 
 .form .box .radio,
 .form .box .submit {
   width: 96%;
+}
+
+.form .box .textarea textarea{
+  width: 90%;
+  height: 34px;
 }
 
 .projects.projects-summary .box {
@@ -362,11 +367,20 @@ a, a:visited {
   color: $color-sky-blue;
 }
 
-.form input {
+.form input{
   margin-bottom: 18px;
   padding: 5px 10px;
   border: 1px solid $color-gray;
   border-radius: $border-radius;
+}
+
+.form .box .textarea textarea,
+.form .box .select select
+{
+  margin-bottom: 18px;
+  padding: 5px 10px;
+  border: 1px solid $color-gray;
+  border-radius: 7px;
 }
 
 button.submit,

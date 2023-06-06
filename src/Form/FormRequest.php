@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Form;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FormRequest
@@ -58,6 +59,18 @@ class FormRequest
     )]
     #[Assert\NotBlank]
     private ?string $language = null;
+
+    private ?string $cardHeader = null;
+
+    private ?string $cardCompanyName = null;
+
+    private ?string $cardCompanyPhone = null;
+
+    private ?string $cardCompanyEmail = null;
+
+    private ?string $cardCompanyWebsite = null;
+
+    private ?int $cardLinkCoverage = null;
 
     /**
      * @return int|null
@@ -153,6 +166,103 @@ class FormRequest
     public function setLanguage(?string $language): void
     {
         $this->language = strtoupper($language);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCardHeader(): ?string
+    {
+        return $this->cardHeader;
+    }
+
+    /**
+     * @param string|null $cardHeader
+     */
+    public function setCardHeader(?string $cardHeader): void
+    {
+        $this->cardHeader = $cardHeader;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCardCompanyName(): ?string
+    {
+        return $this->cardCompanyName;
+    }
+
+    /**
+     * @param string|null $cardCompanyName
+     */
+    public function setCardCompanyName(?string $cardCompanyName): void
+    {
+        $this->cardCompanyName = $cardCompanyName;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCardCompanyPhone(): ?string
+    {
+        return $this->cardCompanyPhone;
+    }
+
+    /**
+     * @param string|null $cardCompanyPhone
+     */
+    public function setCardCompanyPhone(?string $cardCompanyPhone): void
+    {
+        $this->cardCompanyPhone = $cardCompanyPhone;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCardCompanyEmail(): ?string
+    {
+        return $this->cardCompanyEmail;
+    }
+
+    /**
+     * @param string|null $cardCompanyEmail
+     */
+    public function setCardCompanyEmail(?string $cardCompanyEmail): void
+    {
+        $this->cardCompanyEmail = $cardCompanyEmail;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCardCompanyWebsite(): ?string
+    {
+        return $this->cardCompanyWebsite;
+    }
+
+    /**
+     * @param string|null $cardCompanyWebsite
+     */
+    public function setCardCompanyWebsite(?string $cardCompanyWebsite): void
+    {
+        $this->cardCompanyWebsite = $cardCompanyWebsite;
+    }
+
+
+    /**
+     * @return int|null
+     */
+    public function getCardLinkCoverage(): ?int
+    {
+        return $this->cardLinkCoverage;
+    }
+
+    /**
+     * @param int|null $cardLinkCoverage
+     */
+    public function setCardLinkCoverage(?int $cardLinkCoverage): void
+    {
+        $this->cardLinkCoverage = $cardLinkCoverage;
     }
 
 }
