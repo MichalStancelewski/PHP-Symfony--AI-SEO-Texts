@@ -27,7 +27,6 @@ class ProjectExporter
             $url = '/uploads/export/' . $date->format('Y-m-d_H-i') . '_' . $slug . '.txt';
         }
 
-
         $path = getcwd() . $url;
 
         try {
@@ -39,9 +38,27 @@ class ProjectExporter
         }
 
         $iterator = 0;
+        $articlesWithLink = [];
+        $linkCoverage = $this->project->getCardLinkCoverage();
+        if ($linkCoverage > 0) {
+            $linkCoverage = ($linkCoverage / 100) * $this->project->getNumberOfArticles();
+            $linkCoverage = intval(round($linkCoverage, 0, PHP_ROUND_HALF_UP));
+            while (sizeof($articlesWithLink) < $linkCoverage) {
+                $rng = rand(1, $this->project->getNumberOfArticles());
+                if (!array_search($rng, $articlesWithLink)) {
+                    $articlesWithLink[] = $rng;
+                }
+            }
+        }
 
         foreach ($project->getArticles() as $article) {
             $iterator++;
+
+            if (array_search($iterator, $articlesWithLink)) {
+                $body = $this->appendCardToArticle($article->getContent());
+            } else {
+                $body = $article->getContent();
+            }
 
             try {
                 if ($isAdvanced) {
@@ -51,7 +68,7 @@ class ProjectExporter
                     $file->appendToFile($path, 'TAGS:' . "\n");
                     $file->appendToFile($path, 'SLUG:' . "\n");
                     $file->appendToFile($path, 'EXCERPT:' . "\n");
-                    $file->appendToFile($path, 'BODY: ' . $article->getContent() . "\n");
+                    $file->appendToFile($path, 'BODY: ' . $body . "\n");
                     $file->appendToFile($path, 'ALLOW COMMENTS: 0' . "\n");
                     $file->appendToFile($path, 'ALLOW PINGBACKS: 0' . "\n");
                     $file->appendToFile($path, 'SITES: ' . "\n");
@@ -63,7 +80,10 @@ class ProjectExporter
                     }
                 } else {
                     $file->appendToFile($path, $article->getTitle() . "\n");
-                    $file->appendToFile($path, $article->getContent() . "\n");
+                    $file->appendToFile($path, $body . "\n");
+                    $file->appendToFile($path, "\n");
+                    $file->appendToFile($path, "##################################################");
+                    $file->appendToFile($path, "\n");
                     $file->appendToFile($path, "\n");
                 }
 
@@ -81,6 +101,26 @@ class ProjectExporter
         $string = str_replace(' ', '-', $string);
         $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
         return preg_replace('/-+/', '-', $string);
+    }
+
+    private function appendCardToArticle(string $article): string
+    {
+        $cardHeader = $this->project->getCardHeader();
+        $cardCompanyName = $this->project->getCardCompanyName();
+        $cardCompanyPhone = $this->project->getCardCompanyPhone();
+        $cardCompanyEmail = $this->project->getCardCompanyEmail();
+        $cardCompanyWebsite = $this->project->getCardCompanyWebsite();
+
+        return $article . "\n\n" .
+            '<h3>' . $cardHeader . '</h3>' .
+            '<b>' . $cardCompanyName . '</b>' .
+            '<ul style="list-style: none;">' .
+            '<li><span class="dashicons-before dashicons-phone">' . $cardCompanyPhone . '</span></li>' .
+            '<li><span class="dashicons-before dashicons-email">' . $cardCompanyEmail . '</span></li>' .
+            '<li><span class="dashicons-before dashicons-desktop">' .
+            '<u><a href="' . $cardCompanyWebsite . '" target="_blank" rel="noopener">' . $cardCompanyWebsite . '</a></u>' .
+            '</span></li>' .
+            '</ul>';
     }
 
 }
