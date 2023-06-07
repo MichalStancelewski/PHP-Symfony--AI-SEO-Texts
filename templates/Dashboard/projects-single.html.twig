@@ -65,6 +65,26 @@
                 <span class="label">Wykorzystane:</span> <span
                         class="number">{{ numberOfUsed }} ({{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%)</span>
             </div>
+            <div class="col-break"></div>
+            <div class="col-next">
+                <span class="label"><i>Pokrycie linkami:</i> <b>{{ project.cardLinkCoverage }}%</b></span>
+            </div>
+            <div class="col-next">
+                <span class="label"><i>Nagłówek:</i> <b>{{ project.cardHeader ? project.cardHeader : "-" }}</b></span>
+            </div>
+            <div class="col-break"></div>
+            <div class="col-next">
+                <span class="label"><i>Nazwa firmy/strony:</i> <b>{{ project.cardCompanyName ? project.cardCompanyName : "-" }}</b></span>
+            </div>
+            <div class="col-next">
+                <span class="label"><i>Telefon:</i> <b>{{ project.cardCompanyPhone ? project.cardCompanyPhone : "-" }}</b></span>
+            </div>
+            <div class="col-next">
+                <span class="label"><i>Email:</i> <b>{{ project.cardCompanyEmail ? project.cardCompanyEmail : "-" }}</b></span>
+            </div>
+            <div class="col-next">
+                <span class="label"><i>Adres strony:</i> <b>{{ project.cardCompanyWebsite ? project.cardCompanyWebsite : "-" }}</b></span>
+            </div>
         </div>
     </div>
 

@@ -104,11 +104,22 @@
                             <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
                                class="delete">Usuń</a>
                         </div>
-
                     </div>
+                </div>
+                <div class="col-next language">
+                    <span class="label">[{{ project.language }}]</span>
                 </div>
                 <div class="col-next id">
                     <span class="label">| ID: {{ project.id }}</span>
+                </div>
+                <div class="col-next card-info">
+                    <span class="label">| &nbsp; <i>Pokrycie linkami:</i> <b>{{ project.cardLinkCoverage ? project.cardLinkCoverage : "0" }}%</b></span>
+                </div>
+                <div class="col-next card-info">
+                    <span class="label"><i>Nazwa firmy/strony:</i> <b>{{ project.cardCompanyName ? project.cardCompanyName : "-" }}</b></span>
+                </div>
+                <div class="col-next card-info">
+                    <span class="label"><i>Adres strony:</i> <b>{{ project.cardCompanyWebsite ? project.cardCompanyWebsite : "-" }}</b></span>
                 </div>
                 <div class="col-break">
                 </div>
