@@ -288,7 +288,7 @@ class ChatGptRequest
         } else {
             curl_close($curl);
             if (!isset($jsonData->choices[0]->message->content)) {
-                return 'error';
+                return 'Error (code01): ' . $jsonData;
             }
             return $jsonData->choices[0]->message->content;
         }
@@ -382,7 +382,7 @@ class ChatGptRequest
         } else {
             curl_close($curl);
             if (!isset($jsonData->choices[0]->message->content)) {
-                return 'error';
+                return 'Error (code02): ' . $jsonData;
             }
             return str_replace("'", "", $jsonData->choices[0]->message->content);
         }
