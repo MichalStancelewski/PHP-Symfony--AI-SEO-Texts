@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Communicator\DatabaseInsert;
+use App\Entity\Article;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Export\ProjectExporter;
@@ -266,4 +267,55 @@ class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/projects/{projectId}/regenerate/{articleId}/', name: 'app_user_panel_projects_regenerate_article')]
+    public function regenerateArticle(int $projectId, int $articleId, Request $request): Response
+    {
+        $entityManager = $this->entityManager;
+        $articleRepository = $this->articleRepository;
+
+        $project = $entityManager->getRepository(Project::class)->find($projectId);
+        $article = $entityManager->getRepository(Article::class)->find($articleId);
+
+        if ($article && $project) {
+
+            try {
+                $articleRepository->removeArticle($article);
+            } catch (\Exception $e) {
+                return $this->render('dashboard/ajax/regenerate-article.html.twig', [
+                    'isSuccess' => false,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+            $databaseInsert = new DatabaseInsert($entityManager, $project);
+
+            $task = new Task();
+            $task->setProject($project);
+            $task->setLength($project->getTextsLength());
+            $task->setTheme($project->getTheme());
+            $task->setWithTitle($project->getWithTitle());
+            $task->setStatus("new");
+            $task->setDateCreated(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Warsaw')));
+            $task->setLastChangedDate(new \DateTime('now', new \DateTimeZone('Europe/Warsaw')));
+            $task->setLanguage($project->getLanguage());
+
+            try {
+                $databaseInsert->saveTask($task);
+            } catch (\Exception $e) {
+                return $this->render('dashboard/ajax/regenerate-article.html.twig', [
+                    'isSuccess' => false,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+
+            return $this->render('dashboard/ajax/regenerate-article.html.twig', [
+                'isSuccess' => true,
+            ]);
+        }
+
+        return $this->render('dashboard/ajax/regenerate-article.html.twig', [
+            'isSuccess' => false,
+            'error' => 'Wystąpił błąd!',
+        ]);
+
+    }
 }
