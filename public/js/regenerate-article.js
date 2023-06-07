@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (xhr.readyState === XMLHttpRequest.DONE) {
                         if (xhr.status === 200) {
                             link.classList.add('disabled');
-                            link.removeEventListener('click', arguments.callee);
                             link.innerText = 'Wysłano żądanie!';
                         } else {
                             console.error(xhr.responseText);

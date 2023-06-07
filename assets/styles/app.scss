@@ -607,6 +607,37 @@ button.submit:hover,
 
 .regenerate-link.disabled{
   cursor: auto;
+  pointer-events: none;
+}
+
+.toggle{
+  margin-bottom: 5px;
+}
+
+.toggle-link{
+  background-color: #e4e4e4;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 10px;
+  line-height: 1;
+  text-align: center;
+  padding: 3px 5px;
+  margin-right: -5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.toggle-link.toggle-left{
+  border-radius: 4px 0 0 4px;
+}
+
+.toggle-link.toggle-right{
+  border-radius: 0 4px 4px 0;
+}
+
+.toggle-link.active{
+  background-color: #a5dc86;
+  box-shadow: none;
 }
 
 @media only screen and (max-width: 767px) {

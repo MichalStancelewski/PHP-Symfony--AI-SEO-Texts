@@ -119,8 +119,21 @@
                         {{ article.content }}
                     </div>
                     <div class="col-next">
-                        <span class="label"><a href="#" class="regenerate-link" data-project-id="{{ project.id }}"
-                                               data-article-id="{{ article.id }}">Wygeneruj od nowa</a> </span>
+                        <span class="label">
+                            <a href="#" class="regenerate-link" data-project-id="{{ project.id }}"
+                               data-article-id="{{ article.id }}">
+                                Wygeneruj od nowa
+                            </a>
+                        </span>
+                    </div>
+                    <div class="col-next">
+                        <span class="label"> &nbsp;|&nbsp; </span>
+                    </div>
+                    <div class="col-next toggle">
+                        <span class="label"><i>Wykorzystane?&nbsp;</i></span>
+                        <a href="#" class="toggle-link toggle-left{{ article.isUsed == 1 ? " active" }}" data-toggle-value="true">Tak</a>
+
+                        <a href="#" class="toggle-link toggle-right{{ article.isUsed == 0 ? " active" }}" data-toggle-value="false">Nie</a>
                     </div>
                     <div class="col-break">
                     </div>
