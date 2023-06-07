@@ -61,9 +61,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Write me a new text of approx " .
+                        "content" => "Write me a new unique text of about " .
                             $this->textLength .
-                            " words about '" .
+                            " letters on the topic '" .
                             $this->messageContent .
                             "'. Give the text a title that is more than 7 words long, but do not contain a phrase '" .
                             $this->messageContent .
@@ -72,9 +72,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Write me a new text of approx " .
+                        "content" => "Write me a new unique text of about " .
                             $this->textLength .
-                            " words about  '" .
+                            " letters on the topic  '" .
                             $this->messageContent .
                             "'."
                     );
@@ -86,7 +86,7 @@ class ChatGptRequest
                         "role" => "user",
                         "content" => "Napište mi nový unikátní text cca " .
                             $this->textLength .
-                            " slova o '" .
+                            " dopisů na téma '" .
                             $this->messageContent .
                             "'. Dejte textu název, který je delší než 7 slov, ale neobsahuje frázi '" .
                             $this->messageContent .
@@ -95,9 +95,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Napište mi nový text cca " .
+                        "content" => "Napište mi nový unikátní text cca " .
                             $this->textLength .
-                            " slova o  '" .
+                            " dopisů na téma  '" .
                             $this->messageContent .
                             "'."
                     );
@@ -109,7 +109,7 @@ class ChatGptRequest
                         "role" => "user",
                         "content" => "Écrivez-moi un nouveau texte unique d'environ " .
                             $this->textLength .
-                            " des mots sur '" .
+                            " lettres sur le thème '" .
                             $this->messageContent .
                             "'. Donnez au texte un titre de plus de 7 mots, mais ne contenant pas de phrase '" .
                             $this->messageContent .
@@ -120,7 +120,7 @@ class ChatGptRequest
                         "role" => "user",
                         "content" => "Écrivez-moi un nouveau texte unique d'environ " .
                             $this->textLength .
-                            " des mots sur '" .
+                            " lettres sur le thème '" .
                             $this->messageContent .
                             "."
                     );
@@ -130,9 +130,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Escríbeme un nuevo texto único de aprox " .
+                        "content" => "Escríbeme un nuevo texto único de unas " .
                             $this->textLength .
-                            " palabras sobre '" .
+                            " letras sobre el tema '" .
                             $this->messageContent .
                             "'. Dale al texto un título que tenga más de 7 palabras, pero que no contenga una frase'" .
                             $this->messageContent .
@@ -141,9 +141,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Escríbeme un nuevo texto único de aprox " .
+                        "content" => "Escríbeme un nuevo texto único de unas " .
                             $this->textLength .
-                            " palabras sobre '" .
+                            " letras sobre el tema '" .
                             $this->messageContent .
                             "."
                     );
@@ -153,9 +153,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Schrijf mij een nieuwe unieke tekst van ca " .
+                        "content" => "Schrijf me een nieuwe unieke tekst van ongeveer " .
                             $this->textLength .
-                            " woorden over '" .
+                            " letters over het onderwerp '" .
                             $this->messageContent .
                             "'. Geef de tekst een titel die langer is dan 7 woorden, maar geen zin bevat '" .
                             $this->messageContent .
@@ -164,9 +164,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Schrijf mij een nieuwe unieke tekst van ca " .
+                        "content" => "Schrijf me een nieuwe unieke tekst van ongeveer " .
                             $this->textLength .
-                            " woorden over '" .
+                            " letters over het onderwerp '" .
                             $this->messageContent .
                             "."
                     );
@@ -176,9 +176,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Schreiben Sie mir einen neuen einzigartigen Text mit einer Länge von " .
+                        "content" => "Schreiben Sie mir einen neuen, einzigartigen Text aus ca. " .
                             $this->textLength .
-                            " Wörtern über '" .
+                            " Buchstaben zum Thema '" .
                             $this->messageContent .
                             "'. Geben Sie dem Text einen Titel, der mehr als 7 Wörter lang ist, aber die Phrase '" .
                             $this->messageContent .
@@ -187,9 +187,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Schreiben Sie mir einen neuen einzigartigen Text mit einer Länge von " .
+                        "content" => "Schreiben Sie mir einen neuen, einzigartigen Text aus ca. " .
                             $this->textLength .
-                            " Wörtern über '" .
+                            " Buchstaben zum Thema '" .
                             $this->messageContent .
                             "."
                     );
@@ -199,9 +199,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Напишите мне новый уникальный текст о " .
+                        "content" => "Напишите мне новый уникальный текст около " .
                             $this->textLength .
-                            " слов длинной о '" .
+                            " букв на тему '" .
                             $this->messageContent .
                             "'. Дайте тексту заголовок длиной более 7 слов, но не содержащий словосочетания. '" .
                             $this->messageContent .
@@ -210,9 +210,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Напишите мне новый уникальный текст о " .
+                        "content" => "Напишите мне новый уникальный текст около " .
                             $this->textLength .
-                            " слов длинной о '" .
+                            " букв на тему '" .
                             $this->messageContent .
                             "."
                     );
@@ -222,9 +222,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Напишіть мені новий унікальний текст про " .
+                        "content" => "Напишіть мені новий унікальний текст близько " .
                             $this->textLength .
-                            " слів про '" .
+                            " букв на тему '" .
                             $this->messageContent .
                             "'. Дайте тексту назву, яка містить більше 7 слів, але не включайте фразу '" .
                             $this->messageContent .
@@ -233,9 +233,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Напишіть мені новий унікальний текст про " .
+                        "content" => "Напишіть мені новий унікальний текст близько " .
                             $this->textLength .
-                            " слів про '" .
+                            " букв на тему '" .
                             $this->messageContent .
                             "."
                     );
@@ -245,9 +245,9 @@ class ChatGptRequest
                 if ($this->addTitles) {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Scrivimi un nuovo testo unico su " .
+                        "content" => "Scrivimi un nuovo testo unico di circa " .
                             $this->textLength .
-                            " lungo parole su '" .
+                            " lettere sul tema '" .
                             $this->messageContent .
                             "'. Assegna al testo un titolo di più di 7 parole, ma non includere la frase '" .
                             $this->messageContent .
@@ -256,9 +256,9 @@ class ChatGptRequest
                 } else {
                     $messages[] = array(
                         "role" => "user",
-                        "content" => "Scrivimi un nuovo testo unico su " .
+                        "content" => "Scrivimi un nuovo testo unico di circa " .
                             $this->textLength .
-                            " lungo parole su '" .
+                            " lettere sul tema '" .
                             $this->messageContent .
                             "."
                     );
