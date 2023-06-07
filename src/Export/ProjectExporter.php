@@ -40,12 +40,13 @@ class ProjectExporter
         $iterator = 0;
         $articlesWithLink = [];
         $linkCoverage = $this->project->getCardLinkCoverage();
+
         if ($linkCoverage > 0) {
             $linkCoverage = ($linkCoverage / 100) * $this->project->getNumberOfArticles();
             $linkCoverage = intval(round($linkCoverage, 0, PHP_ROUND_HALF_UP));
             while (sizeof($articlesWithLink) < $linkCoverage) {
                 $rng = rand(1, $this->project->getNumberOfArticles());
-                if (!array_search($rng, $articlesWithLink)) {
+                if (array_search($rng, $articlesWithLink) === false) {
                     $articlesWithLink[] = $rng;
                 }
             }
@@ -54,7 +55,7 @@ class ProjectExporter
         foreach ($project->getArticles() as $article) {
             $iterator++;
 
-            if (array_search($iterator, $articlesWithLink)) {
+            if (array_search($iterator, $articlesWithLink) !== false) {
                 $body = $this->appendCardToArticle($article->getContent());
             } else {
                 $body = $article->getContent();
