@@ -601,6 +601,13 @@ button.submit:hover,
   color: $color-blue;
 }
 
+.regenerate-link:hover:not(.disabled){
+  color: $color-blue;
+}
+
+.regenerate-link.disabled{
+  cursor: auto;
+}
 
 @media only screen and (max-width: 767px) {
   body {

@@ -33,7 +33,8 @@
                     </a>
                 </div>
                 <div class="col-next">
-                    <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}" class="button standard">
+                    <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}"
+                       class="button standard">
                     <span><img src="/uploads/default/icons/checkmark.svg" class="icon" alt=""/>
                     Oznacz jako wykorzystane
                     </span>
@@ -117,6 +118,10 @@
                     <div class="col-100" style="margin: 5px 0;">
                         {{ article.content }}
                     </div>
+                    <div class="col-next">
+                        <span class="label"><a href="#" class="regenerate-link" data-project-id="{{ project.id }}"
+                                               data-article-id="{{ article.id }}">Wygeneruj od nowa</a> </span>
+                    </div>
                     <div class="col-break">
                     </div>
                 </div>
@@ -127,4 +132,10 @@
 
 
     {% endif %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/regenerate-article.js"></script>
 {% endblock %}

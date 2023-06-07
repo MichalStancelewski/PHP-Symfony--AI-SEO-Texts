@@ -279,7 +279,7 @@ class UserController extends AbstractController
         if ($article && $project) {
 
             try {
-                $articleRepository->removeArticle($article);
+                $articleRepository->remove($article, true);
             } catch (\Exception $e) {
                 return $this->render('dashboard/ajax/regenerate-article.html.twig', [
                     'isSuccess' => false,
@@ -292,7 +292,7 @@ class UserController extends AbstractController
             $task->setProject($project);
             $task->setLength($project->getTextsLength());
             $task->setTheme($project->getTheme());
-            $task->setWithTitle($project->getWithTitle());
+            $task->setWithTitle($project->isWithTitle());
             $task->setStatus("new");
             $task->setDateCreated(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Warsaw')));
             $task->setLastChangedDate(new \DateTime('now', new \DateTimeZone('Europe/Warsaw')));
@@ -303,18 +303,19 @@ class UserController extends AbstractController
             } catch (\Exception $e) {
                 return $this->render('dashboard/ajax/regenerate-article.html.twig', [
                     'isSuccess' => false,
-                    'error' => $e->getMessage(),
+                    'message' => $e->getMessage(),
                 ]);
             }
 
             return $this->render('dashboard/ajax/regenerate-article.html.twig', [
                 'isSuccess' => true,
+                'message' => 'Wysłano żądanie',
             ]);
         }
 
         return $this->render('dashboard/ajax/regenerate-article.html.twig', [
             'isSuccess' => false,
-            'error' => 'Wystąpił błąd!',
+            'message' => 'Wystąpił błąd!',
         ]);
 
     }
