@@ -319,4 +319,34 @@ class UserController extends AbstractController
         ]);
 
     }
+
+    #[Route('/projects/switch/{articleId}/{toggleValue}', name: 'app_user_panel_projects_switch_is_used_article')]
+    public function switchIsUsed(int $articleId, bool $toggleValue, Request $request): Response
+    {
+        $entityManager = $this->entityManager;
+        $articleRepository = $this->articleRepository;
+
+        $article = $entityManager->getRepository(Article::class)->find($articleId);
+
+        if ($article) {
+            try {
+                $articleRepository->setIsUsed($article, $toggleValue);
+            }
+            catch (\Exception $e) {
+                    return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
+                        'isSuccess' => false,
+                        'message' => $e->getMessage(),
+                    ]);
+                }
+            return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
+                'isSuccess' => true,
+                'message' => 'Wysłano żądanie!',
+            ]);
+        }
+
+        return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
+            'isSuccess' => false,
+            'message' => 'Wystąpił błąd!',
+        ]);
+    }
 }

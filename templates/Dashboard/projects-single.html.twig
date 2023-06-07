@@ -131,9 +131,14 @@
                     </div>
                     <div class="col-next toggle">
                         <span class="label"><i>Wykorzystane?&nbsp;</i></span>
-                        <a href="#" class="toggle-link toggle-left{{ article.isUsed == 1 ? " active" }}" data-toggle-value="true">Tak</a>
-
-                        <a href="#" class="toggle-link toggle-right{{ article.isUsed == 0 ? " active" }}" data-toggle-value="false">Nie</a>
+                        <a href="#" class="toggle-link toggle-left{{ article.isUsed == 1 ? " active" }}"
+                           data-toggle-value="1" data-article-id="{{ article.id }}">
+                            Tak
+                        </a>
+                        <a href="#" class="toggle-link toggle-right{{ article.isUsed == 0 ? " active" }}"
+                           data-toggle-value="0" data-article-id="{{ article.id }}">
+                            Nie
+                        </a>
                     </div>
                     <div class="col-break">
                     </div>
@@ -151,4 +156,5 @@
 
 {% block javascripts %}
     <script src="/js/regenerate-article.js"></script>
+    <script src="/js/switch-is-used.js"></script>
 {% endblock %}

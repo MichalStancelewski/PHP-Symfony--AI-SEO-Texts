@@ -638,6 +638,8 @@ button.submit:hover,
 .toggle-link.active{
   background-color: #a5dc86;
   box-shadow: none;
+  cursor: auto;
+  pointer-events: none;
 }
 
 @media only screen and (max-width: 767px) {
