@@ -9,6 +9,7 @@ use App\Entity\Task;
 use App\Repository\ProjectRepository;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,15 +33,18 @@ class TaskController extends AbstractController
     #[Route('/tasks-test', name: 'app_tasks_test')]
     public function test(): JsonResponse
     {
-        $gpt = new ChatGptRequest( $this->getApiKey(),  $this->getOrganizationKey(),  "Wakacje nad morzem", 100, false);
+        $gpt = new ChatGptRequest($this->getApiKey(), $this->getOrganizationKey(), "Wakacje nad morzem", 100, false);
         $receivedData = $gpt->sendAndGetNewArticle("POL");
         return $this->json([
         ]);
     }
 
     #[Route('/tasks', name: 'app_tasks')] /* set to '/tasks-cron/ in production */
-    public function index(): JsonResponse
+    public function index(LoggerInterface $logger): JsonResponse
     {
+        set_time_limit(600);
+
+        $this->logger = $logger;
         $this->deleteExportedOlderThan(7);
 
         $this->checkProjects();
@@ -52,7 +56,7 @@ class TaskController extends AbstractController
         }
 
         for ($i = 0; $i < count($tasks); $i++) {
-            $this->sendGptRequest($tasks[$i]);
+            $this->sendGptRequest($tasks[$i], $logger);
         }
 
         return $this->json([
@@ -135,7 +139,7 @@ class TaskController extends AbstractController
         return $tasks;
     }
 
-    private function sendGptRequest(Task $task): void
+    private function sendGptRequest(Task $task, LoggerInterface $logger): void
     {
         $taskRepository = $this->taskRepository;
 
@@ -147,6 +151,13 @@ class TaskController extends AbstractController
             $task->isWithTitle());
         $receivedData = $chatGptRequest->sendAndGetNewArticle($task->getLanguage());
 
+        if (!is_string($receivedData)) {
+            $logger->error('Error code 1: {error}', [
+                'error' => json_encode($receivedData, JSON_PRETTY_PRINT),
+            ]);
+            return;
+        }
+
         $article = new Article();
         $article->setProject($task->getProject());
         $article->setIsUsed(false);
@@ -155,7 +166,15 @@ class TaskController extends AbstractController
             $article->setTitle($article->getTitleFromString());
         }
         $article->setContent($article->getFormatedContentFromString());
-        $article->setContent($chatGptRequest->sendAndGetWithHtml($article->getContent(), $article->getProject()->getLanguage()));
+
+        $articleWithHtml = $chatGptRequest->sendAndGetWithHtml($article->getContent(), $article->getProject()->getLanguage());
+        if (!is_string($articleWithHtml)) {
+            $logger->error('Error code 2: {error}', [
+                'error' => json_encode($articleWithHtml, JSON_PRETTY_PRINT),
+            ]);
+        } else {
+            $article->setContent($articleWithHtml);
+        }
 
         $entityManager = $this->entityManager;
         $databaseInsert = new DatabaseInsert($entityManager, $task->getProject());
@@ -174,7 +193,7 @@ class TaskController extends AbstractController
 
         foreach ($files as $file) {
             $dateOfFile = date("Y-m-d", filectime($dir . $file));
-            $dateOfExpiration = date("Y-m-d", strtotime($dateOfFile . '+ '.$days.' Days'));
+            $dateOfExpiration = date("Y-m-d", strtotime($dateOfFile . '+ ' . $days . ' Days'));
 
             if ($dateOfExpiration < $dateCurrent) {
                 if ($filesystem->exists('/' . $dir . $file)) {

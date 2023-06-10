@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ChatGptRequest
 {
     private const API_URL = 'https://api.openai.com/v1/chat/completions';
+    private const MAX_TOKENS_LOW = 2000;
+    private const MAX_TOKENS_HIGH = 4000;
     private string $apiKey;
     private string $organizationKey;
     private string $messageContent;
@@ -270,7 +272,7 @@ class ChatGptRequest
         $data = array();
         $data["model"] = "gpt-3.5-turbo";
         $data["messages"] = $messages;
-        $data["max_tokens"] = 3000;
+        $data["max_tokens"] = ChatGptRequest::MAX_TOKENS_LOW;
 
         $curl = curl_init(ChatGptRequest::API_URL);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -284,11 +286,11 @@ class ChatGptRequest
         if (curl_errno($curl)) {
             curl_close($curl);
             //throw error
-            return 'error';
+            return 'error code 1';
         } else {
             curl_close($curl);
             if (!isset($jsonData->choices[0]->message->content)) {
-                return 'Error (code01): ' . $jsonData;
+                return $jsonData;
             }
             return $jsonData->choices[0]->message->content;
         }
@@ -365,7 +367,7 @@ class ChatGptRequest
         $data = array();
         $data["model"] = "gpt-3.5-turbo";
         $data["messages"] = $messages;
-        $data["max_tokens"] = 3000;
+        $data["max_tokens"] = ChatGptRequest::MAX_TOKENS_HIGH;
 
         $curl = curl_init(ChatGptRequest::API_URL);
         curl_setopt($curl, CURLOPT_POST, 1);
@@ -382,7 +384,7 @@ class ChatGptRequest
         } else {
             curl_close($curl);
             if (!isset($jsonData->choices[0]->message->content)) {
-                return 'Error (code02): ' . $jsonData;
+                return $jsonData;
             }
             return str_replace("'", "", $jsonData->choices[0]->message->content);
         }
