@@ -272,6 +272,7 @@ class UserController extends AbstractController
     {
         $entityManager = $this->entityManager;
         $articleRepository = $this->articleRepository;
+        $projectRepository = $this->projectRepository;
 
         $project = $entityManager->getRepository(Project::class)->find($projectId);
         $article = $entityManager->getRepository(Article::class)->find($articleId);
@@ -280,6 +281,7 @@ class UserController extends AbstractController
 
             try {
                 $articleRepository->remove($article, true);
+                $projectRepository->setStatusPending($project, true);
             } catch (\Exception $e) {
                 return $this->render('dashboard/ajax/regenerate-article.html.twig', [
                     'isSuccess' => false,
