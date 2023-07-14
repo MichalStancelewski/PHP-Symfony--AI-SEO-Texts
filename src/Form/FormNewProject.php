@@ -4,7 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class FormRequest
+class FormNewProject
 {
     #[Assert\NotBlank
     (

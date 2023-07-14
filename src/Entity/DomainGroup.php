@@ -18,12 +18,13 @@ class DomainGroup
     #[ORM\Column(length: 512)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'domainGroup', targetEntity: Domain::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'domainGroup', targetEntity: Domain::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $domains;
 
-    public function __construct()
+    public function __construct(string $name)
     {
         $this->domains = new ArrayCollection();
+        $this->name = $name;
     }
 
     public function getId(): ?int

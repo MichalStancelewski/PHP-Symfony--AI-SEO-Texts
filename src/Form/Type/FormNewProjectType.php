@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Form\FormRequest;
+use App\Form\FormNewProject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormRequestType extends AbstractType
+class FormNewProjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -115,7 +115,7 @@ class FormRequestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FormRequest::class,
+            'data_class' => FormNewProject::class,
         ]);
     }
 }

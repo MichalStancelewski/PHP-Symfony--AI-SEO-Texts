@@ -136,10 +136,12 @@ a, a:visited {
 
 .icon.error{
   filter: $filter-red;
+  height: 24px;
 }
 
 .icon.success{
   filter: $filter-green;
+  height: 24px;
 }
 
 .button .icon {
@@ -153,6 +155,11 @@ a, a:visited {
 .button.add-new .icon {
   filter: $filter-white;
 }
+
+.align-self-center {
+  align-self: center !important;
+}
+
 
 .title-box {
   margin: -25px -25px 20px -25px;
@@ -174,7 +181,7 @@ a, a:visited {
 }
 
 .form.box-container {
-  max-width: 440px;
+  max-width: 720px;
 }
 
 .projects.box-container {
@@ -225,6 +232,10 @@ a, a:visited {
 .form .box .textarea textarea{
   width: 90%;
   height: 34px;
+}
+
+.form .box .textarea.domains-list textarea{
+  height: 434px;
 }
 
 .projects.projects-summary .box {
@@ -377,7 +388,7 @@ a, a:visited {
 }
 
 .form input{
-  margin-bottom: 18px;
+  margin-bottom: 5px;
   padding: 5px 10px;
   border: 1px solid $color-gray;
   border-radius: $border-radius;
@@ -386,7 +397,7 @@ a, a:visited {
 .form .box .textarea textarea,
 .form .box .select select
 {
-  margin-bottom: 18px;
+  margin-bottom: 5px;
   padding: 5px 10px;
   border: 1px solid $color-gray;
   border-radius: 7px;

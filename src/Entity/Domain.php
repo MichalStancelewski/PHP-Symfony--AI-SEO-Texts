@@ -20,6 +20,11 @@ class Domain
     #[ORM\JoinColumn(nullable: false)]
     private ?DomainGroup $domainGroup = null;
 
+    public function __construct(string $name)
+    {
+        $this->name = trim($name);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

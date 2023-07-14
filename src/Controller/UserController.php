@@ -4,16 +4,22 @@ namespace App\Controller;
 
 use App\Communicator\DatabaseInsert;
 use App\Entity\Article;
+use App\Entity\Domain;
+use App\Entity\DomainGroup;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Export\ProjectExporter;
 use App\Form\FormEditProject;
-use App\Form\FormRequest;
+use App\Form\FormNewDomainGroup;
+use App\Form\FormNewProject;
 use App\Form\Type\FormEditProjectType;
-use App\Form\Type\FormRequestType;
+use App\Form\Type\FormNewDomainGroupType;
+use App\Form\Type\FormNewProjectType;
 use App\Repository\ArticleRepository;
+use App\Repository\DomainGroupRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,9 +28,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     public function __construct(
+        private LoggerInterface        $logger,
         private EntityManagerInterface $entityManager,
         private ProjectRepository      $projectRepository,
-        private ArticleRepository      $articleRepository
+        private ArticleRepository      $articleRepository,
+        private DomainGroupRepository  $domainGroupRepository
     )
     {
     }
@@ -45,11 +53,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/new/', name: 'app_user_panel_new')]
-    public function new(Request $request): Response
+    public function newProject(Request $request): Response
     {
-        $formRequest = new FormRequest();
+        $formRequest = new FormNewProject();
 
-        $form = $this->createForm(FormRequestType::class, $formRequest);
+        $form = $this->createForm(FormNewProjectType::class, $formRequest);
         $form->handleRequest($request);
 
         $errors = array();
@@ -104,21 +112,21 @@ class UserController extends AbstractController
                 $databaseInsert->saveTask($task);
             }
 
-            return $this->render('dashboard/new.html.twig', [
+            return $this->render('dashboard/projects/new.html.twig', [
                 'isSuccess' => 'success',
                 'form' => $form,
                 'submission' => $formRequest,
             ]);
         }
         if ($form->isSubmitted() && !$form->isValid()) {
-            return $this->render('dashboard/new.html.twig', [
+            return $this->render('dashboard/projects/new.html.twig', [
                 'isSuccess' => 'failure',
                 'form' => $form,
                 'errors' => $errors,
             ]);
         }
 
-        return $this->render('dashboard/new.html.twig', [
+        return $this->render('dashboard/projects/new.html.twig', [
             'isSuccess' => '',
             'form' => $form,
         ]);
@@ -131,7 +139,7 @@ class UserController extends AbstractController
         $projectsPending = $projectRepository->findAllPending();
         $projectsDone = $projectRepository->findAllDone();
 
-        return $this->render('dashboard/projects.html.twig', [
+        return $this->render('dashboard/projects/all.html.twig', [
             'projectsPending' => $projectsPending,
             'projectsDone' => $projectsDone,
             'numberOfPending' => count($projectsPending),
@@ -150,7 +158,7 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('dashboard/projects-single.html.twig', [
+        return $this->render('dashboard/projects/single.html.twig', [
             'project' => $project,
             'numberOfUsed' => $numberOfUsed,
         ]);
@@ -163,7 +171,7 @@ class UserController extends AbstractController
         $pathToPlain = $projectExporter->export(false);
         $pathToAdvanced = $projectExporter->export(true);
 
-        return $this->render('dashboard/projects-export.html.twig', [
+        return $this->render('dashboard/projects/export.html.twig', [
             'project' => $project,
             'pathToPlain' => $pathToPlain,
             'pathToAdvanced' => $pathToAdvanced,
@@ -176,7 +184,7 @@ class UserController extends AbstractController
         $articleRepository = $this->articleRepository;
         $project->makeUsed($articleRepository);
 
-        return $this->render('dashboard/projects-makeused.html.twig', [
+        return $this->render('dashboard/projects/makeused.html.twig', [
             'project' => $project,
         ]);
     }
@@ -184,7 +192,7 @@ class UserController extends AbstractController
     #[Route('/projects/{id}/delete/', name: 'app_user_panel_projects_delete')]
     public function delete(Project $project): Response
     {
-        return $this->render('dashboard/projects-delete.html.twig', [
+        return $this->render('dashboard/projects/delete.html.twig', [
             'project' => $project,
         ]);
     }
@@ -209,7 +217,7 @@ class UserController extends AbstractController
         $project = $entityManager->getRepository(Project::class)->find($id);
 
         if (!$project) {
-            return $this->render('dashboard/projects-edit.html.twig', [
+            return $this->render('dashboard/projects/edit.html.twig', [
                 'isSuccess' => 'failure',
                 'form' => $form,
                 'errors' => 'Nie istnieje projekt o ID: ' . $id,
@@ -244,7 +252,7 @@ class UserController extends AbstractController
             $databaseInsert = new DatabaseInsert($entityManager, $project);
             $databaseInsert->editProjectName($formRequest->getName());
 
-            return $this->render('dashboard/projects-edit.html.twig', [
+            return $this->render('dashboard/projects/edit.html.twig', [
                 'isSuccess' => 'success',
                 'project' => $project,
                 'form' => $form,
@@ -252,7 +260,7 @@ class UserController extends AbstractController
             ]);
         }
         if ($form->isSubmitted() && !$form->isValid()) {
-            return $this->render('dashboard/projects-edit.html.twig', [
+            return $this->render('dashboard/projects/edit.html.twig', [
                 'isSuccess' => 'failure',
                 'project' => $project,
                 'form' => $form,
@@ -260,7 +268,7 @@ class UserController extends AbstractController
             ]);
         }
 
-        return $this->render('dashboard/projects-edit.html.twig', [
+        return $this->render('dashboard/projects/edit.html.twig', [
             'isSuccess' => '',
             'project' => $project,
             'form' => $form,
@@ -333,13 +341,12 @@ class UserController extends AbstractController
         if ($article) {
             try {
                 $articleRepository->setIsUsed($article, $toggleValue);
+            } catch (\Exception $e) {
+                return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
+                    'isSuccess' => false,
+                    'message' => $e->getMessage(),
+                ]);
             }
-            catch (\Exception $e) {
-                    return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
-                        'isSuccess' => false,
-                        'message' => $e->getMessage(),
-                    ]);
-                }
             return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
                 'isSuccess' => true,
                 'message' => 'Wysłano żądanie!',
@@ -349,6 +356,68 @@ class UserController extends AbstractController
         return $this->render('dashboard/ajax/switch-is-used-article.html.twig', [
             'isSuccess' => false,
             'message' => 'Wystąpił błąd!',
+        ]);
+    }
+
+    #[Route('/domains/new/', name: 'app_user_panel_new_domain_group')]
+    public function newDomainGroup(Request $request): Response
+    {
+        $domainsList = null;
+        $formRequest = new FormNewDomainGroup();
+
+        $form = $this->createForm(FormNewDomainGroupType::class, $formRequest);
+        $form->handleRequest($request);
+
+        $errors = array();
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formRequest = $form->getData();
+
+            $domainGroup = new DomainGroup(
+                $formRequest->getName()
+            );
+
+            if ($formRequest->getDomainsList()) {
+
+                $domainsList = explode("\n", $formRequest->getDomainsList());
+                foreach ($domainsList as $d) {
+                    $this->logger->debug('Domain manager | Domain: ' . $d);
+                    $domain = new Domain($d);
+                    $domainGroup->addDomain($domain);
+                }
+            }
+
+            $domainGroupRepository = $this->domainGroupRepository;
+            $domainGroupRepository->save($domainGroup, true);
+
+            if (is_countable($domainsList)) {
+                $domainsNumber = count($domainsList);
+            } else {
+                $domainsNumber = 0;
+            }
+
+            return $this->render('dashboard/domains/new.html.twig', [
+                'isSuccess' => 'success',
+                'form' => $form,
+                'submission' => $formRequest,
+                'domainsNumber' => $domainsNumber,
+            ]);
+
+        }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            return $this->render('dashboard/domains/new.html.twig', [
+                'isSuccess' => 'failure',
+                'form' => $form,
+                'errors' => $errors,
+            ]);
+        }
+
+        return $this->render('dashboard/domains/new.html.twig', [
+            'isSuccess' => '',
+            'form' => $form,
         ]);
     }
 }
