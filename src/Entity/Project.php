@@ -65,6 +65,9 @@ class Project
     #[ORM\Column(nullable: true)]
     private ?int $cardLinkCoverage = null;
 
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?ProjectGroup $projectGroup = null;
+
     public function __construct(string $name, string $theme, int $numberOfArticles, int $textsLength, bool $withTitle, string $language)
     {
         $this->articles = new ArrayCollection();
@@ -327,6 +330,18 @@ class Project
     public function setCardLinkCoverage(?int $cardLinkCoverage): self
     {
         $this->cardLinkCoverage = $cardLinkCoverage;
+
+        return $this;
+    }
+
+    public function getProjectGroup(): ?ProjectGroup
+    {
+        return $this->projectGroup;
+    }
+
+    public function setProjectGroup(?ProjectGroup $projectGroup): self
+    {
+        $this->projectGroup = $projectGroup;
 
         return $this;
     }

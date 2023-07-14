@@ -21,6 +21,9 @@ class DomainGroup
     #[ORM\OneToMany(mappedBy: 'domainGroup', targetEntity: Domain::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $domains;
 
+    #[ORM\OneToOne(mappedBy: 'domainGroup', cascade: ['persist', 'remove'])]
+    private ?ProjectGroup $projectGroup = null;
+
     public function __construct(string $name)
     {
         $this->domains = new ArrayCollection();
@@ -77,5 +80,27 @@ class DomainGroup
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getProjectGroup(): ?ProjectGroup
+    {
+        return $this->projectGroup;
+    }
+
+    public function setProjectGroup(?ProjectGroup $projectGroup): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($projectGroup === null && $this->projectGroup !== null) {
+            $this->projectGroup->setDomainGroup(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($projectGroup !== null && $projectGroup->getDomainGroup() !== $this) {
+            $projectGroup->setDomainGroup($this);
+        }
+
+        $this->projectGroup = $projectGroup;
+
+        return $this;
     }
 }
