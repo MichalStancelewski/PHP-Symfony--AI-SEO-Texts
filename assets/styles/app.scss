@@ -134,6 +134,14 @@ a, a:visited {
   filter: $filter-white;
 }
 
+.icon.error{
+  filter: $filter-red;
+}
+
+.icon.success{
+  filter: $filter-green;
+}
+
 .button .icon {
   width: 16px;
   height: auto;

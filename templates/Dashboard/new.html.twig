@@ -12,6 +12,9 @@
         <div class="projects projects-summary box-container">
             <div class="box">
                 <div class="col-next">
+                   <img src="/uploads/default/icons/checkmark.svg" class="icon success" alt=""/>
+                </div>
+                <div class="col-next">
                     Projekt <b>{{ submission.getName }}</b> utworzony!
                 </div>
             </div>
@@ -19,6 +22,9 @@
     {% elseif isSuccess == 'failure' %}
         <div class="projects projects-summary box-container">
             <div class="box">
+                <div class="col-next">
+                    <img src="/uploads/default/icons/checkmark.svg" class="icon error" alt=""/>
+                </div>
                 <div class="col-next">
                     <div class="error-list">
                         <b>Błędy:</b> <br/>

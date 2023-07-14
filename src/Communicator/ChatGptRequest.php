@@ -7,8 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ChatGptRequest
 {
     private const API_URL = 'https://api.openai.com/v1/chat/completions';
-    private const MAX_TOKENS_LOW = 2000;
-    private const MAX_TOKENS_HIGH = 4000;
+    private const MAX_TOKENS_LOW = 3000;
+    private const MAX_TOKENS_HIGH = 9000;
     private string $apiKey;
     private string $organizationKey;
     private string $messageContent;
@@ -365,7 +365,7 @@ class ChatGptRequest
         }
 
         $data = array();
-        $data["model"] = "gpt-3.5-turbo";
+        $data["model"] = "gpt-3.5-turbo-16k";
         $data["messages"] = $messages;
         $data["max_tokens"] = ChatGptRequest::MAX_TOKENS_HIGH;
 

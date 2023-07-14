@@ -11,14 +11,15 @@ use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Exception\ExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Filesystem\Filesystem;
 
 class TaskController extends AbstractController
 {
-    private const MAX_MINUTES_JOB = 1;
-    private const MAX_CONCURRENT_JOB = 1;
+    private const MAX_MINUTES_JOB = 3;
+    private const MAX_CONCURRENT_JOB = 10;
     private string $apiKey;
     private string $organizationKey;
 
@@ -30,16 +31,8 @@ class TaskController extends AbstractController
     {
     }
 
-    #[Route('/tasks-test', name: 'app_tasks_test')]
-    public function test(): JsonResponse
-    {
-        $gpt = new ChatGptRequest($this->getApiKey(), $this->getOrganizationKey(), "Wakacje nad morzem", 100, false);
-        $receivedData = $gpt->sendAndGetNewArticle("POL");
-        return $this->json([
-        ]);
-    }
 
-    #[Route('/tasks', name: 'app_tasks')] /* set to '/tasks-cron/ in production */
+    #[Route('/tasks-cron/', name: 'app_tasks')]
     public function index(LoggerInterface $logger): JsonResponse
     {
         set_time_limit(600);
@@ -195,9 +188,16 @@ class TaskController extends AbstractController
             $dateOfFile = date("Y-m-d", filectime($dir . $file));
             $dateOfExpiration = date("Y-m-d", strtotime($dateOfFile . '+ ' . $days . ' Days'));
 
-            if ($dateOfExpiration < $dateCurrent) {
-                if ($filesystem->exists('/' . $dir . $file)) {
-                    $filesystem->remove('/' . $dir . $file);
+            $path = './' . $dir . $file;
+
+            if (strtotime($dateOfExpiration) < strtotime($dateCurrent)) {
+                if ($filesystem->exists([$path])) {
+                    try {
+                        $filesystem->remove($path);
+                    }
+                    catch(ExceptionInterface $exception) {
+                        $this->logger->error('Delete files | Files delete error: ' . $path . ' | ' . $exception->getMessage());
+                    }
                 }
             }
         }
