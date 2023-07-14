@@ -261,6 +261,14 @@ a, a:visited {
   width: 100%;
 }
 
+.projects.projects-pending .box .col-80,
+.projects.projects-done .box .col-80 {
+  flex-basis: auto;
+  align-self: baseline;
+  padding-right: 10px;
+  width: calc(80% - 10px);
+}
+
 .projects.projects-pending .box .col-30,
 .projects.projects-done .box .col-30 {
   flex-basis: auto;

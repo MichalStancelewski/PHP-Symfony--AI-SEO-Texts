@@ -167,7 +167,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/projects/{id}/export/', name: 'app_user_panel_projects_export')]
-    public function export(Project $project): Response
+    public function exportProject(Project $project): Response
     {
         $projectExporter = new ProjectExporter($project);
         $pathToPlain = $projectExporter->export(false);
@@ -181,7 +181,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/projects/{id}/make-used/', name: 'app_user_panel_projects_makeused')]
-    public function makeUsed(Project $project): Response
+    public function makeUsedProject(Project $project): Response
     {
         $articleRepository = $this->articleRepository;
         $project->makeUsed($articleRepository);
@@ -192,7 +192,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/projects/{id}/delete/', name: 'app_user_panel_projects_delete')]
-    public function delete(Project $project): Response
+    public function deleteProject(Project $project): Response
     {
         return $this->render('dashboard/projects/delete.html.twig', [
             'project' => $project,
@@ -200,7 +200,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/projects/{id}/delete/confirm/', name: 'app_user_panel_projects_delete_confirm')]
-    public function deleteConfirmed(Project $project): Response
+    public function deleteProjectConfirmed(Project $project): Response
     {
         $project->deleteArticles($this->articleRepository);
         $this->projectRepository->remove($project, true);
@@ -493,4 +493,53 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/domains/', name: 'app_user_panel_domain_group')]
+    public function domains(Request $request): Response
+    {
+        $numberTotalGroups = 0;
+        $numberTotalDomains = 0;
+
+        $domainGroupRepository = $this->domainGroupRepository;
+        $domainGroups = $domainGroupRepository->findAll();
+
+        if ($domainGroups) {
+            $numberTotalGroups = sizeof($domainGroups);
+
+            foreach ($domainGroups as $domainGroup){
+                $numberTotalDomains += sizeof($domainGroup->getDomains());
+            }
+        }
+
+        return $this->render('dashboard/domains/all.html.twig', [
+            'domainGroups' => $domainGroups,
+            'numberTotalGroups' => $numberTotalGroups,
+            'numberTotalDomains' => $numberTotalDomains,
+        ]);
+    }
+
+    #[Route('/domains/{id}/', name: 'app_user_panel_domain_group_single')]
+    public function singleDomainGroup(DomainGroup $domainGroup): Response
+    {
+        return $this->render('dashboard/domains/single.html.twig', [
+            'domainGroup' => $domainGroup,
+        ]);
+
+    }
+
+    #[Route('/domains/{id}/delete/', name: 'app_user_panel_domain_group_delete')]
+    public function deleteDomainGroup(DomainGroup $domainGroup): Response
+    {
+        return $this->render('dashboard/domains/delete.html.twig', [
+            'domainGroup' => $domainGroup,
+        ]);
+    }
+
+    #[Route('/domains/{id}/delete/confirm/', name: 'app_user_panel_domain_group_delete_confirm')]
+    public function deleteDomainGroupConfirmed(DomainGroup $domainGroup): Response
+    {
+        $this->domainGroupRepository->remove($domainGroup, true);
+        return $this->redirectToRoute('app_user_panel_domain_group');
+    }
+
 }

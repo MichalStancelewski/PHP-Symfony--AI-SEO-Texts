@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grupa Domen - Szczegóły - AI SEO Texts{% endblock %}
+
+{% block body %}
+
+    <div class="title-box">
+        <h1>Grupa Domen: <i style="font-weight: 300;">{{ domainGroup.name }}</i></h1>
+    </div>
+
+    <div class="projects projects-summary box-container">
+        <div class="box">
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_domain_group') }}" class="button go-back">
+                    <span><img src="/uploads/default/icons/reply.svg" class="icon" alt=""/>
+                    Wróć
+                    </span>
+                </a>
+            </div>
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_domain_group_edit', { id: domainGroup.id }) }}" class="button standard">
+                    <span><img src="/uploads/default/icons/settings.svg" class="icon" alt=""/>
+                    Edytuj
+                    </span>
+                </a>
+            </div>
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_domain_group_delete', { id: domainGroup.id }) }}"
+                   class="button delete">
+                    <span><img src="/uploads/default/icons/prohibited.svg" class="icon" alt=""/>
+                    Usuń
+                    </span>
+                </a>
+            </div>
+            <div class="col-break"></div>
+            <div class="col-next">
+                <span class="label">Liczba domen:</span> <span class="number">{{ domainGroup.getDomains|length }}</span>
+            </div>
+        </div>
+    </div>
+
+    {% if domainGroup.getDomains|length < 1 %}
+        <div class="message-empty center">
+            <div><span>Brak przypisanych domen</span></div>
+            <div><a href="{{ path('app_user_panel_domain_group_edit', { id: domainGroup.id }) }}" class="button refresh">
+                    Przejdź do edycji
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="projects article-list box-container">
+            <h2>Domeny</h2>
+
+            <div class="box border-bottom" style="margin: 10px 0;">
+                {% for domain in domainGroup.getDomains %}
+                    {{ domain.name }} <br/>
+                {% endfor %}
+            </div>
+
+        </div>
+
+
+    {% endif %}
+
+
+{% endblock %}
+

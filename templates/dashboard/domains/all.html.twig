@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wszystkie Grupy Domen - AI SEO Texts{% endblock %}
+
+{% block body %}
+    <div class="title-box">
+        <h1>Grupy domen</h1>
+    </div>
+
+    <div class="projects projects-summary box-container">
+        <div class="box">
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_new_domain_group') }}" class="button add-new">
+                    <span><img src="/uploads/default/icons/plus.svg" class="icon" alt=""/>
+                    Stwórz
+                    </span>
+                </a>
+            </div>
+            <div class="col-next">
+                <span class="label">Łącznie grup:</span> <span class="number">{{ numberTotalGroups }}</span>
+            </div>
+            <div class="col-next">
+                <span class="label">Łącznie domen:</span> <span class="number">{{ numberTotalDomains }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects projects-done box-container">
+        <div class="box label border-bottom">
+            <div class="col-80">
+                Nazwa
+            </div>
+            <div class="col-20">
+                L. domen
+            </div>
+        </div>
+
+        {% for domainGroup in domainGroups %}
+            <div class="box border-bottom">
+                <div class="col-80">
+                    <a href="{{ path('app_user_panel_domain_group_single', { id: domainGroup.id }) }}"
+                       class="name-link"><b>{{ domainGroup.name }}</b></a>
+                </div>
+                <div class="col-20">
+                    {{ domainGroup.getDomains|length }}
+                </div>
+                <div class="col-break">
+                </div>
+                <div class="col-next link">
+                    <a href="{{ path('app_user_panel_domain_group_single', { id: domainGroup.id }) }}" class="view">Zobacz</a>
+                </div>
+                <div class="col-next link dropdown">
+                    <span class="more-options">Więcej &#10096;</span>
+                    <div class="dropdown-content">
+                        <div class="line link">
+                            <a href="{{ path('app_user_panel_domain_group_edit', { id: domainGroup.id }) }}"
+                               class="standard">Edytuj</a>
+                        </div>
+                        <div class="line link">
+                            <a href="{{ path('app_user_panel_domain_group_delete', { id: domainGroup.id }) }}"
+                               class="delete">Usuń</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-next id">
+                    <span class="label">ID: {{ domainGroup.id }}</span>
+                </div>
+                <div class="col-break">
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
