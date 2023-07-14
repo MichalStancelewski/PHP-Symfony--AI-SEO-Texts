@@ -11,7 +11,10 @@
     {% if isSuccess == 'success' %}
         <div class="projects projects-summary box-container">
             <div class="box">
-                <div class="col-next">
+                <div class="col-next align-self-center">
+                    <img src="/uploads/default/icons/checkmark.svg" class="icon success" alt=""/>
+                </div>
+                <div class="col-next align-self-center">
                     Projekt <b>{{ submission.getName }}</b> edytowany pomyślnie!
                 </div>
             </div>
@@ -19,7 +22,10 @@
     {% elseif isSuccess == 'failure' %}
         <div class="projects projects-summary box-container">
             <div class="box">
-                <div class="col-next">
+                <div class="col-next align-self-center">
+                    <img src="/uploads/default/icons/warning.svg" class="icon error" alt=""/>
+                </div>
+                <div class="col-next align-self-center">
                     <div class="error-list">
                         <p><b>Edycja projektu nie powiodła się!</b></p>
                         <b>Błędy:</b> <br/>
@@ -59,7 +65,11 @@
                 <span class="label">{{ form_label(form.cardHeader) }} </span><br/>
                 {{ form_widget(form.cardHeader, {'value': project.cardHeader }) }}
             </div>
-            <div class="col-2">
+            <div class="col-1">
+                <span class="label">{{ form_label(form.cardCompanyWebsite) }} </span><br/>
+                {{ form_widget(form.cardCompanyWebsite, {'attr': {'value': project.cardCompanyWebsite }}) }}
+            </div>
+            <div class="col-1">
                 <span class="label">{{ form_label(form.cardCompanyName) }} </span><br/>
                 {{ form_widget(form.cardCompanyName, {'attr': {'value': project.cardCompanyName }}) }}
             </div>
@@ -70,10 +80,6 @@
             <div class="col-2">
                 <span class="label">{{ form_label(form.cardCompanyEmail) }} </span><br/>
                 {{ form_widget(form.cardCompanyEmail, {'attr': {'value': project.cardCompanyEmail }}) }}
-            </div>
-            <div class="col-2">
-                <span class="label">{{ form_label(form.cardCompanyWebsite) }} </span><br/>
-                {{ form_widget(form.cardCompanyWebsite, {'attr': {'value': project.cardCompanyWebsite }}) }}
             </div>
             <div class="col-1 ">
                 <hr>

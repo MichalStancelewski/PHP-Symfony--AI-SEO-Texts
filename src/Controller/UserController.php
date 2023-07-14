@@ -9,9 +9,11 @@ use App\Entity\DomainGroup;
 use App\Entity\Project;
 use App\Entity\Task;
 use App\Export\ProjectExporter;
+use App\Form\FormEditDomainGroup;
 use App\Form\FormEditProject;
 use App\Form\FormNewDomainGroup;
 use App\Form\FormNewProject;
+use App\Form\Type\FormEditDomainGroupType;
 use App\Form\Type\FormEditProjectType;
 use App\Form\Type\FormNewDomainGroupType;
 use App\Form\Type\FormNewProjectType;
@@ -381,7 +383,6 @@ class UserController extends AbstractController
             );
 
             if ($formRequest->getDomainsList()) {
-
                 $domainsList = explode("\n", $formRequest->getDomainsList());
                 foreach ($domainsList as $d) {
                     $this->logger->debug('Domain manager | Domain: ' . $d);
@@ -417,6 +418,78 @@ class UserController extends AbstractController
 
         return $this->render('dashboard/domains/new.html.twig', [
             'isSuccess' => '',
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/domains/{id}/edit/', name: 'app_user_panel_domain_group_edit')]
+    public function editDomainGroup(int $id, Request $request): Response
+    {
+        $entityManager = $this->entityManager;
+
+        $formEditDomainGroup = new FormEditDomainGroup();
+        $form = $this->createForm(FormEditDomainGroupType::class, $formEditDomainGroup);
+        $form->handleRequest($request);
+
+        $domainsList = '';
+        $domainGroup = $entityManager->getRepository(DomainGroup::class)->find($id);
+
+        $oldDomains = $domainGroup->getDomains()->toArray();
+        $newDomains = [];
+        if ($oldDomains) {
+            $domainsList = implode("\n", $oldDomains);
+        }
+
+        if (!$domainGroup) {
+            return $this->render('dashboard/domains/edit.html.twig', [
+                'isSuccess' => 'failure',
+                'form' => $form,
+                'errors' => 'Nie istnieje grupa domen o ID: ' . $id,
+            ]);
+        }
+
+        $errors = array();
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formRequest = $form->getData();
+
+            if ($formRequest->getDomainsList()) {
+                $domainsList = explode("\n", $formRequest->getDomainsList());
+                foreach ($domainsList as $d) {
+                    $domain = new Domain($d);
+                    $newDomains[] = $domain;
+                }
+                $domainsList = implode("\n", $domainsList);
+            }
+
+            $domainGroupRepository = $this->domainGroupRepository;
+            $domainGroupRepository->edit($domainGroup, $formRequest->getName(), $oldDomains, $newDomains);
+
+            return $this->render('dashboard/domains/edit.html.twig', [
+                'isSuccess' => 'success',
+                'domainsList' => $domainsList,
+                'domainGroup' => $domainGroup,
+                'form' => $form,
+                'submission' => $formRequest,
+            ]);
+        }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            return $this->render('dashboard/domains/edit.html.twig', [
+                'isSuccess' => 'failure',
+                'domainsList' => $domainsList,
+                'domainGroup' => $domainGroup,
+                'form' => $form,
+                'errors' => $errors,
+            ]);
+        }
+
+        return $this->render('dashboard/domains/edit.html.twig', [
+            'isSuccess' => '',
+            'domainsList' => $domainsList,
+            'domainGroup' => $domainGroup,
             'form' => $form,
         ]);
     }

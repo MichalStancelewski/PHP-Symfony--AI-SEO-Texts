@@ -39,28 +39,25 @@ class DomainGroupRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return DomainGroup[] Returns an array of DomainGroup objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function edit(DomainGroup $domainGroup, string $name, array $oldDomains, array $newDomains): void
+    {
+        $domainGroup->setName($name);
 
-//    public function findOneBySomeField($value): ?DomainGroup
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($oldDomains) {
+            foreach ($oldDomains as $d) {
+                $domainGroup->removeDomain($d);
+            }
+        }
+
+        if ($newDomains) {
+            foreach ($newDomains as $d) {
+                $domainGroup->addDomain($d);
+            }
+        }
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($domainGroup);
+        $entityManager->flush();
+    }
+
 }
