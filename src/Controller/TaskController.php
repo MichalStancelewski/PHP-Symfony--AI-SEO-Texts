@@ -19,7 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class TaskController extends AbstractController
 {
     private const MAX_MINUTES_JOB = 3;
-    private const MAX_CONCURRENT_JOB = 10;
+    private const MAX_CONCURRENT_JOB = 8;
     private string $apiKey;
     private string $organizationKey;
 
@@ -50,6 +50,7 @@ class TaskController extends AbstractController
 
         for ($i = 0; $i < count($tasks); $i++) {
             $this->sendGptRequest($tasks[$i], $logger);
+            sleep(1);
         }
 
         return $this->json([
@@ -104,7 +105,7 @@ class TaskController extends AbstractController
         } else {
             $maxSpots = $maxSpots - count($pendingTasks);
         }
-        sleep(3);
+
         $failedTasks = $taskRepository->findAllFailed();
         if (count($failedTasks) > 0) {
             for ($i = 0; $i < count($failedTasks); $i++) {
@@ -118,7 +119,7 @@ class TaskController extends AbstractController
         if (count($tasks) >= TaskController::MAX_CONCURRENT_JOB) {
             return $tasks;
         }
-        sleep(3);
+
         $newTasks = $taskRepository->findAllNew();
         if (count($newTasks) > 0) {
             for ($i = 0; $i < count($newTasks); $i++) {
