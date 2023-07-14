@@ -41,6 +41,8 @@ security:
     access_control:
         - { path: ^/new/, roles: ROLE_ADMIN }
         - { path: ^/projects/, roles: ROLE_ADMIN }
+        - { path: ^/project-groups/, roles: ROLE_ADMIN }
+        - { path: ^/domains/, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
