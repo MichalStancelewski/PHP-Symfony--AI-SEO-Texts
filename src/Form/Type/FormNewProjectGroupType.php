@@ -14,11 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormNewProjectGroupType extends AbstractType
 {
-    private $em;
+    private $entityManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -32,7 +32,7 @@ class FormNewProjectGroupType extends AbstractType
             ->add('projects', ChoiceType::class, [
                     'label' => 'Projekty',
                     'placeholder' => '',
-                    'choice_loader' => new ChoiceLoader($this->em, 'App\Entity\Project'),
+                    'choice_loader' => new ChoiceLoader($this->entityManager, 'App\Entity\Project'),
                     'multiple' => true,
                     'expanded' => false,
                     'required' => false
@@ -41,7 +41,7 @@ class FormNewProjectGroupType extends AbstractType
             ->add('domainGroup', ChoiceType::class, [
                     'label' => 'Grupy domen',
                     'placeholder' => '',
-                    'choice_loader' => new ChoiceLoader($this->em, 'App\Entity\DomainGroup'),
+                    'choice_loader' => new ChoiceLoader($this->entityManager, 'App\Entity\DomainGroup'),
                     'multiple' => false,
                     'expanded' => false,
                     'required' => false
