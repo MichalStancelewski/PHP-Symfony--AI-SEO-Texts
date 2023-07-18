@@ -1,6 +1,7 @@
 @import './variables';
 
 body {
+  display:none;
   margin: 0;
   background-color: $color-slight-gray;
   font-family: $font-family-text;
@@ -116,9 +117,13 @@ a, a:visited {
   color: $color-white;
 }
 
-.menu-item.add-new:hover,
 .button.add-new:hover {
   background-color: $color-sky-blue;
+}
+
+.menu-item.add-new.disabled{
+  background-color: $color-blue;
+  cursor: default;
 }
 
 .sidebar-menu-main .icon {
@@ -130,16 +135,16 @@ a, a:visited {
 }
 
 .sidebar-menu-main .menu-item.active .icon,
-.sidebar-menu-main .menu-item:hover .icon {
+.sidebar-menu-main .menu-item:not(.disabled):hover .icon {
   filter: $filter-white;
 }
 
-.icon.error{
+.icon.error {
   filter: $filter-red;
   height: 24px;
 }
 
-.icon.success{
+.icon.success {
   filter: $filter-green;
   height: 24px;
 }
@@ -229,12 +234,12 @@ a, a:visited {
   width: 96%;
 }
 
-.form .box .textarea textarea{
+.form .box .textarea textarea {
   width: 90%;
   height: 34px;
 }
 
-.form .box .textarea.domains-list textarea{
+.form .box .textarea.domains-list textarea {
   height: 434px;
 }
 
@@ -352,14 +357,14 @@ a, a:visited {
   margin-bottom: 5px;
 }
 
-.box .link{
+.box .link {
   padding-top: 5px;
   font-size: 10px;
 }
 
 .id .label,
 .language .label,
-.card-info .label{
+.card-info .label {
   font-size: 10px;
 }
 
@@ -395,7 +400,7 @@ a, a:visited {
   color: $color-sky-blue;
 }
 
-.form input{
+.form input {
   margin-bottom: 5px;
   padding: 5px 10px;
   border: 1px solid $color-gray;
@@ -403,8 +408,7 @@ a, a:visited {
 }
 
 .form .box .textarea textarea,
-.form .box .select select
-{
+.form .box .select select {
   margin-bottom: 5px;
   padding: 5px 10px;
   border: 1px solid $color-gray;
@@ -412,7 +416,7 @@ a, a:visited {
 }
 
 button.submit,
-.submit button{
+.submit button {
   margin-top: 8px;
   padding: 8px 43px;
   background-color: $color-alfa;
@@ -565,7 +569,7 @@ button.submit:hover,
   filter: $filter-white;
 }
 
-.error-box{
+.error-box {
   margin-top: 12px;
   color: $color-red;
 }
@@ -605,7 +609,7 @@ button.submit:hover,
   position: absolute;
   background-color: #f9f9f9;
   min-width: 200px;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   padding: 8px 12px;
   z-index: 1;
 }
@@ -614,34 +618,34 @@ button.submit:hover,
   display: block;
 }
 
-.dropdown .line{
+.dropdown .line {
   padding: 8px 2px;
   font-size: 13px;
 }
 
-.more-options{
+.more-options {
   color: $color-blue;
   cursor: pointer;
 }
 
-.more-options:hover{
+.more-options:hover {
   color: $color-blue;
 }
 
-.regenerate-link:hover:not(.disabled){
+.regenerate-link:hover:not(.disabled) {
   color: $color-blue;
 }
 
-.regenerate-link.disabled{
+.regenerate-link.disabled {
   cursor: auto;
   pointer-events: none;
 }
 
-.toggle{
+.toggle {
   margin-bottom: 5px;
 }
 
-.toggle-link{
+.toggle-link {
   background-color: #e4e4e4;
   color: rgba(0, 0, 0, 0.6);
   font-size: 10px;
@@ -654,20 +658,72 @@ button.submit:hover,
   transition: all 0.1s ease-in-out;
 }
 
-.toggle-link.toggle-left{
+.toggle-link.toggle-left {
   border-radius: 4px 0 0 4px;
 }
 
-.toggle-link.toggle-right{
+.toggle-link.toggle-right {
   border-radius: 0 4px 4px 0;
 }
 
-.toggle-link.active{
+.toggle-link.active {
   background-color: #a5dc86;
   box-shadow: none;
   cursor: auto;
   pointer-events: none;
 }
+
+.form .select select {
+  width: 95%;
+}
+
+.form .select .select2-container .select2-selection__choice__display,
+.select2-results__options li,
+.select2-selection__rendered {
+  font-size: 12px !important;
+}
+
+#menu-trigger,
+#menu-list {
+  transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
+}
+
+#menu-list {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-bottom: 2px solid $color-slight-dark;
+}
+
+#menu-list li {
+  list-style: none;
+  padding: 5px 10px;
+  border-bottom: 1px solid $color-semi-dark;
+}
+
+#menu-list {
+  margin-top: -8px;
+}
+
+#menu-list li a {
+  margin-bottom: 0;
+  font-size: 14px !important;
+}
+
+#menu-trigger:hover > #menu-list {
+  max-height: 720px;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#menu-trigger {
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 0;
+}
+
 
 @media only screen and (max-width: 767px) {
   body {

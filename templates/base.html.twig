@@ -13,10 +13,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
 
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
+    {% block head %}
+
     {% endblock %}
 
+    {{ encore_entry_link_tags('app') }}
 </head>
 <body>
 <div class="wrapper">
@@ -32,5 +33,10 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.style.display = 'block';
+});
+</script>
 </body>
 </html>

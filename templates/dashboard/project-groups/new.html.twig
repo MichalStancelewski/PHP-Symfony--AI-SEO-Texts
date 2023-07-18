@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nowa grupa projektów - AI SEO Texts{% endblock %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <link href="/js/select2/select2.min.css" rel="stylesheet" />
+    <script src="/js/select2/select2.min.js"></script>
+    <script src="/js/select2/lang-pl.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="title-box">
+        <h1>Dodaj nową grupę projektów</h1>
+    </div>
+
+    {% if isSuccess == 'success' %}
+        <div class="projects projects-summary box-container">
+            <div class="box">
+                <div class="col-next align-self-center">
+                   <img src="/uploads/default/icons/checkmark.svg" class="icon success" alt=""/>
+                </div>
+                <div class="col-next align-self-center">
+                    Grupa projektów <b>{{ submission.getName }}</b> utworzona!</b>
+                </div>
+            </div>
+        </div>
+    {% elseif isSuccess == 'failure' %}
+        <div class="projects projects-summary box-container">
+            <div class="box">
+                <div class="col-next align-self-center">
+                    <img src="/uploads/default/icons/warning.svg" class="icon error" alt=""/>
+                </div>
+                <div class="col-next align-self-center">
+                    <div class="error-list">
+                        <b>Błędy:</b> <br/>
+                        {% for error in errors %}
+                            {{ error }}<br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {{ form_start(form) }}
+
+    <div class="form box-container">
+
+        <div class="box">
+            <div class="col-1 ">
+                <span class="label"><b>Ustawienia główne</b></span>
+            </div>
+            <div class="col-1">
+                <span class="label">{{ form_label(form.name) }} </span><br/>
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="col-1 select">
+                <span class="label"><b>{{ form_label(form.projects) }} </b></span><br/>
+                {{ form_widget(form.projects) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="col-1 select">
+                <span class="label"><b>{{ form_label(form.domainGroup) }} </b></span><br/>
+                {{ form_widget(form.domainGroup) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="submit">
+                {{ form_row(form.save) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#form_new_project_group_projects').select2({
+            language: "pl"
+        });
+        $('#form_new_project_group_domainGroup').select2({
+            language: "pl"
+        });
+    });
+</script>
+{% endblock %}

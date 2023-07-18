@@ -24,8 +24,9 @@ class ProjectGroup
     #[ORM\OneToMany(mappedBy: 'projectGroup', targetEntity: Project::class)]
     private Collection $projects;
 
-    public function __construct()
+    public function __construct(string $name)
     {
+        $this->name = $name;
         $this->projects = new ArrayCollection();
     }
 

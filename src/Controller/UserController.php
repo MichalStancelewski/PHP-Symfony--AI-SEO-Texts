@@ -7,18 +7,22 @@ use App\Entity\Article;
 use App\Entity\Domain;
 use App\Entity\DomainGroup;
 use App\Entity\Project;
+use App\Entity\ProjectGroup;
 use App\Entity\Task;
 use App\Export\ProjectExporter;
 use App\Form\FormEditDomainGroup;
 use App\Form\FormEditProject;
 use App\Form\FormNewDomainGroup;
 use App\Form\FormNewProject;
+use App\Form\FormNewProjectGroup;
 use App\Form\Type\FormEditDomainGroupType;
 use App\Form\Type\FormEditProjectType;
 use App\Form\Type\FormNewDomainGroupType;
+use App\Form\Type\FormNewProjectGroupType;
 use App\Form\Type\FormNewProjectType;
 use App\Repository\ArticleRepository;
 use App\Repository\DomainGroupRepository;
+use App\Repository\ProjectGroupRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -34,7 +38,8 @@ class UserController extends AbstractController
         private EntityManagerInterface $entityManager,
         private ProjectRepository      $projectRepository,
         private ArticleRepository      $articleRepository,
-        private DomainGroupRepository  $domainGroupRepository
+        private DomainGroupRepository  $domainGroupRepository,
+        private ProjectGroupRepository $projectGroupRepository
     )
     {
     }
@@ -506,7 +511,7 @@ class UserController extends AbstractController
         if ($domainGroups) {
             $numberTotalGroups = sizeof($domainGroups);
 
-            foreach ($domainGroups as $domainGroup){
+            foreach ($domainGroups as $domainGroup) {
                 $numberTotalDomains += sizeof($domainGroup->getDomains());
             }
         }
@@ -540,6 +545,183 @@ class UserController extends AbstractController
     {
         $this->domainGroupRepository->remove($domainGroup, true);
         return $this->redirectToRoute('app_user_panel_domain_group');
+    }
+
+    #[Route('/project-groups/new/', name: 'app_user_panel_new_project_group')]
+    public function newProjectGroup(Request $request): Response
+    {
+
+        $formRequest = new FormNewProjectGroup();
+
+        $form = $this->createForm(FormNewProjectGroupType::class, $formRequest);
+        $form->handleRequest($request);
+
+        $errors = array();
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formRequest = $form->getData();
+
+            $projectGroup = new ProjectGroup(
+                $formRequest->getName()
+            );
+
+            if ($formRequest->getDomainGroup()) {
+                $domainGroupRepository = $this->domainGroupRepository;
+                $projectGroup->setDomainGroup($domainGroupRepository->find($formRequest->getDomainGroup()));
+            }
+
+            if ($formRequest->getProjects()) {
+                $projectRepository = $this->projectRepository;
+                foreach ($formRequest->getProjects() as $p){
+                    $project = $projectRepository->find($p);
+                    $projectGroup->addProject($project);
+                }
+            }
+            $projectGroupRepository = $this->projectGroupRepository;
+            $projectGroupRepository->save($projectGroup, true);
+
+            return $this->render('dashboard/project-groups/new.html.twig', [
+                'isSuccess' => 'success',
+                'form' => $form,
+                'submission' => $formRequest
+            ]);
+
+        }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            return $this->render('dashboard/project-groups/new.html.twig', [
+                'isSuccess' => 'failure',
+                'form' => $form,
+                'errors' => $errors,
+            ]);
+        }
+
+        return $this->render('dashboard/project-groups/new.html.twig', [
+            'isSuccess' => '',
+            'form' => $form,
+        ]);
+
+    }
+
+    #[Route('/project-groups/{id}/edit/', name: 'app_user_panel_project_group_edit')]
+    public function editProjectGroup(int $id, Request $request): Response
+    {
+        /*
+        $entityManager = $this->entityManager;
+
+        $formEditDomainGroup = new FormEditDomainGroup();
+        $form = $this->createForm(FormEditDomainGroupType::class, $formEditDomainGroup);
+        $form->handleRequest($request);
+
+        $domainsList = '';
+        $domainGroup = $entityManager->getRepository(DomainGroup::class)->find($id);
+
+        $oldDomains = $domainGroup->getDomains()->toArray();
+        $newDomains = [];
+        if ($oldDomains) {
+            $domainsList = implode("\n", $oldDomains);
+        }
+
+        if (!$domainGroup) {
+            return $this->render('dashboard/project-groups/edit.html.twig', [
+                'isSuccess' => 'failure',
+                'form' => $form,
+                'errors' => 'Nie istnieje grupa domen o ID: ' . $id,
+            ]);
+        }
+
+        $errors = array();
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formRequest = $form->getData();
+
+            if ($formRequest->getDomainsList()) {
+                $domainsList = explode("\n", $formRequest->getDomainsList());
+                foreach ($domainsList as $d) {
+                    $domain = new Domain($d);
+                    $newDomains[] = $domain;
+                }
+                $domainsList = implode("\n", $domainsList);
+            }
+
+            $domainGroupRepository = $this->domainGroupRepository;
+            $domainGroupRepository->edit($domainGroup, $formRequest->getName(), $oldDomains, $newDomains);
+
+            return $this->render('dashboard/project-groups/edit.html.twig', [
+                'isSuccess' => 'success',
+                'domainsList' => $domainsList,
+                'domainGroup' => $domainGroup,
+                'form' => $form,
+                'submission' => $formRequest,
+            ]);
+        }
+        if ($form->isSubmitted() && !$form->isValid()) {
+            return $this->render('dashboard/project-groups/edit.html.twig', [
+                'isSuccess' => 'failure',
+                'domainsList' => $domainsList,
+                'domainGroup' => $domainGroup,
+                'form' => $form,
+                'errors' => $errors,
+            ]);
+        }
+
+        return $this->render('dashboard/project-groups/edit.html.twig', [
+            'isSuccess' => '',
+            'domainsList' => $domainsList,
+            'domainGroup' => $domainGroup,
+            'form' => $form,
+        ]);
+        */
+    }
+
+    #[Route('/project-groups/', name: 'app_user_panel_project_group')]
+    public function projectGroup(Request $request): Response
+    {
+        /*
+                $domainGroupRepository = $this->domainGroupRepository;
+                $domainGroups = $domainGroupRepository->findAll();
+
+                if ($domainGroups) {
+                    $numberTotalGroups = sizeof($domainGroups);
+
+                    foreach ($domainGroups as $domainGroup){
+                        $numberTotalDomains += sizeof($domainGroup->getDomains());
+                    }
+                }
+
+                return $this->render('dashboard/project-groups/all.html.twig', [
+                    'projectGroup' => $projectGroup,
+                ]);
+        */
+    }
+
+    #[Route('/project-groups/{id}/', name: 'app_user_panel_project_group_single')]
+    public function singleProjectGroup(ProjectGroup $projectGroup): Response
+    {
+        return $this->render('dashboard/project-groups/single.html.twig', [
+            'projectGroup' => $projectGroup,
+        ]);
+
+    }
+
+    #[Route('/project-groups/{id}/delete/', name: 'app_user_panel_project_group_delete')]
+    public function deleteProjectGroup(ProjectGroup $projectGroup): Response
+    {
+        return $this->render('dashboard/project-groups/delete.html.twig', [
+            'projectGroup' => $projectGroup,
+        ]);
+    }
+
+    #[Route('/project-groups/{id}/delete/confirm/', name: 'app_user_panel_project_group_delete_confirm')]
+    public function deleteProjectGroupConfirmed(ProjectGroup $projectGroup): Response
+    {
+        $this->projectGroupRepository->remove($projectGroup, true);
+        return $this->redirectToRoute('app_user_panel_project_group');
     }
 
 }

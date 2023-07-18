@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grupa domen - Edytuj - AI SEO Texts{% endblock %}
+
+{% block body %}
+
+    <div class="title-box">
+        <h1>Edycja grupy domen: <i style="font-weight: 300;">{{ domainGroup.name }}</i></h1>
+    </div>
+
+    {% if isSuccess == 'success' %}
+        <div class="projects projects-summary box-container">
+            <div class="box">
+                <div class="col-next align-self-center">
+                    <img src="/uploads/default/icons/checkmark.svg" class="icon success" alt=""/>
+                </div>
+                <div class="col-next align-self-center">
+                    Grupa domen <b>{{ submission.getName }}</b> edytowany pomyślnie!
+                </div>
+            </div>
+        </div>
+    {% elseif isSuccess == 'failure' %}
+        <div class="projects projects-summary box-container">
+            <div class="box">
+                <div class="col-next align-self-center">
+                    <img src="/uploads/default/icons/warning.svg" class="icon error" alt=""/>
+                </div>
+                <div class="col-next align-self-center">
+                    <div class="error-list">
+                        <p><b>Edycja grupy domen nie powiodła się!</b></p>
+                        <b>Błędy:</b> <br/>
+                        {% for error in errors %}
+                            {{ error }}<br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {{ form_start(form) }}
+
+    <div class="form box-container">
+
+        <div class="box">
+            <div class="col-1 ">
+                <span class="label"><b>Ustawienia główne</b></span>
+            </div>
+            <div class="col-1">
+                <span class="label">{{ form_label(form.name) }} </span><br/>
+                {{ form_widget(form.name, {'attr': {'value': domainGroup.name }}) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="col-1 ">
+                <span class="label"><b>Lista domen</b></span>
+            </div>
+            <div class="col-1 textarea domains-list">
+                <span class="label">{{ form_label(form.domainsList) }} </span><br/>
+                {{ form_widget(form.domainsList, {'value': domainsList }) }}
+            </div>
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="submit">
+                {{ form_row(form.save) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
