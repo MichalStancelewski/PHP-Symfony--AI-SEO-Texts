@@ -228,6 +228,7 @@ class UserController extends AbstractController
         if (!$project) {
             return $this->render('dashboard/projects/edit.html.twig', [
                 'isSuccess' => 'failure',
+                'project' => $project,
                 'form' => $form,
                 'errors' => 'Nie istnieje projekt o ID: ' . $id,
             ]);
@@ -450,6 +451,8 @@ class UserController extends AbstractController
         if (!$domainGroup) {
             return $this->render('dashboard/domains/edit.html.twig', [
                 'isSuccess' => 'failure',
+                'domainsList' => $domainsList,
+                'domainGroup' => $domainGroup,
                 'form' => $form,
                 'errors' => 'Nie istnieje grupa domen o ID: ' . $id,
             ]);
