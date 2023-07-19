@@ -1,31 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Grupa Domen - Szczegóły - AI SEO Texts{% endblock %}
+{% block title %}Grupa Projektów - Szczegóły - AI SEO Texts{% endblock %}
 
 {% block body %}
 
     <div class="title-box">
-        <h1>Grupa Domen: <i style="font-weight: 300;">{{ domainGroup.name }}</i></h1>
+        <h1>Grupa Projektów: <i style="font-weight: 300;">{{ projectGroup.name }}</i></h1>
     </div>
+
+    {% set numberOfTexts = 0 %}
+    {% set plannedTexts = 0 %}
+    {% set usedTexts = 0 %}
+    {% for project in projectGroup.getProjects %}
+        {% set numberOfTexts = numberOfTexts + project.getArticles|length %}
+        {% set plannedTexts = plannedTexts + project.getNumberOfArticles %}
+        {% for article in project.getArticles %}
+            {% if article.isUsed == 1 %}
+                {% set usedTexts = usedTexts + 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
 
     <div class="projects projects-summary box-container">
         <div class="box">
             <div class="col-next">
-                <a href="{{ path('app_user_panel_domain_group') }}" class="button go-back">
+                <a href="{{ path('app_user_panel_project_group') }}" class="button go-back">
                     <span><img src="/uploads/default/icons/reply.svg" class="icon" alt=""/>
                     Wróć
                     </span>
                 </a>
             </div>
             <div class="col-next">
-                <a href="{{ path('app_user_panel_domain_group_edit', { id: domainGroup.id }) }}" class="button standard">
+                <a href="{{ path('app_user_panel_project_group_edit', { id: projectGroup.id }) }}"
+                   class="button standard">
                     <span><img src="/uploads/default/icons/settings.svg" class="icon" alt=""/>
                     Edytuj
                     </span>
                 </a>
             </div>
             <div class="col-next">
-                <a href="{{ path('app_user_panel_domain_group_delete', { id: domainGroup.id }) }}"
+                <a href="{{ path('app_user_panel_project_group_delete', { id: projectGroup.id }) }}"
                    class="button delete">
                     <span><img src="/uploads/default/icons/prohibited.svg" class="icon" alt=""/>
                     Usuń
@@ -34,34 +48,168 @@
             </div>
             <div class="col-break"></div>
             <div class="col-next">
-                <span class="label">Liczba domen:</span> <span class="number">{{ domainGroup.getDomains|length }}</span>
+                <span class="label">Projekty:
+                    <b>
+                        {{ projectGroup.getProjects|length }}
+                    </b></span>
+            </div>
+            <div class="col-next">
+                <span class="label">Teksty:
+                    <b>
+                        {% if plannedTexts == 0 %}
+                            -
+                        {% else %}
+                            {{ numberOfTexts }}/{{ plannedTexts }}
+                        {% endif %}
+                    </b></span>
+            </div>
+            <div class="col-next">
+                <span class="label">Wykorzystanie:
+                    <b>
+                        {% if plannedTexts == 0 %}
+                            -
+                        {% else %}
+                            {{ (usedTexts / plannedTexts * 100) | number_format(1) }}%
+                        {% endif %}
+                    </b></span>
+            </div>
+            <div class="col-next">
+                <span class="label">Grupa domen: <b>{{ projectGroup.getDomainGroup ?? "-" }}</b></span>
             </div>
         </div>
     </div>
 
-    {% if domainGroup.getDomains|length < 1 %}
-        <div class="message-empty center">
-            <div><span>Brak przypisanych domen</span></div>
-            <div><a href="{{ path('app_user_panel_domain_group_edit', { id: domainGroup.id }) }}" class="button refresh">
-                    Przejdź do edycji
-                </a>
+{% if projectGroup.getProjects|length < 1 %}
+<div class="message-empty center">
+    <div><span><b>Brak przypisanych projektów</b></span></div>
+    <br/>
+    <div><a href="{{ path('app_user_panel_new') }}" class="button refresh">
+            Dodaj nowy projekt
+        </a>
+    </div>
+</div>
+{% else %}
+
+<div class="projects projects-done box-container">
+    <h2>Zakończone</h2>
+    <div class="box label border-bottom">
+        <div class="col-25">
+            Nazwa
+        </div>
+        <div class="col-30">
+            Temat
+        </div>
+        <div class="col-5">
+            L. art.
+        </div>
+        <div class="col-5">
+            Dług.
+        </div>
+        <div class="col-5">
+            Tytuł
+        </div>
+        <div class="col-20">
+            Data
+        </div>
+        <div class="col-10">
+            Status
+        </div>
+    </div>
+
+    {% for project in projectGroup.getProjects %}
+
+        {% set numberOfUsed = 0 %}
+        {% for article in project.getArticles %}
+            {% if article.isUsed == 1 %}
+                {% set numberOfUsed = numberOfUsed + 1 %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="box border-bottom">
+            <div class="col-25">
+                <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}"
+                   class="name-link"><b>{{ project.name }}</b></a>
+            </div>
+            <div class="col-30">
+                {{ project.theme }}
+            </div>
+            <div class="col-5">
+                {% if project.getArticles|length != project.numberOfArticles %}
+                    <span style="color: red;">{{ project.getArticles|length }}</span>/{{ project.numberOfArticles }}
+                {% else %}
+                    {{ project.getArticles|length }}/{{ project.numberOfArticles }}
+                {% endif %}
+            </div>
+            <div class="col-5">
+                {{ project.textsLength }}
+            </div>
+            <div class="col-5">
+                {% if project.withTitle == 1 %}
+                    tak
+                {% else %}
+                    nie
+                {% endif %}
+            </div>
+            <div class="col-20">
+                {{ project.date|date('d-m-Y H:i:s') }}
+            </div>
+            <div class="col-10">
+                {% if project.status == 'pending' %}
+                    Przetwarzane
+                {% elseif project.status == 'done' %}
+                    Zakończone
+                {% endif %}
+            </div>
+            <div class="col-next link">
+                <a href="{{ path('app_user_panel_projects_single', { id: project.id }) }}" class="view">Zobacz</a>
+            </div>
+            <div class="col-next">
+                <span class="label is-used">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
+            </div>
+            <div class="col-next link dropdown">
+                <span class="more-options">Więcej &#10096;</span>
+                <div class="dropdown-content">
+                    <div class="line link">
+                        <a href="{{ path('app_user_panel_projects_edit', { id: project.id }) }}"
+                           class="standard">Edytuj</a>
+                    </div>
+                    {% if project.status == 'done' %}
+                        <div class="line link">
+                            <a href="{{ path('app_user_panel_projects_export', { id: project.id }) }}"
+                               class="standard">Eksportuj</a>
+                        </div>
+                        <div class="line link">
+                            <a href="{{ path('app_user_panel_projects_makeused', { id: project.id }) }}"
+                               class="standard">Oznacz jako wykorzystane</a>
+                        </div>
+                    {% endif %}
+                    <div class="line link">
+                        <a href="{{ path('app_user_panel_projects_delete', { id: project.id }) }}"
+                           class="delete">Usuń</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-next language">
+                <span class="label">[{{ project.language }}]</span>
+            </div>
+            <div class="col-next id">
+                <span class="label">ID: {{ project.id }}</span>
+            </div>
+            <div class="col-next card-info">
+                <span class="label">| &nbsp; <i>Pokrycie linkami:</i> <b>{{ project.cardLinkCoverage ? project.cardLinkCoverage : "0" }}%</b></span>
+            </div>
+            <div class="col-next card-info">
+                <span class="label"><i>Nazwa firmy/strony:</i> <b>{{ project.cardCompanyName ? project.cardCompanyName : "-" }}</b></span>
+            </div>
+            <div class="col-next card-info">
+                <span class="label"><i>Adres strony:</i> <b>{{ project.cardCompanyWebsite ? project.cardCompanyWebsite : "-" }}</b></span>
+            </div>
+            <div class="col-break">
             </div>
         </div>
-    {% else %}
-        <div class="projects article-list box-container">
-            <h2>Domeny</h2>
-
-            <div class="box border-bottom" style="margin: 10px 0;">
-                {% for domain in domainGroup.getDomains %}
-                    {{ domain.name }} <br/>
-                {% endfor %}
-            </div>
-
-        </div>
-
-
+    {% endfor %}
+    
     {% endif %}
-
 
 {% endblock %}
 
