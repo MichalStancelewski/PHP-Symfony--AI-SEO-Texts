@@ -12,10 +12,12 @@ use App\Entity\Task;
 use App\Export\ProjectExporter;
 use App\Form\FormEditDomainGroup;
 use App\Form\FormEditProject;
+use App\Form\FormEditProjectGroup;
 use App\Form\FormNewDomainGroup;
 use App\Form\FormNewProject;
 use App\Form\FormNewProjectGroup;
 use App\Form\Type\FormEditDomainGroupType;
+use App\Form\Type\FormEditProjectGroupType;
 use App\Form\Type\FormEditProjectType;
 use App\Form\Type\FormNewDomainGroupType;
 use App\Form\Type\FormNewProjectGroupType;
@@ -575,7 +577,7 @@ class UserController extends AbstractController
 
             if ($formRequest->getProjects()) {
                 $projectRepository = $this->projectRepository;
-                foreach ($formRequest->getProjects() as $p){
+                foreach ($formRequest->getProjects() as $p) {
                     $project = $projectRepository->find($p);
                     $projectGroup->addProject($project);
                 }
@@ -608,27 +610,25 @@ class UserController extends AbstractController
     #[Route('/project-groups/{id}/edit/', name: 'app_user_panel_project_group_edit')]
     public function editProjectGroup(int $id, Request $request): Response
     {
-        /*
-        $entityManager = $this->entityManager;
 
-        $formEditDomainGroup = new FormEditDomainGroup();
-        $form = $this->createForm(FormEditDomainGroupType::class, $formEditDomainGroup);
+        $entityManager = $this->entityManager;
+        $domainGroupRepository = $this->domainGroupRepository;
+        $projectGroupRepository = $this->projectGroupRepository;
+        $projectRepository = $this->projectRepository;
+
+        $formEditProjectGroup = new FormEditProjectGroup();
+        $form = $this->createForm(FormEditProjectGroupType::class, $formEditProjectGroup);
         $form->handleRequest($request);
 
-        $domainsList = '';
-        $domainGroup = $entityManager->getRepository(DomainGroup::class)->find($id);
+        $projectGroup = $entityManager->getRepository(ProjectGroup::class)->find($id);
 
-        $oldDomains = $domainGroup->getDomains()->toArray();
-        $newDomains = [];
-        if ($oldDomains) {
-            $domainsList = implode("\n", $oldDomains);
-        }
-
-        if (!$domainGroup) {
+        if (!$projectGroup) {
             return $this->render('dashboard/project-groups/edit.html.twig', [
                 'isSuccess' => 'failure',
                 'form' => $form,
-                'errors' => 'Nie istnieje grupa domen o ID: ' . $id,
+                'projectGroup' => $projectGroup,
+                'projectsArray' => $projectsArray,
+                'errors' => 'Nie istnieje grupa projektów o ID: ' . $id,
             ]);
         }
 
@@ -637,46 +637,56 @@ class UserController extends AbstractController
             $errors[] = $error->getMessage();
         }
 
+        $projectsArray = [];
+        $oldProjectsArray = [];
+        $newProjectsArray = [];
+
+        if ($projectGroup->getProjects()) {
+            foreach ($projectGroup->getProjects() as $p) {
+                $oldProjectsArray[] = $projectRepository->find($p->getId());
+                $projectsArray[] = $p->getId();
+            }
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $formRequest = $form->getData();
 
-            if ($formRequest->getDomainsList()) {
-                $domainsList = explode("\n", $formRequest->getDomainsList());
-                foreach ($domainsList as $d) {
-                    $domain = new Domain($d);
-                    $newDomains[] = $domain;
+            if ($formRequest->getProjects()) {
+                $projectsList = $formRequest->getProjects();
+                foreach ($projectsList as $p) {
+                    $newProjectsArray[] = $projectRepository->find($p);
+                    $this->logger->debug('Projects debug: ' . $p);
                 }
-                $domainsList = implode("\n", $domainsList);
             }
 
-            $domainGroupRepository = $this->domainGroupRepository;
-            $domainGroupRepository->edit($domainGroup, $formRequest->getName(), $oldDomains, $newDomains);
+            if ($formRequest->getDomainGroup()) {
+                $domainGroup = $domainGroupRepository->find($formRequest->getDomainGroup());
+            } else {
+                $domainGroup = null;
+            }
 
-            return $this->render('dashboard/project-groups/edit.html.twig', [
-                'isSuccess' => 'success',
-                'domainsList' => $domainsList,
-                'domainGroup' => $domainGroup,
-                'form' => $form,
-                'submission' => $formRequest,
-            ]);
+            $projectGroupRepository->edit($projectGroup, $formRequest->getName(), $domainGroup, $oldProjectsArray, $newProjectsArray);
+
+            return $this->redirect($this->generateUrl('app_user_panel_project_group_edit', ['id' => $projectGroup->getId()]));
         }
+
         if ($form->isSubmitted() && !$form->isValid()) {
             return $this->render('dashboard/project-groups/edit.html.twig', [
                 'isSuccess' => 'failure',
-                'domainsList' => $domainsList,
-                'domainGroup' => $domainGroup,
                 'form' => $form,
+                'projectGroup' => $projectGroup,
+                'projectsArray' => $projectsArray,
                 'errors' => $errors,
             ]);
         }
 
         return $this->render('dashboard/project-groups/edit.html.twig', [
             'isSuccess' => '',
-            'domainsList' => $domainsList,
-            'domainGroup' => $domainGroup,
+            'projectGroup' => $projectGroup,
+            'projectsArray' => $projectsArray,
             'form' => $form,
         ]);
-        */
+
     }
 
     #[Route('/project-groups/', name: 'app_user_panel_project_group')]

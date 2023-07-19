@@ -23,12 +23,12 @@ class FormNewProjectType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                     'label' => 'Nazwa projektu',
-                    'sanitize_html' => true
+                    'sanitize_html' => false
                 ]
             )
             ->add('theme', TextType::class, [
                     'label' => 'Temat tekstów',
-                    'sanitize_html' => true
+                    'sanitize_html' => false
                 ]
             )
             ->add('numberOfArticles', IntegerType::class, [
@@ -79,7 +79,7 @@ class FormNewProjectType extends AbstractType
             ])
             ->add('cardHeader', TextareaType::class, [
                     'label' => 'Nagłówek',
-                    'sanitize_html' => true,
+                    'sanitize_html' => false,
                     'required' => false
                 ]
             )

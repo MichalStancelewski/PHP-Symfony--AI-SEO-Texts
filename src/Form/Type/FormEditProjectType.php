@@ -34,7 +34,7 @@ class FormEditProjectType extends AbstractType
             ])
             ->add('cardHeader', TextareaType::class, [
                     'label' => 'Nagłówek',
-                    'sanitize_html' => true,
+                    'sanitize_html' => false,
                     'required' => false
                 ]
             )

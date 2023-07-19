@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Grupa domen - Edytuj - AI SEO Texts{% endblock %}
+{% block title %}Grupa projektów - Edytuj - AI SEO Texts{% endblock %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <link href="/js/select2/select2.min.css" rel="stylesheet" />
+    <script src="/js/select2/select2.min.js"></script>
+    <script src="/js/select2/lang-pl.js"></script>
+{% endblock %}
 
 {% block body %}
 
     <div class="title-box">
-        <h1>Edycja grupy domen: <i style="font-weight: 300;">{{ domainGroup.name }}</i></h1>
+        <h1>Edycja grupy projektów: <i style="font-weight: 300;">{{ projectGroup.name }}</i></h1>
     </div>
 
     {% if isSuccess == 'success' %}
@@ -15,7 +22,7 @@
                     <img src="/uploads/default/icons/checkmark.svg" class="icon success" alt=""/>
                 </div>
                 <div class="col-next align-self-center">
-                    Grupa domen <b>{{ submission.getName }}</b> edytowany pomyślnie!
+                    Grupa projektów <b>{{ submission.getName }}</b> edytowana pomyślnie!
                 </div>
             </div>
         </div>
@@ -27,7 +34,7 @@
                 </div>
                 <div class="col-next align-self-center">
                     <div class="error-list">
-                        <p><b>Edycja grupy domen nie powiodła się!</b></p>
+                        <p><b>Edycja grupy projektów nie powiodła się!</b></p>
                         <b>Błędy:</b> <br/>
                         {% for error in errors %}
                             {{ error }}<br/>
@@ -49,17 +56,34 @@
             </div>
             <div class="col-1">
                 <span class="label">{{ form_label(form.name) }} </span><br/>
-                {{ form_widget(form.name, {'attr': {'value': domainGroup.name }}) }}
+                {{ form_widget(form.name, {'attr': {'value': projectGroup.name }}) }}
             </div>
             <div class="col-1 ">
                 <hr>
             </div>
-            <div class="col-1 ">
-                <span class="label"><b>Lista domen</b></span>
+            <div class="col-1 select">
+                <span class="label"><b>{{ form_label(form.projects) }}</b></span><br/>
+                <select id="{{ form.projects.vars.id }}" name="{{ form.projects.vars.full_name }}" multiple>
+                    {% for option in form.projects.vars.choices %}
+                        {% set value = option.value %}
+                        {% set name = option.label %}
+                        {% set selected = (value in projectsArray) ? 'selected' : '' %}
+                        {% if name is not defined %}
+                            {% set name = projectsArray[value] ?? value %}
+                        {% endif %}
+                        <option value="{{ value }}" {{ selected }}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+                <div style="display: none;">
+                    {{ form_widget(form.projects) }}
+                </div>
             </div>
-            <div class="col-1 textarea domains-list">
-                <span class="label">{{ form_label(form.domainsList) }} </span><br/>
-                {{ form_widget(form.domainsList, {'value': domainsList }) }}
+            <div class="col-1 ">
+                <hr>
+            </div>
+            <div class="col-1 select">
+                <span class="label"><b>{{ form_label(form.domainGroup) }} </b></span><br/>
+                {{ form_widget(form.domainGroup, {'value': projectGroup.getDomainGroup.getId ?? null }) }}
             </div>
             <div class="col-1 ">
                 <hr>
@@ -70,4 +94,18 @@
         </div>
     </div>
     {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#form_edit_project_group_projects').select2({
+                language: "pl"
+            });
+            $('#form_edit_project_group_domainGroup').select2({
+                language: "pl"
+            });
+        });
+    </script>
 {% endblock %}

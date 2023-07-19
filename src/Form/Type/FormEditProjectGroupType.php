@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Form\FormNewProjectGroup;
+use App\Form\FormEditProjectGroup;
 use App\Form\Loader\ChoiceLoader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FormNewProjectGroupType extends AbstractType
+class FormEditProjectGroupType extends AbstractType
 {
     private $entityManager;
 
@@ -56,7 +56,7 @@ class FormNewProjectGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => FormNewProjectGroup::class,
+            'data_class' => FormEditProjectGroup::class,
         ]);
     }
 }

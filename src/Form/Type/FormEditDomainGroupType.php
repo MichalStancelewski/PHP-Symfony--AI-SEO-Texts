@@ -17,12 +17,12 @@ class FormEditDomainGroupType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                     'label' => 'Nazwa grupy domen',
-                    'sanitize_html' => true
+                    'sanitize_html' => false
                 ]
             )
             ->add('domainsList', TextareaType::class, [
                     'label' => 'Domeny (każda w osobnej linii)',
-                    'sanitize_html' => true,
+                    'sanitize_html' => false,
                     'required' => false
                 ]
             )

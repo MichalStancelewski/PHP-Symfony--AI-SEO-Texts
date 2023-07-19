@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\DomainGroup;
 use App\Entity\ProjectGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,28 +40,30 @@ class ProjectGroupRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return ProjectGroup[] Returns an array of ProjectGroup objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function edit(ProjectGroup $projectGroup, string $name, ?DomainGroup $domainGroup, array $oldProjects, array $newProjects): void
+    {
+        $projectGroup->setName($name);
 
-//    public function findOneBySomeField($value): ?ProjectGroup
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($domainGroup) {
+            $projectGroup->setDomainGroup($domainGroup);
+        } else {
+            $projectGroup->setDomainGroup(null);
+        }
+
+        if ($oldProjects) {
+            foreach ($oldProjects as $p) {
+                $projectGroup->removeProject($p);
+            }
+        }
+
+        if ($newProjects) {
+            foreach ($newProjects as $p) {
+                $projectGroup->addProject($p);
+            }
+        }
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($projectGroup);
+        $entityManager->flush();
+    }
 }
