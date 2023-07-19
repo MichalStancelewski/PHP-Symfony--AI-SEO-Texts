@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wszystkie Grupy Domen - AI SEO Texts{% endblock %}
+{% block title %}Wszystkie Grupy Projektów - AI SEO Texts{% endblock %}
 
 {% block body %}
     <div class="title-box">
-        <h1>Grupy domen</h1>
+        <h1>Grupy projektów</h1>
     </div>
 
     <div class="projects projects-summary box-container">
@@ -19,51 +19,87 @@
             <div class="col-next">
                 <span class="label">Łącznie grup:</span> <span class="number">{{ numberTotalGroups }}</span>
             </div>
-            <div class="col-next">
-                <span class="label">Łącznie domen:</span> <span class="number">{{ numberTotalDomains }}</span>
-            </div>
         </div>
     </div>
 
     <div class="projects projects-done box-container">
         <div class="box label border-bottom">
-            <div class="col-80">
+            <div class="col-40">
                 Nazwa
             </div>
-            <div class="col-20">
-                L. domen
+            <div class="col-10">
+                Wykorzystane
+            </div>
+            <div class="col-10">
+                L. projektów
+            </div>
+            <div class="col-10">
+                L. tekstów
+            </div>
+            <div class="col-30">
+                Grupa domen
             </div>
         </div>
 
-        {% for domainGroup in domainGroups %}
+        {% for projectGroup in projectGroups %}
+            {% set numberOfTexts = 0 %}
+            {% set plannedTexts = 0 %}
+            {% set usedTexts = 0 %}
+            {% for project in projectGroup.getProjects %}
+                {% set numberOfTexts = numberOfTexts + project.getArticles|length %}
+                {% set plannedTexts = plannedTexts + project.getNumberOfArticles %}
+                {% for article in project.getArticles %}
+                    {% if article.isUsed == 1 %}
+                        {% set usedTexts = usedTexts + 1 %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
             <div class="box border-bottom">
-                <div class="col-80">
-                    <a href="{{ path('app_user_panel_domain_group_single', { id: domainGroup.id }) }}"
-                       class="name-link"><b>{{ domainGroup.name }}</b></a>
+                <div class="col-40">
+                    <a href="{{ path('app_user_panel_project_group_single', { id: projectGroup.id }) }}"
+                       class="name-link"><b>{{ projectGroup.name }}</b></a>
                 </div>
-                <div class="col-20">
-                    {{ domainGroup.getDomains|length }}
+                <div class="col-10">
+                    {% if plannedTexts == 0 %}
+                        -
+                    {% else %}
+                        {{ (usedTexts / plannedTexts * 100) | number_format(1) }}%
+                    {% endif %}
+                </div>
+                <div class="col-10">
+                    {{ projectGroup.getProjects|length }}
+                </div>
+                <div class="col-10">
+                    {% if plannedTexts == 0 %}
+                        -
+                    {% else %}
+                        {{ numberOfTexts }}/{{ plannedTexts }}
+                    {% endif %}
+
+                </div>
+                <div class="col-30">
+                    {{ projectGroup.getDomainGroup ?? "-" }}
                 </div>
                 <div class="col-break">
                 </div>
                 <div class="col-next link">
-                    <a href="{{ path('app_user_panel_domain_group_single', { id: domainGroup.id }) }}" class="view">Zobacz</a>
+                    <a href="{{ path('app_user_panel_project_group_single', { id: projectGroup.id }) }}" class="view">Zobacz</a>
                 </div>
                 <div class="col-next link dropdown">
                     <span class="more-options">Więcej &#10096;</span>
                     <div class="dropdown-content">
                         <div class="line link">
-                            <a href="{{ path('app_user_panel_domain_group_edit', { id: domainGroup.id }) }}"
+                            <a href="{{ path('app_user_panel_project_group_edit', { id: projectGroup.id }) }}"
                                class="standard">Edytuj</a>
                         </div>
                         <div class="line link">
-                            <a href="{{ path('app_user_panel_domain_group_delete', { id: domainGroup.id }) }}"
+                            <a href="{{ path('app_user_panel_project_group_delete', { id: projectGroup.id }) }}"
                                class="delete">Usuń</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-next id">
-                    <span class="label">ID: {{ domainGroup.id }}</span>
+                    <span class="label">ID: {{ projectGroup.id }}</span>
                 </div>
                 <div class="col-break">
                 </div>

@@ -695,22 +695,23 @@ class UserController extends AbstractController
     #[Route('/project-groups/', name: 'app_user_panel_project_group')]
     public function projectGroup(Request $request): Response
     {
-        /*
-                $domainGroupRepository = $this->domainGroupRepository;
-                $domainGroups = $domainGroupRepository->findAll();
 
-                if ($domainGroups) {
-                    $numberTotalGroups = sizeof($domainGroups);
+        $projectGroupRepository = $this->projectGroupRepository;
+        $projectGroups = $projectGroupRepository->findAll();
 
-                    foreach ($domainGroups as $domainGroup){
-                        $numberTotalDomains += sizeof($domainGroup->getDomains());
-                    }
-                }
+        if ($projectGroups) {
+            $numberTotalGroups = sizeof($projectGroups);
 
-                return $this->render('dashboard/project-groups/all.html.twig', [
-                    'projectGroup' => $projectGroup,
-                ]);
-        */
+            foreach ($projectGroups as $projectGroup) {
+                $numberTotalGroups += sizeof($projectGroup->getProjects());
+            }
+        }
+
+        return $this->render('dashboard/project-groups/all.html.twig', [
+            'projectGroups' => $projectGroups,
+            'numberTotalGroups' => $numberTotalGroups,
+        ]);
+
     }
 
     #[Route('/project-groups/{id}/', name: 'app_user_panel_project_group_single')]

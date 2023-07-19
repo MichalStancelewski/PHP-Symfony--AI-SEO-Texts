@@ -29,6 +29,11 @@
                         </a></li>
                 </ul>
             </li>
+            <li><a href="{{ path('app_user_panel_project_group') }}"
+                   class="menu-item{% if currentPage == 'app_user_panel_project_group' %} active{% endif %}">
+                    <span><img src="/uploads/default/icons/star.svg" class="icon" alt=""/>
+                    Grupy projektów</span>
+                </a></li>
             <li><a href="{{ path('app_user_panel_projects') }}"
                    class="menu-item{% if currentPage == 'app_user_panel_projects' %} active{% endif %}">
                     <span><img src="/uploads/default/icons/menu.svg" class="icon" alt=""/>
