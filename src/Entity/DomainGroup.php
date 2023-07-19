@@ -21,13 +21,14 @@ class DomainGroup
     #[ORM\OneToMany(mappedBy: 'domainGroup', targetEntity: Domain::class,  cascade: ['persist'],  orphanRemoval: true)]
     private Collection $domains;
 
-    #[ORM\OneToOne(mappedBy: 'domainGroup', cascade: ['persist', 'remove'])]
-    private ?ProjectGroup $projectGroup = null;
+    #[ORM\OneToMany(mappedBy: 'domainGroup', targetEntity: ProjectGroup::class)]
+    private Collection $projectGroups;
 
     public function __construct(string $name)
     {
         $this->domains = new ArrayCollection();
         $this->name = $name;
+        $this->projectGroups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,25 +83,34 @@ class DomainGroup
         return $this->name;
     }
 
-    public function getProjectGroup(): ?ProjectGroup
+    /**
+     * @return Collection<int, ProjectGroup>
+     */
+    public function getProjectGroups(): Collection
     {
-        return $this->projectGroup;
+        return $this->projectGroups;
     }
 
-    public function setProjectGroup(?ProjectGroup $projectGroup): self
+    public function addProjectGroup(ProjectGroup $projectGroup): self
     {
-        // unset the owning side of the relation if necessary
-        if ($projectGroup === null && $this->projectGroup !== null) {
-            $this->projectGroup->setDomainGroup(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($projectGroup !== null && $projectGroup->getDomainGroup() !== $this) {
+        if (!$this->projectGroups->contains($projectGroup)) {
+            $this->projectGroups->add($projectGroup);
             $projectGroup->setDomainGroup($this);
         }
 
-        $this->projectGroup = $projectGroup;
+        return $this;
+    }
+
+    public function removeProjectGroup(ProjectGroup $projectGroup): self
+    {
+        if ($this->projectGroups->removeElement($projectGroup)) {
+            // set the owning side to null (unless already changed)
+            if ($projectGroup->getDomainGroup() === $this) {
+                $projectGroup->setDomainGroup(null);
+            }
+        }
 
         return $this;
     }
+
 }

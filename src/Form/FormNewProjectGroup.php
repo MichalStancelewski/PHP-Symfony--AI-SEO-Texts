@@ -2,11 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\DomainGroup;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FormNewProjectGroup

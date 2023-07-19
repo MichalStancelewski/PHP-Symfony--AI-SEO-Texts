@@ -18,11 +18,11 @@ class ProjectGroup
     #[ORM\Column(length: 512)]
     private ?string $name = null;
 
-    #[ORM\OneToOne(inversedBy: 'projectGroup', cascade: ['persist', 'remove'])]
-    private ?DomainGroup $domainGroup = null;
-
     #[ORM\OneToMany(mappedBy: 'projectGroup', targetEntity: Project::class)]
     private Collection $projects;
+
+    #[ORM\ManyToOne(inversedBy: 'projectGroups')]
+    private ?DomainGroup $domainGroup = null;
 
     public function __construct(string $name)
     {
@@ -43,18 +43,6 @@ class ProjectGroup
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getDomainGroup(): ?DomainGroup
-    {
-        return $this->domainGroup;
-    }
-
-    public function setDomainGroup(?DomainGroup $domainGroup): self
-    {
-        $this->domainGroup = $domainGroup;
 
         return $this;
     }
@@ -85,6 +73,23 @@ class ProjectGroup
                 $project->setProjectGroup(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    public function getDomainGroup(): ?DomainGroup
+    {
+        return $this->domainGroup;
+    }
+
+    public function setDomainGroup(?DomainGroup $domainGroup): self
+    {
+        $this->domainGroup = $domainGroup;
 
         return $this;
     }
