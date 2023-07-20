@@ -2,6 +2,13 @@
 
 {% block title %}Nowy Projekt - AI SEO Texts{% endblock %}
 
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <link href="/js/select2/select2.min.css" rel="stylesheet" />
+    <script src="/js/select2/select2.min.js"></script>
+    <script src="/js/select2/lang-pl.js"></script>
+{% endblock %}
+
 {% block body %}
 
     <div class="title-box">
@@ -62,9 +69,13 @@
                 <span class="label">{{ form_label(form.textsLength) }} </span><br/>
                 {{ form_widget(form.textsLength) }}
             </div>
-            <div class="col-1 select">
+            <div class="col-2 select">
                 <span class="label">{{ form_label(form.language) }} </span><br/>
                 {{ form_widget(form.language) }}
+            </div>
+            <div class="col-1 select">
+                <span class="label">{{ form_label(form.projectGroup) }} </span><br/>
+                {{ form_widget(form.projectGroup) }}
             </div>
             <div class="radio">
                 <span class="label">{{ form_label(form.withTitle) }} </span><br/>
@@ -109,4 +120,14 @@
         </div>
     </div>
     {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#form_new_project_projectGroup').select2({
+                language: "pl"
+            });
+        });
+    </script>
 {% endblock %}

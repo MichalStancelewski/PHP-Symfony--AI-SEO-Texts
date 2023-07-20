@@ -102,6 +102,10 @@ class UserController extends AbstractController
             if ($formRequest->getCardCompanyWebsite()) {
                 $project->setCardCompanyWebsite($formRequest->getCardCompanyWebsite());
             };
+            if ($formRequest->getProjectGroup()) {
+                $projectGroup = $this->projectGroupRepository->find($formRequest->getProjectGroup());
+                $project->setProjectGroup($projectGroup);
+            };
 
             $entityManager = $this->entityManager;
             $databaseInsert = new DatabaseInsert($entityManager, $project);
@@ -706,17 +710,8 @@ class UserController extends AbstractController
         $projectGroupRepository = $this->projectGroupRepository;
         $projectGroups = $projectGroupRepository->findAll();
 
-        if ($projectGroups) {
-            $numberTotalGroups = sizeof($projectGroups);
-
-            foreach ($projectGroups as $projectGroup) {
-                $numberTotalGroups += sizeof($projectGroup->getProjects());
-            }
-        }
-
         return $this->render('dashboard/project-groups/all.html.twig', [
             'projectGroups' => $projectGroups,
-            'numberTotalGroups' => $numberTotalGroups,
         ]);
 
     }

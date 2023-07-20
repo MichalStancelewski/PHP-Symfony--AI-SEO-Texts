@@ -17,7 +17,7 @@
                 </a>
             </div>
             <div class="col-next">
-                <span class="label">Łącznie grup:</span> <span class="number">{{ numberTotalGroups }}</span>
+                <span class="label">Łącznie grup:</span> <span class="number">{{ projectGroups|length }}</span>
             </div>
         </div>
     </div>
@@ -73,7 +73,11 @@
                     {% if plannedTexts == 0 %}
                         -
                     {% else %}
-                        {{ numberOfTexts }}/{{ plannedTexts }}
+                        {% if numberOfTexts != plannedTexts %}
+                            <span style="color: red;">{{ numberOfTexts }}</span>/{{ plannedTexts }}
+                        {% else %}
+                            {{ numberOfTexts }}/{{ plannedTexts }}
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="col-30">

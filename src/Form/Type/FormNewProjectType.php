@@ -3,6 +3,8 @@
 namespace App\Form\Type;
 
 use App\Form\FormNewProject;
+use App\Form\Loader\ChoiceLoader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,6 +20,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormNewProjectType extends AbstractType
 {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -47,6 +54,15 @@ class FormNewProjectType extends AbstractType
                 ],
                 'expanded' => true
             ])
+            ->add('projectGroup', ChoiceType::class, [
+                    'label' => 'Grupa projektów',
+                    'placeholder' => '',
+                    'choice_loader' => new ChoiceLoader($this->entityManager, 'App\Entity\ProjectGroup'),
+                    'multiple' => false,
+                    'expanded' => false,
+                    'required' => false
+                ]
+            )
             ->add('language', LanguageType::class, [
                     'label' => 'Język',
                     'alpha3' => true,

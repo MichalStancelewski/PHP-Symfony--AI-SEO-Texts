@@ -72,6 +72,8 @@ class FormNewProject
 
     private ?int $cardLinkCoverage = null;
 
+    private ?int $projectGroup = null;
+
     /**
      * @return int|null
      */
@@ -248,7 +250,6 @@ class FormNewProject
         $this->cardCompanyWebsite = $cardCompanyWebsite;
     }
 
-
     /**
      * @return int|null
      */
@@ -264,5 +265,22 @@ class FormNewProject
     {
         $this->cardLinkCoverage = $cardLinkCoverage;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getProjectGroup(): ?int
+    {
+        return $this->projectGroup;
+    }
+
+    /**
+     * @param int|null $projectGroup
+     */
+    public function setProjectGroup(?int $projectGroup): void
+    {
+        $this->projectGroup = $projectGroup;
+    }
+
 
 }
