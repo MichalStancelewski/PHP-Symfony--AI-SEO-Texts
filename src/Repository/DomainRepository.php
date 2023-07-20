@@ -39,28 +39,9 @@ class DomainRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Domain[] Returns an array of Domain objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByGroupId($groupId)
+    {
+        return $this->findBy(['domainGroup' => $groupId]);
+    }
 
-//    public function findOneBySomeField($value): ?Domain
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

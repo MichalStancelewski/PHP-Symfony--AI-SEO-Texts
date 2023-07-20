@@ -10,6 +10,7 @@ use App\Entity\Project;
 use App\Entity\ProjectGroup;
 use App\Entity\Task;
 use App\Export\ProjectExporter;
+use App\Export\ProjectGroupExporter;
 use App\Form\FormEditDomainGroup;
 use App\Form\FormEditProject;
 use App\Form\FormEditProjectGroup;
@@ -24,6 +25,7 @@ use App\Form\Type\FormNewProjectGroupType;
 use App\Form\Type\FormNewProjectType;
 use App\Repository\ArticleRepository;
 use App\Repository\DomainGroupRepository;
+use App\Repository\DomainRepository;
 use App\Repository\ProjectGroupRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,6 +42,7 @@ class UserController extends AbstractController
         private EntityManagerInterface $entityManager,
         private ProjectRepository      $projectRepository,
         private ArticleRepository      $articleRepository,
+        private DomainRepository       $domainRepository,
         private DomainGroupRepository  $domainGroupRepository,
         private ProjectGroupRepository $projectGroupRepository
     )
@@ -53,10 +56,14 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $projectRepository = $this->projectRepository;
-        $projectsNewest = $projectRepository->findNewest(5);
+        $projectsNewest = $projectRepository->findNewest(3);
+
+        $projectGroupRepository = $this->projectGroupRepository;
+        $projectGroupsNewest = $projectGroupRepository->findNewest(2);
 
         return $this->render('dashboard/index.html.twig', [
             'projectsNewest' => $projectsNewest,
+            'projectGroupsNewest' => $projectGroupsNewest,
         ]);
 
     }
@@ -738,6 +745,66 @@ class UserController extends AbstractController
     {
         $this->projectGroupRepository->remove($projectGroup, $this->projectRepository);
         return $this->redirectToRoute('app_user_panel_project_group');
+    }
+
+    #[Route('/project-groups/{id}/export/', name: 'app_user_panel_project_group_export')]
+    public function exportProjectGroup(ProjectGroup $projectGroup): Response
+    {
+        if(!$this->checkProjectsStatus($projectGroup)){
+            return $this->render('dashboard/project-groups/export.html.twig', [
+                'projectGroup' => $projectGroup,
+                'isSuccess' => 'pending',
+            ]);
+        }
+
+        $projectGroupExporter = new ProjectGroupExporter($projectGroup, $this->domainRepository);
+        $pathToPlain = $projectGroupExporter->export(false);
+        $pathToAdvanced = $projectGroupExporter->export(true);
+
+        return $this->render('dashboard/project-groups/export.html.twig', [
+            'isSuccess' => 'success',
+            'projectGroup' => $projectGroup,
+            'pathToPlain' => $pathToPlain,
+            'pathToAdvanced' => $pathToAdvanced,
+        ]);
+    }
+
+    #[Route('/project-groups/{id}/make-used/', name: 'app_user_panel_project_group_makeused')]
+    public function makeUsedProjectGroup(ProjectGroup $projectGroup): Response
+    {
+        if(!$this->checkProjectsStatus($projectGroup)){
+            return $this->render('dashboard/project-groups/makeused.html.twig', [
+                'projectGroup' => $projectGroup,
+                'isSuccess' => 'pending',
+            ]);
+        }
+
+        $articleRepository = $this->articleRepository;
+
+        if (sizeof($projectGroup->getProjects()) > 0) {
+            foreach ($projectGroup->getProjects() as $project) {
+                $project->makeUsed($articleRepository);
+            }
+            return $this->render('dashboard/project-groups/makeused.html.twig', [
+                'projectGroup' => $projectGroup,
+                'isSuccess' => 'success',
+            ]);
+        } else {
+            return $this->render('dashboard/project-groups/makeused.html.twig', [
+                'projectGroup' => $projectGroup,
+                'isSuccess' => 'failure',
+            ]);
+        }
+    }
+
+    public function checkProjectsStatus(ProjectGroup $projectGroup): bool
+    {
+        foreach ($projectGroup->getProjects() as $project) {
+            if ($project->getStatus() != 'done') {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

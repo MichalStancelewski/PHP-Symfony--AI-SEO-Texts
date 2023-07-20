@@ -248,8 +248,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-next">
-                    <span class="label is-used">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
+                <div class="col-break">
+                </div>
+                <div class="col-next card-info">
+                    <span class="label">Wykorzystane: {{ (numberOfUsed / project.numberOfArticles * 100) | number_format(1) }}%</span>
                 </div>
                 <div class="col-next language">
                     <span class="label">[{{ project.language }}]</span>
@@ -277,7 +279,6 @@
                 </div>
             </div>
         {% endfor %}
-
     </div>
 
 {% endblock %}

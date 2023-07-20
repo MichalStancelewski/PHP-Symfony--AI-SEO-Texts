@@ -1,7 +1,7 @@
 @import './variables';
 
 body {
-  display:none;
+  display: none;
   margin: 0;
   background-color: $color-slight-gray;
   font-family: $font-family-text;
@@ -121,7 +121,7 @@ a, a:visited {
   background-color: $color-sky-blue;
 }
 
-.menu-item.add-new.disabled{
+.menu-item.add-new.disabled {
   background-color: $color-blue;
   cursor: default;
 }
@@ -414,6 +414,15 @@ a, a:visited {
 
 .link .export:hover {
   color: $color-sky-blue;
+}
+
+.link.minimal {
+  color: $color-gray;
+  font-size: 13px;
+}
+
+.link.minimal:hover {
+  color: $color-blue;
 }
 
 .form input {

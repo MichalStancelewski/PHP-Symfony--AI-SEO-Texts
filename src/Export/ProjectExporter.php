@@ -69,7 +69,7 @@ class ProjectExporter
                     $file->appendToFile($path, 'TAGS:' . "\n");
                     $file->appendToFile($path, 'SLUG:' . "\n");
                     $file->appendToFile($path, 'EXCERPT:' . "\n");
-                    $file->appendToFile($path, 'BODY: ' . $body . "\n");
+                    $file->appendToFile($path, 'BODY: ' . $this->removeBlockquoteTag($body) . "\n");
                     $file->appendToFile($path, 'ALLOW COMMENTS: 0' . "\n");
                     $file->appendToFile($path, 'ALLOW PINGBACKS: 0' . "\n");
                     $file->appendToFile($path, 'SITES: ' . "\n");
@@ -122,6 +122,15 @@ class ProjectExporter
             '<u><a href="' . $cardCompanyWebsite . '" target="_blank" rel="noopener">' . $cardCompanyWebsite . '</a></u>' .
             '</span></li>' .
             '</ul>';
+    }
+
+    function removeBlockquoteTag(string $text) : string
+    {
+        $pattern = '/<blockquote\b[^>]*>(.*?)<\/blockquote>/is';
+
+        $filtered_text = preg_replace($pattern, '', $text);
+
+        return $filtered_text;
     }
 
 }

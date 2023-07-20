@@ -72,4 +72,13 @@ class ProjectGroupRepository extends ServiceEntityRepository
 
         $entityManager->flush();
     }
+
+    public function findNewest(int $number)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults($number)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Grupa Projektów - Oznacz jako wykorzystane - AI SEO Texts{% endblock %}
+
+{% block body %}
+
+    <div class="title-box">
+        <h1>Grupa Projektów: <i style="font-weight: 300;">{{ projectGroup.name }}</i></h1>
+    </div>
+
+    <div class="projects projects-summary box-container">
+        <div class="box">
+            <div class="col-next">
+                <a href="{{ path('app_user_panel_project_group') }}" class="button go-back">
+                    <span><img src="/uploads/default/icons/reply.svg" class="icon" alt=""/>
+                    Wróć
+                    </span>
+                </a>
+            </div>
+            <div class="col-break"></div>
+            <div class="col-next">
+                {% if isSuccess == 'success' %}
+                    Artykuły zostały oznaczone jako wykorzystane!
+                {% elseif isSuccess == 'pending' %}
+                    Błąd - Nie wszystkie projekty zostały zakończone!
+                {% else %}
+                    Brak artykułów do oznaczenia jako wykorzystane!
+                {% endif %}
+            </div>
+            <div class="col-break"></div>
+        </div>
+    </div>
+
+{% endblock %}
