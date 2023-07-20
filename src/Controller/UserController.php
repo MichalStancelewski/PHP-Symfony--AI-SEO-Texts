@@ -734,7 +734,7 @@ class UserController extends AbstractController
     #[Route('/project-groups/{id}/delete/confirm/', name: 'app_user_panel_project_group_delete_confirm')]
     public function deleteProjectGroupConfirmed(ProjectGroup $projectGroup): Response
     {
-        $this->projectGroupRepository->remove($projectGroup, true);
+        $this->projectGroupRepository->remove($projectGroup, $this->projectRepository);
         return $this->redirectToRoute('app_user_panel_project_group');
     }
 

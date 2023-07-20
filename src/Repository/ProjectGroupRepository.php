@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\DomainGroup;
+use App\Entity\Project;
 use App\Entity\ProjectGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -25,15 +26,6 @@ class ProjectGroupRepository extends ServiceEntityRepository
     public function save(ProjectGroup $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(ProjectGroup $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
@@ -64,6 +56,20 @@ class ProjectGroupRepository extends ServiceEntityRepository
 
         $entityManager = $this->getEntityManager();
         $entityManager->persist($projectGroup);
+        $entityManager->flush();
+    }
+
+    public function remove(ProjectGroup $projectGroup, ProjectRepository $projectRepository): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach($projectGroup->getProjects() as $project){
+            $project->setProjectGroup(null);
+            $entityManager->persist($project);
+        }
+
+        $entityManager->remove($projectGroup);
+
         $entityManager->flush();
     }
 }
