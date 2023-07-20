@@ -591,7 +591,7 @@ class UserController extends AbstractController
             return $this->render('dashboard/project-groups/new.html.twig', [
                 'isSuccess' => 'success',
                 'form' => $form,
-                'submission' => $formRequest
+                'submission' => $formRequest,
             ]);
 
         }
@@ -670,7 +670,14 @@ class UserController extends AbstractController
 
             $projectGroupRepository->edit($projectGroup, $formRequest->getName(), $domainGroup, $oldProjectsArray, $newProjectsArray);
 
-            return $this->redirect($this->generateUrl('app_user_panel_project_group_edit', ['id' => $projectGroup->getId()]));
+            return $this->render('dashboard/project-groups/edit.html.twig', [
+                'isSuccess' => 'success',
+                'form' => $form,
+                'projectGroup' => $projectGroup,
+                'projectsArray' => $projectsArray,
+                'errors' => $errors,
+                'submission' => $formRequest,
+            ]);
         }
 
         if ($form->isSubmitted() && !$form->isValid()) {

@@ -4,7 +4,7 @@
 
 {% block head %}
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <link href="/js/select2/select2.min.css" rel="stylesheet" />
+    <link href="/js/select2/select2.min.css" rel="stylesheet"/>
     <script src="/js/select2/select2.min.js"></script>
     <script src="/js/select2/lang-pl.js"></script>
 {% endblock %}
@@ -45,7 +45,7 @@
         </div>
     {% endif %}
 
-
+    {% if isSuccess != 'success' %}
     {{ form_start(form) }}
 
     <div class="form box-container">
@@ -94,12 +94,13 @@
         </div>
     </div>
     {{ form_end(form) }}
+    {% endif %}
 
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#form_edit_project_group_projects').select2({
                 language: "pl"
             });
@@ -109,3 +110,4 @@
         });
     </script>
 {% endblock %}
+
